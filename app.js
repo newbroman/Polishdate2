@@ -1,15 +1,20 @@
-import { setupListeners } from './events.js';
-
-window.onload = () => {
+// STAGE 2.1 - The Module Hunter
+window.onload = async () => {
     const calendarGrid = document.getElementById('calendarGrid');
-    
+    calendarGrid.innerHTML = "<h1>Attempting to load modules...</h1>";
+
     try {
-        console.log("Testing events.js import...");
-        // If this works, the 'setupListeners' function exists
-        if (typeof setupListeners === 'function') {
-            calendarGrid.innerHTML = "<h1>STAGE 2 SUCCESS</h1><p>The app can see events.js! The problem is likely in calendar-core.js or ui-renderer.js.</p>";
+        // This tries to load the file dynamically to catch the specific error
+        const eventsModule = await import('./events.js');
+        
+        if (eventsModule.setupListeners) {
+            calendarGrid.innerHTML = "<h1>SUCCESS!</h1><p>The browser found events.js.</p>";
         }
     } catch (error) {
-        calendarGrid.innerHTML = "<h1>STAGE 2 FAILED</h1><p>Error: " + error.message + "</p>";
+        // THIS WILL TELL US THE TRUTH
+        calendarGrid.innerHTML = `<h1>MODULE LOAD FAILED</h1>
+            <p>Error: ${error.message}</p>
+            <p>Check if all filenames on GitHub are lowercase!</p>`;
+        console.error(error);
     }
 };
