@@ -3,27 +3,26 @@ import phonetics from './phonetics.js';
 import yearData from './year.js';
 import { getWrittenDay } from './numbers.js';
 
-export function updateDateDisplay(selectedDate, includeYear) {
+export function updateInfoPanel(selectedDate, includeYear) {
     const mIdx = selectedDate.getMonth();
-    const dayKey = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'][selectedDate.getDay()];
-    const dayNamePl = culturalData.days[dayKey].split(' ')[0];
+    const dayNamePl = ["niedziela", "poniedziałek", "wtorek", "środa", "czwartek", "piątek", "sobota"][selectedDate.getDay()];
     
-    // Genitive conversion logic
+    // 1. Get Written Polish (Genitive Case)
     const monthGen = culturalData.months[mIdx].pl
         .replace(/ń$/, 'nia').replace(/ec$/, 'ca').replace(/y$/, 'ego').toLowerCase();
-    
-    const dayNumWritten = getWrittenDay(selectedDate.getDate());
+    const dayNumPl = getWrittenDay(selectedDate.getDate());
     const yearPl = yearData.getYearInPolish(selectedDate.getFullYear());
 
-    // Phonetic mapping
-    const pDayName = phonetics.days[dayNamePl.toLowerCase()] || dayNamePl;
+    // 2. Get Phonetics from your mapping
+    const pDayName = phonetics.days[dayNamePl] || dayNamePl;
     const pMonth = phonetics.months[monthGen] || monthGen;
-    const pYear = yearData.getYearPhonetic(selectedDate.getFullYear());
     const pDayNum = phonetics.numbers[selectedDate.getDate()] || selectedDate.getDate();
+    const pYear = yearData.getYearPhonetic(selectedDate.getFullYear());
 
-    const plDate = `${dayNamePl}, ${dayNumWritten} ${monthGen}`;
-    const phDate = `${pDayName}, ${pDayNum} ${pMonth}`;
-
-    document.getElementById('plPhrase').innerText = includeYear ? `${plDate} ${yearPl}` : plDate;
-    document.getElementById('phoneticPhrase').innerText = includeYear ? `${phDate} ${pYear}` : phDate;
+    // 3. Render to HTML
+    document.getElementById('plPhrase').innerText = `${dayNamePl}, ${dayNumPl} ${monthGen} ${includeYear ? yearPl : ""}`;
+    document.getElementById('phoneticPhrase').innerText = `${pDayName}, ${pDayNum} ${pMonth} ${includeYear ? pYear : ""}`;
+    document.getElementById('enPhrase').innerText = selectedDate.toLocaleDateString('en-GB', { 
+        weekday: 'long', day: 'numeric', month: 'long', year: includeYear ? 'numeric' : undefined 
+    });
 }
