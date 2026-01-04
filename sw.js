@@ -1,12 +1,13 @@
-const CACHE_NAME = 'pl-dates-v11.2'; // Increment version to force update
+const CACHE_NAME = 'pl-dates-v11'; // Incremented to v11 to force a fresh start
 const ASSETS = [
   './',
   './index.html',
   './styles.css',
   './manifest.json',
-  /* Main Orchestrator */
+  /* Main Orchestrator & New Event Logic */
   './app.js',
-  /* New Logic Modules */
+  './events.js',
+  /* Logic Modules */
   './navigation.js',
   './ui-renderer.js',
   './calendar-core.js',
@@ -22,8 +23,9 @@ const ASSETS = [
   './icon-512.png'
 ];
 
-// Install Event - Caches all assets
+// Install Event - Caches everything immediately
 self.addEventListener('install', (event) => {
+  self.skipWaiting(); // Forces the new service worker to become active immediately
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
       return cache.addAll(ASSETS);
@@ -31,7 +33,7 @@ self.addEventListener('install', (event) => {
   );
 });
 
-// Activate Event - Cleans up old caches
+// Activate Event - Deletes all old caches (v10, v9, etc.)
 self.addEventListener('activate', (event) => {
   event.waitUntil(
     caches.keys().then((keys) => {
@@ -42,11 +44,11 @@ self.addEventListener('activate', (event) => {
   );
 });
 
-// Fetch Event - Offline-first strategy
+// Fetch Event - Tries to get the latest from network, falls back to cache if offline
 self.addEventListener('fetch', (event) => {
   event.respondWith(
-    caches.match(event.request).then((response) => {
-      return response || fetch(event.request);
+    fetch(event.request).catch(() => {
+      return caches.match(event.request);
     })
   );
 });
