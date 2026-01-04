@@ -11,38 +11,3 @@ const culturalData = {
         7: { pl: "Sierpień", derivation: "From 'sierp' (sickle), the tool for harvest.", season: "summer" },
         8: { pl: "Wrzesień", derivation: "From 'wrzos' (heather), which flowers now.", season: "autumn" },
         9: { pl: "Październik", derivation: "From 'paździerz' (flax waste) from making cloth.", season: "autumn" },
-        10: { pl: "Listopad", derivation: "A poetic name: 'liście' (leaves) + 'padać' (to fall).", season: "autumn" },
-        11: { pl: "Grudzień", derivation: "From 'gruda' (frozen clod of earth).", season: "winter" }
-    },
-
-    // Days with religious/numerical origins
-    days: {
-        monday: "Poniedziałek (Day after Sunday)",
-        tuesday: "Wtorek (The second day)",
-        wednesday: "Środa (The middle day)",
-        thursday: "Czwartek (The fourth day)",
-        friday: "Piątek (The fifth day)",
-        saturday: "Sobota (From the Sabbath)",
-        sunday: "Niedziela (No-work day)"
-    },
-
-    // Holiday Explanations
-    holidayExplanations: {
-        "1-1": "New Year's Day: A fresh start with family celebrations.",
-        "1-6": "Three Kings Day: Religious processions through city streets.",
-        "5-1": "Labour Day: Often a day for rallies or spring picnics.",
-        "5-3": "Constitution Day: Celebrating Europe's first modern constitution (1791).",
-        "8-15": "Armed Forces Day & Assumption of Mary: Military parades and church services.",
-        "11-1": "All Saints' Day: Cemeteries glow with thousands of candles left for loved ones.",
-        "11-11": "Independence Day: Patriotic marches celebrating the rebirth of Poland in 1918.",
-        "12-25": "Christmas Day: Quiet family time following the Christmas Eve Vigil (Wigilia)."
-    },
-
-    grammarGuide: {
-        title: "The Grammar of Dates",
-        sections: [
-            { heading: "The Whose Rule (Genitive)", content: "In Polish dates, we use the Genitive case. Instead of 'January', we say 'of January' (stycznia)." }
-        ]
-    }
-};
-export default culturalData;

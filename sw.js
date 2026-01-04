@@ -1,4 +1,4 @@
-const CACHE_NAME = 'pl-dates-v10'; // Increment version to force update
+const CACHE_NAME = 'pl-dates-v11'; // Increment version to force update
 const ASSETS = [
   './',
   './index.html',
