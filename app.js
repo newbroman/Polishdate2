@@ -1,22 +1,15 @@
-// DEBUG app.js
+import { setupListeners } from './events.js';
+
 window.onload = () => {
-    console.log("App.js has started successfully!");
-
-    const mR = document.getElementById('monthRoller');
-    const yR = document.getElementById('yearRoller');
     const calendarGrid = document.getElementById('calendarGrid');
-
-    // 1. Force remove the loading message manually
-    if (calendarGrid) {
-        calendarGrid.innerHTML = "<h1>DEBUG MODE: JS IS WORKING</h1><p>If you see this, the problem is a missing file or a typo in your imports.</p>";
-    }
-
-    // 2. Simple population to see if UI elements are found
-    if (mR && yR) {
-        mR.add(new Option("Debug Month", 0));
-        yR.add(new Option("2024", 2024));
-        console.log("Dropdowns found and populated.");
-    } else {
-        console.error("Could not find dropdown elements in index.html");
+    
+    try {
+        console.log("Testing events.js import...");
+        // If this works, the 'setupListeners' function exists
+        if (typeof setupListeners === 'function') {
+            calendarGrid.innerHTML = "<h1>STAGE 2 SUCCESS</h1><p>The app can see events.js! The problem is likely in calendar-core.js or ui-renderer.js.</p>";
+        }
+    } catch (error) {
+        calendarGrid.innerHTML = "<h1>STAGE 2 FAILED</h1><p>Error: " + error.message + "</p>";
     }
 };
