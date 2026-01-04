@@ -1,63 +1,22 @@
-import { renderCalendarGrid } from './calendar-core.js';
-import { updateInfoPanel } from './ui-renderer.js';
-import { setupListeners } from './events.js';
-
-/**
- * app.js
- * Main Entry Point - Orchestrates the State and Initial Boot
- */
-
-// 1. Global State Object
-const state = {
-    viewDate: new Date(),
-    selectedDate: new Date(),
-    includeYear: true
-};
-
-// 2. Master Render Function
-// This is called every time a button is clicked or a date is changed
-function render() {
-    // Sync the Dropdown Selectors
-    const mR = document.getElementById('monthRoller');
-    const yR = document.getElementById('yearRoller');
-    if (mR) mR.value = state.viewDate.getMonth();
-    if (yR) yR.value = state.viewDate.getFullYear();
-
-    // Render the Calendar Grid (Logic from calendar-core.js)
-    renderCalendarGrid(state.viewDate, state.selectedDate, (clickedDate) => {
-        state.selectedDate = clickedDate;
-        render(); 
-    });
-
-    // Update the Bottom Phrase Panel (Logic from ui-renderer.js)
-    updateInfoPanel(state.selectedDate, state.includeYear);
-    
-    // Update the Year Toggle Button Text
-    const yearBtn = document.getElementById('repeatYearBtn');
-    if (yearBtn) {
-        yearBtn.innerText = `Include Year: ${state.includeYear ? 'ON' : 'OFF'}`;
-    }
-}
-
-// 3. Ignition Switch (Window Load)
+// DEBUG app.js
 window.onload = () => {
+    console.log("App.js has started successfully!");
+
     const mR = document.getElementById('monthRoller');
     const yR = document.getElementById('yearRoller');
+    const calendarGrid = document.getElementById('calendarGrid');
 
-    // Populate Months Dropdown
-    for (let i = 0; i < 12; i++) {
-        const label = new Intl.DateTimeFormat('en-US', { month: 'long' }).format(new Date(2020, i));
-        mR.add(new Option(label, i));
+    // 1. Force remove the loading message manually
+    if (calendarGrid) {
+        calendarGrid.innerHTML = "<h1>DEBUG MODE: JS IS WORKING</h1><p>If you see this, the problem is a missing file or a typo in your imports.</p>";
     }
 
-    // Populate Years Dropdown
-    for (let i = 2020; i <= 2035; i++) {
-        yR.add(new Option(i, i));
+    // 2. Simple population to see if UI elements are found
+    if (mR && yR) {
+        mR.add(new Option("Debug Month", 0));
+        yR.add(new Option("2024", 2024));
+        console.log("Dropdowns found and populated.");
+    } else {
+        console.error("Could not find dropdown elements in index.html");
     }
-
-    // Attach all click and change listeners (Logic from events.js)
-    setupListeners(state, render);
-
-    // Initial Render to remove the "Wczytywanie..." message
-    render();
 };
