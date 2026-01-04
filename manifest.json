@@ -1,0 +1,41 @@
+{
+  "short_name": "LearnPolish",
+  "name": "Polish Date & Culture Learner",
+  "description": "Learn to say dates in Polish with phonetics, grammar rules, and cultural history.",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "type": "image/png",
+      "sizes": "192x192",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-512.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "any maskable"
+    }
+  ],
+  "start_url": "./index.html",
+  "background_color": "#121212",
+  "display": "standalone",
+  "orientation": "portrait",
+  "scope": "./",
+  "theme_color": "#e6192e",
+  "shortcuts": [
+    {
+      "name": "Calendar",
+      "short_name": "Calendar",
+      "description": "Open the interactive calendar",
+      "url": "./index.html",
+      "icons": [{ "src": "icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Culture Hub",
+      "short_name": "Culture",
+      "description": "View holidays and etymology",
+      "url": "./index.html#culture",
+      "icons": [{ "src": "icon-192.png", "sizes": "192x192" }]
+    }
+  ]
+}
