@@ -1,4 +1,4 @@
-const CACHE_NAME = 'pl-dates-v12.5'; // Incremented to v11 to force a fresh start
+const CACHE_NAME = 'pl-dates-v13.0'; // Incremented to v11 to force a fresh start
 const ASSETS = [
   './',
   './index.html',
