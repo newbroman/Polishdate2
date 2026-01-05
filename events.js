@@ -36,6 +36,12 @@ export function setupListeners(state, render) {
     };
 
     // Dropdowns
-    document.getElementById('monthRoller').onchange = (e) => { state.viewDate.setMonth(parseInt(e.target.value)); render(); };
-    document.getElementById('yearRoller').onchange = (e) => { state.viewDate.setFullYear(parseInt(e.target.value)); render(); };
-}
+    document.getElementById('monthRoller').onchange = (e) => { 
+        state.viewDate.setMonth(parseInt(e.target.value)); 
+        render(); 
+    };
+    document.getElementById('yearRoller').onchange = (e) => { 
+        state.viewDate.setFullYear(parseInt(e.target.value)); 
+        render(); 
+    };
+} // <--- THIS BRACE IS THE FIX. IT CLOSES THE setupListeners FUNCTION.
