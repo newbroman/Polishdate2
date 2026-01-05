@@ -1,30 +1,30 @@
-// app.js - SELF-CONTAINED EMERGENCY VERSION
+import { renderCalendarGrid } from './calendar-core.js';
+import { updateInfoPanel } from './ui-renderer.js';
+import { setupListeners } from './events.js';
+
+const state = { viewDate: new Date(), selectedDate: new Date(), includeYear: true };
+
+function render() {
+    renderCalendarGrid(state.viewDate, state.selectedDate, (d) => {
+        state.selectedDate = d;
+        render();
+    });
+    updateInfoPanel(state.selectedDate, state.includeYear);
+}
+
 window.onload = () => {
-    console.log("App starting...");
-    const grid = document.getElementById('calendarGrid');
-    const phrase = document.getElementById('plPhrase');
-
-    // 1. Force clear the loading text
-    if (phrase) phrase.innerText = "System Online";
-    
-    // 2. Build a tiny test calendar manually
-    if (grid) {
-        grid.innerHTML = ""; // Clear "Wczytywanie"
-        for (let i = 1; i <= 31; i++) {
-            const day = document.createElement('div');
-            day.className = 'calendar-day';
-            day.style.border = "1px solid #ccc";
-            day.style.padding = "10px";
-            day.innerText = i;
-            grid.appendChild(day);
-        }
-    }
-
-    // 3. Populate dropdowns
+    // Populate Dropdowns
     const mR = document.getElementById('monthRoller');
     const yR = document.getElementById('yearRoller');
-    if (mR && yR) {
-        mR.add(new Option("Test Month", 0));
-        yR.add(new Option("2024", 2024));
+    const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    
+    monthNames.forEach((name, i) => mR.add(new Option(name, i)));
+    for (let i = 2024; i <= 2030; i++) yR.add(new Option(i, i));
+
+    try {
+        setupListeners(state, render);
+        render();
+    } catch (e) {
+        console.error("App startup failed:", e);
     }
 };
