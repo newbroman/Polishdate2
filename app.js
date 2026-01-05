@@ -1,47 +1,29 @@
-import { renderCalendarGrid } from './calendar-core.js';
-import { updateInfoPanel } from './ui-renderer.js';
-
-// Global State
-const state = { viewDate: new Date(), selectedDate: new Date(), includeYear: true };
-
-async function render() {
-    console.log("Render starting...");
-    const phrase = document.getElementById('plPhrase');
-    
-    // This line removes "Wczytywanie..." manually
-    if (phrase) phrase.innerText = "Synchronizing...";
-
-    try {
-        renderCalendarGrid(state.viewDate, state.selectedDate, (d) => {
-            state.selectedDate = d;
-            render();
-        });
-        updateInfoPanel(state.selectedDate, state.includeYear);
-        if (phrase) phrase.innerText = "Done!"; 
-    } catch (e) {
-        if (phrase) phrase.innerText = "Render Error: " + e.message;
-    }
-}
-
+// NUCLEAR DEBUG app.js
 window.onload = async () => {
-    console.log("Window loaded.");
+    const plPhrase = document.getElementById('plPhrase');
+    plPhrase.innerText = "Checking files...";
+
+    const files = [
+        './calendar-core.js',
+        './ui-renderer.js',
+        './events.js',
+        './holiday.js',
+        './cultural.js'
+    ];
+
+    for (const file of files) {
+        try {
+            plPhrase.innerText = `Loading ${file}...`;
+            await import(file);
+        } catch (e) {
+            plPhrase.innerHTML = `<span style="color:red">ERROR in ${file}:</span><br>${e.message}`;
+            return; // Stop here if a file fails
+        }
+    }
+
+    plPhrase.innerText = "All files loaded! Starting render...";
     
-    // Populate dropdowns immediately
-    const mR = document.getElementById('monthRoller');
-    const yR = document.getElementById('yearRoller');
-    if (mR && yR) {
-        for (let i = 0; i < 12; i++) mR.add(new Option(new Intl.DateTimeFormat('en-US', { month: 'long' }).format(new Date(2020, i)), i));
-        for (let i = 2020; i <= 2035; i++) yR.add(new Option(i, i));
-    }
-
-    // Try to load events.js WITHOUT crashing the whole app if it fails
-    try {
-        const { setupListeners } = await import('./events.js');
-        setupListeners(state, render);
-    } catch (e) {
-        console.warn("Could not load events.js, buttons might not work yet.");
-    }
-
-    // Force the first render
-    render();
+    // If we get here, the chain is good. 
+    // Now try a manual render to clear the screen
+    document.getElementById('calendarGrid').innerHTML = "<h1>SYSTEM READY</h1>";
 };
