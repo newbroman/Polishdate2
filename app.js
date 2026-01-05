@@ -4,11 +4,11 @@ window.onload = async () => {
     plPhrase.innerText = "Checking files...";
 
     const files = [
-        'calendar-core.js',
-        'ui-renderer.js',
-        'events.js',
-        'holiday.js',
-        'cultural.js'
+        './calendar-core.js',
+        './ui-renderer.js',
+        './events.js',
+        './holiday.js',
+        './cultural.js'
     ];
 
     for (const file of files) {
