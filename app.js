@@ -1,29 +1,55 @@
-// NUCLEAR DEBUG app.js
-window.onload = async () => {
-    const plPhrase = document.getElementById('plPhrase');
-    plPhrase.innerText = "Checking files...";
+// app.js - Cache-Busting Version
+import { renderCalendarGrid } from './calendar-core.js?v=999';
+import { updateInfoPanel } from './ui-renderer.js?v=999';
+import { setupListeners } from './events.js?v=999';
 
-    const files = [
-        './calendar-core.js',
-        './ui-renderer.js',
-        './events.js',
-        './holiday.js',
-        './cultural.js'
-    ];
+// 1. Initialize Global State
+const state = { 
+    viewDate: new Date(), 
+    selectedDate: new Date(), 
+    includeYear: true 
+};
 
-    for (const file of files) {
-        try {
-            plPhrase.innerText = `Loading ${file}...`;
-            await import(file);
-        } catch (e) {
-            plPhrase.innerHTML = `<span style="color:red">ERROR in ${file}:</span><br>${e.message}`;
-            return; // Stop here if a file fails
-        }
+// 2. The Main Render Function
+function render() {
+    // Populate dropdowns to match state
+    document.getElementById('monthRoller').value = state.viewDate.getMonth();
+    document.getElementById('yearRoller').value = state.viewDate.getFullYear();
+
+    // Render the actual calendar
+    renderCalendarGrid(state.viewDate, state.selectedDate, (newDate) => {
+        state.selectedDate = newDate;
+        render();
+    });
+
+    // Update the side panel (holidays, grammar, etc.)
+    updateInfoPanel(state.selectedDate, state.includeYear);
+}
+
+// 3. App Entry Point
+window.onload = () => {
+    const monthRoller = document.getElementById('monthRoller');
+    const yearRoller = document.getElementById('yearRoller');
+
+    // Populate Dropdowns once on start
+    const monthNames = ["January", "February", "March", "April", "May", "June",
+                        "July", "August", "September", "October", "November", "December"];
+    
+    monthNames.forEach((name, index) => {
+        monthRoller.add(new Option(name, index));
+    });
+
+    for (let year = 2024; year <= 2030; year++) {
+        yearRoller.add(new Option(year, year));
     }
 
-    plPhrase.innerText = "All files loaded! Starting render...";
-    
-    // If we get here, the chain is good. 
-    // Now try a manual render to clear the screen
-    document.getElementById('calendarGrid').innerHTML = "<h1>SYSTEM READY</h1>";
+    // Connect buttons and dropdowns
+    try {
+        setupListeners(state, render);
+    } catch (e) {
+        console.error("Listener setup failed:", e);
+    }
+
+    // Perform initial render
+    render();
 };
