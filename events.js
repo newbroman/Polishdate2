@@ -3,39 +3,41 @@ import holidayData from './holiday.js';
 import culturalData from './cultural.js';
 
 export function setupListeners(state, render) {
-    // 1. Audio / Listen Button
-    const listenBtn = document.querySelector('.listen-btn');
-    if (listenBtn) {
-        listenBtn.onclick = () => {
+    // 1. Audio Button (Matches id="playBtn" in HTML)
+    const playBtn = document.getElementById('playBtn');
+    if (playBtn) {
+        playBtn.onclick = () => {
             const textToSpeak = document.getElementById('plPhrase').innerText;
-            // Only speak if there is actual text (not "Loading...")
             if (textToSpeak && !textToSpeak.includes('...')) {
                 speakPolish(textToSpeak);
             }
         };
     }
 
-    // 2. Navigation Tabs (Calendar vs Cultural Hub)
-    const navCalendar = document.getElementById('navCalendar');
-    const navCulture = document.getElementById('navCulture');
-    const calendarSection = document.getElementById('calendarSection');
-    const culturalHub = document.getElementById('culturalHub');
-
-    if (navCalendar && navCulture) {
-        navCalendar.onclick = () => {
-            calendarSection.style.display = 'block';
-            culturalHub.style.display = 'none';
+    // 2. Year Toggle (Matches id="repeatYearBtn" in HTML)
+    const yearBtn = document.getElementById('repeatYearBtn');
+    if (yearBtn) {
+        yearBtn.onclick = () => {
+            state.includeYear = !state.includeYear;
+            yearBtn.innerText = `Include Year: ${state.includeYear ? 'ON' : 'OFF'}`;
             render();
-        };
-
-        navCulture.onclick = () => {
-            calendarSection.style.display = 'none';
-            culturalHub.style.display = 'block';
-            renderCulturalHub(state);
         };
     }
 
-    // 3. Calendar Controls (Arrows & Today)
+    // 3. Navigation
+    document.getElementById('navCalendar').onclick = () => {
+        document.getElementById('calendarSection').style.display = 'block';
+        document.getElementById('culturalHub').style.display = 'none';
+        render();
+    };
+
+    document.getElementById('navCulture').onclick = () => {
+        document.getElementById('calendarSection').style.display = 'none';
+        document.getElementById('culturalHub').style.display = 'block';
+        renderCulturalHub(state);
+    };
+
+    // 4. Calendar Controls
     document.getElementById('prevMonth').onclick = () => {
         state.viewDate.setMonth(state.viewDate.getMonth() - 1);
         render();
@@ -52,7 +54,7 @@ export function setupListeners(state, render) {
         render();
     };
 
-    // 4. Dropdowns (Month & Year)
+    // 5. Dropdowns
     document.getElementById('monthRoller').onchange = (e) => {
         state.viewDate.setMonth(parseInt(e.target.value));
         render();
@@ -64,23 +66,13 @@ export function setupListeners(state, render) {
     };
 }
 
-// Helper function to build the Cultural Hub view
 function renderCulturalHub(state) {
     const hub = document.getElementById('culturalHub');
     const year = state.viewDate.getFullYear();
     const holidays = holidayData.getHolidaysForYear(year);
-    
     let html = `<div class="culture-wrap"><h2>🎈 Holidays in ${year}</h2>`;
-    
     Object.entries(holidays).forEach(([key, name]) => {
-        const explanation = culturalData.holidayExplanations[key] || "National holiday.";
-        html += `
-            <div class="holiday-card">
-                <strong>${name}</strong><br>
-                <small>${explanation}</small>
-            </div>`;
+        html += `<div class="holiday-card"><strong>${name}</strong><br><small>${culturalData.holidayExplanations[key] || ""}</small></div>`;
     });
-    
-    html += `</div>`;
-    hub.innerHTML = html;
+    hub.innerHTML = html + `</div>`;
 }
