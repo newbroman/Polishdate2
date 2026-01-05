@@ -1,46 +1,41 @@
-/**
- * calendar-core.js
- * Handles the logic for rendering the 7-column date grid.
- */
 import holidayData from './holiday.js';
 import culturalData from './cultural.js';
 
-export function renderCalendarGrid(viewDate, selectedDate, onDayClick) {
+export function renderCalendarGrid(viewDate, selectedDate, onDateClick) {
     const grid = document.getElementById('calendarGrid');
+    if (!grid) return;
     grid.innerHTML = '';
 
     const year = viewDate.getFullYear();
     const month = viewDate.getMonth();
-    
-    // Update season theme on body
-    document.body.className = culturalData.months[month].season;
-
     const firstDay = new Date(year, month, 1).getDay();
     const daysInMonth = new Date(year, month + 1, 0).getDate();
     const holidays = holidayData.getHolidaysForYear(year);
 
-    // Padding for first week
-    for (let i = 0; i < firstDay; i++) {
+    // Adjust for Monday-start calendar (Polish standard)
+    let startEdge = firstDay === 0 ? 6 : firstDay - 1;
+
+    // Create Empty Slots
+    for (let i = 0; i < startEdge; i++) {
         grid.appendChild(document.createElement('div'));
     }
 
-    // Create day cells
-    for (let day = 1; day <= daysInMonth; day++) {
-        const dayEl = document.createElement('div');
-        dayEl.className = 'calendar-day';
-        dayEl.innerText = day;
+    // Create Day Cells
+    for (let d = 1; d <= daysInMonth; d++) {
+        const cell = document.createElement('div');
+        cell.className = 'calendar-day';
+        cell.innerText = d;
 
-        const dateObj = new Date(year, month, day);
-
-        // Highlight if holiday
-        if (holidays[`${month}-${day}`]) dayEl.classList.add('holiday');
+        const dateKey = `${month}-${d}`;
+        if (holidays[dateKey]) cell.classList.add('holiday');
         
-        // Highlight if selected
-        if (dateObj.toDateString() === selectedDate.toDateString()) {
-            dayEl.classList.add('selected');
+        if (d === selectedDate.getDate() && 
+            month === selectedDate.getMonth() && 
+            year === selectedDate.getFullYear()) {
+            cell.classList.add('selected');
         }
 
-        dayEl.onclick = () => onDayClick(dateObj);
-        grid.appendChild(dayEl);
+        cell.onclick = () => onDateClick(new Date(year, month, d));
+        grid.appendChild(cell);
     }
 }
