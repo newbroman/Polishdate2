@@ -1,55 +1,30 @@
-// app.js - Cache-Busting Version
-import { renderCalendarGrid } from './calendar-core.js?v=999';
-import { updateInfoPanel } from './ui-renderer.js?v=999';
-import { setupListeners } from './events.js?v=999';
-
-// 1. Initialize Global State
-const state = { 
-    viewDate: new Date(), 
-    selectedDate: new Date(), 
-    includeYear: true 
-};
-
-// 2. The Main Render Function
-function render() {
-    // Populate dropdowns to match state
-    document.getElementById('monthRoller').value = state.viewDate.getMonth();
-    document.getElementById('yearRoller').value = state.viewDate.getFullYear();
-
-    // Render the actual calendar
-    renderCalendarGrid(state.viewDate, state.selectedDate, (newDate) => {
-        state.selectedDate = newDate;
-        render();
-    });
-
-    // Update the side panel (holidays, grammar, etc.)
-    updateInfoPanel(state.selectedDate, state.includeYear);
-}
-
-// 3. App Entry Point
+// app.js - SELF-CONTAINED EMERGENCY VERSION
 window.onload = () => {
-    const monthRoller = document.getElementById('monthRoller');
-    const yearRoller = document.getElementById('yearRoller');
+    console.log("App starting...");
+    const grid = document.getElementById('calendarGrid');
+    const phrase = document.getElementById('plPhrase');
 
-    // Populate Dropdowns once on start
-    const monthNames = ["January", "February", "March", "April", "May", "June",
-                        "July", "August", "September", "October", "November", "December"];
+    // 1. Force clear the loading text
+    if (phrase) phrase.innerText = "System Online";
     
-    monthNames.forEach((name, index) => {
-        monthRoller.add(new Option(name, index));
-    });
-
-    for (let year = 2024; year <= 2030; year++) {
-        yearRoller.add(new Option(year, year));
+    // 2. Build a tiny test calendar manually
+    if (grid) {
+        grid.innerHTML = ""; // Clear "Wczytywanie"
+        for (let i = 1; i <= 31; i++) {
+            const day = document.createElement('div');
+            day.className = 'calendar-day';
+            day.style.border = "1px solid #ccc";
+            day.style.padding = "10px";
+            day.innerText = i;
+            grid.appendChild(day);
+        }
     }
 
-    // Connect buttons and dropdowns
-    try {
-        setupListeners(state, render);
-    } catch (e) {
-        console.error("Listener setup failed:", e);
+    // 3. Populate dropdowns
+    const mR = document.getElementById('monthRoller');
+    const yR = document.getElementById('yearRoller');
+    if (mR && yR) {
+        mR.add(new Option("Test Month", 0));
+        yR.add(new Option("2024", 2024));
     }
-
-    // Perform initial render
-    render();
 };
