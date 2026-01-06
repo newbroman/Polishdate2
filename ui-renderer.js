@@ -1,44 +1,35 @@
 import culturalData from './cultural.js';
+import phonetics from './phonetics.js'; // Using your phonetics file
+import { getOrdinalYearPl, getOrdinalYearPhonetic } from './numbers.js'; // We'll build these helpers
 
 export function updateInfoPanel(date, includeYear) {
     const day = date.getDate();
     const monthIndex = date.getMonth();
     const year = date.getFullYear();
-    const dayOfWeek = date.getDay(); // 0 = Sunday, 1 = Monday...
+    const dayOfWeek = date.getDay();
 
-    // 1. Polish Genitive Months (The "of" form)
+    // 1. Get Month Names & Phonetics from data files
     const monthGenitive = [
         "stycznia", "lutego", "marca", "kwietnia", "maja", "czerwca",
         "lipca", "sierpnia", "września", "października", "listopada", "grudnia"
     ];
-
-    // 2. Phonetic Months (Matches your help page)
-    const phoneticMonths = [
-        "stich-nya", "loo-te-go", "mar-tsa", "kyev-tnya", "ma-ya", "cherv-tsa",
-        "leep-tsa", "syerp-nya", "vzhye-shnya", "paz-dzhyer-nee-ka", "lees-to-pa-da", "grood-nya"
-    ];
-
-    // 3. Year Translation (Nominative Ordinal - matching Grammar Rules)
-    const yearPl = year === 2024 ? "dwutysięczny dwudziesty czwarty" : 
-                    year === 2025 ? "dwutysięczny dwudziesty piąty" : 
-                    year === 2026 ? "dwutysięczny dwudziesty szósty" : `${year}`;
-
-    const yearPhonetic = year === 2024 ? "dvoo-ti-syench-ni dvoo-dyess-ti chvar-ti" :
-                         year === 2025 ? "dvoo-ti-syench-ni dvoo-dyess-ti pyon-ti" :
-                         year === 2026 ? "dvoo-ti-syench-ni dvoo-dyess-ti shooss-ti" : "";
-
-    // 4. Polish Day Name
-    const dayNamesPl = ["niedziela", "poniedziałek", "wtorek", "środa", "czwartek", "piątek", "sobota"];
-    const currentDayPl = dayNamesPl[dayOfWeek];
-
-    // 5. Construct the Phrases
-    // Format: "poniedziałek, 6 stycznia 2024"
-    const fullPlDate = `${currentDayPl}, ${day} ${monthGenitive[monthIndex]}${includeYear ? ` ${yearPl}` : ''}`;
     
-    // Phonetic Format: "6 stich-nya dvoo-ti..."
-    const fullPhonetic = `${day} ${phoneticMonths[monthIndex]}${includeYear ? ` ${yearPhonetic}` : ''}`;
+    // Pull phonetic month from phonetics.js (e.g., phonetics.months["stycznia"])
+    const pMonth = phonetics.months[monthGenitive[monthIndex]] || monthGenitive[monthIndex];
 
-    // 6. Update HTML
+    // 2. Handle Years (0-3000)
+    // We call a helper function to turn the number into Polish words/phonetics
+    const yearPl = getOrdinalYearPl(year);
+    const yearPhonetic = getOrdinalYearPhonetic(year);
+
+    // 3. Construct Final Phrases
+    const dayNamePl = culturalData.days[dayOfWeek].pl.toLowerCase();
+    const pDayName = phonetics.days[dayNamePl] || dayNamePl;
+
+    const fullPlDate = `${dayNamePl}, ${day} ${monthGenitive[monthIndex]}${includeYear ? ` ${yearPl}` : ''}`;
+    const fullPhonetic = `${pDayName}, ${day} ${pMonth}${includeYear ? ` ${yearPhonetic}` : ''}`;
+
+    // 4. Render to UI
     document.getElementById('plPhrase').innerText = fullPlDate;
     document.getElementById('phoneticPhrase').innerText = fullPhonetic;
     document.getElementById('enPhrase').innerText = date.toLocaleDateString('en-GB', { 
