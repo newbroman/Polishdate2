@@ -15,3 +15,21 @@ const writtenNumbersGen = {
 };
 
 export const getWrittenDay = (day) => writtenNumbersGen[day] || day;
+
+export function getOrdinalYearPl(year) {
+    if (year === 2000) return "dwutysięczny";
+    if (year > 2000 && year < 3000) {
+        const rest = year - 2000;
+        // Logic to combine "dwutysięczny" + ordinal for the rest (e.g., 24 -> dwudziesty czwarty)
+        return "dwutysięczny " + getSmallOrdinalPl(rest);
+    }
+    return year.toString(); // Fallback
+}
+
+export function getOrdinalYearPhonetic(year) {
+    if (year === 2000) return "dvoo-ti-syench-ni";
+    if (year > 2000 && year < 3000) {
+        return "dvoo-ti-syench-ni " + getSmallOrdinalPhonetic(year - 2000);
+    }
+    return "";
+}
