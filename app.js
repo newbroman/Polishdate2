@@ -11,26 +11,47 @@ const state = {
 
 function render() {
     const mRoller = document.getElementById('monthRoller');
-    const yRoller = document.getElementById('yearRoller');
+    const yInput = document.getElementById('yearInput'); // Changed from yRoller
+    const monthIndex = state.viewDate.getMonth();
+    const year = state.viewDate.getFullYear();
 
-    // Force dropdowns to match the current viewDate
-    if (mRoller) mRoller.value = state.viewDate.getMonth();
-    if (yRoller) yRoller.value = state.viewDate.getFullYear();
+    // 1. Force dropdown and Year Input to match viewDate
+    if (mRoller) mRoller.value = monthIndex;
+    if (yInput) yInput.value = year;
 
-    // Clear loading text
+    // 2. Localize the Calendar Header (Month Year Display)
+    const monthNamesEn = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    const monthNamesPl = ["Styczeń", "Luty", "Marzec", "Kwiecień", "Maj", "Czerwiec", "Lipiec", "Sierpień", "Wrzesień", "Październik", "Listopad", "Grudzień"];
+    
+    const displayMonth = state.isPolish ? monthNamesPl[monthIndex] : monthNamesEn[monthIndex];
+    const headerDisplay = document.getElementById('currentMonthDisplay');
+    if (headerDisplay) {
+        headerDisplay.innerText = `${displayMonth} ${year}`;
+    }
+
+    // 3. Localize Weekday Labels (Sun, Mon... vs Nie, Pon...)
+    const daysEn = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+    const daysPl = ["Nie", "Pon", "Wt", "Śr", "Czw", "Pią", "Sob"];
+    const weekdayContainer = document.querySelector('.weekdays');
+    
+    if (weekdayContainer) {
+        weekdayContainer.innerHTML = (state.isPolish ? daysPl : daysEn)
+            .map(day => `<div>${day}</div>`).join('');
+    }
+
+    // 4. Clear loading text
     const phrase = document.getElementById('plPhrase');
     if (phrase && phrase.innerText.includes('Wczytywanie')) phrase.innerText = "";
 
-    // Draw the grid
+    // 5. Draw the grid (Essential for the calendar to appear)
     renderCalendarGrid(state.viewDate, state.selectedDate, (newDate) => {
         state.selectedDate = newDate;
-        render();
+        render(); // Re-render when a new day is clicked
     });
 
-    // Update the Polish/English text
+    // 6. Update the Polish/Phonetic/English text panel
     updateInfoPanel(state.selectedDate, state.includeYear);
 }
-
 window.onload = () => {
     const monthRoller = document.getElementById('monthRoller');
     const yearRoller = document.getElementById('yearRoller');
