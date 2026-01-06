@@ -280,6 +280,94 @@ body {
     border: 1px solid #444;
 }
 
+/* --- Detailed Cultural Page --- */
+.culture-page {
+    padding: 10px 5px;
+    color: var(--text-main);
+}
+
+.culture-header {
+    text-align: center;
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid var(--accent-color);
+}
+
+.culture-header h1 {
+    font-size: 2rem;
+    margin: 0;
+    color: var(--accent-color);
+    text-transform: uppercase;
+}
+
+.season-label {
+    display: inline-block;
+    margin-top: 8px;
+    padding: 4px 12px;
+    background: #333;
+    border-radius: 15px;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    color: var(--gold);
+}
+
+.info-block {
+    margin-bottom: 30px;
+    background: #1a1a1a;
+    padding: 20px;
+    border-radius: 12px;
+    border: 1px solid #333;
+}
+
+.info-block h3 {
+    margin-top: 0;
+    color: var(--gold);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.info-block p {
+    line-height: 1.6;
+    color: var(--text-dim);
+    margin-bottom: 0;
+}
+
+.holiday-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.holiday-entry {
+    padding-left: 15px;
+    border-left: 3px solid var(--accent-color);
+}
+
+.holiday-entry strong {
+    display: block;
+    font-size: 1.1rem;
+    margin-bottom: 4px;
+}
+
+.no-data {
+    font-style: italic;
+    color: #666;
+}
+
+.close-culture-btn {
+    width: 100%;
+    padding: 15px;
+    background: #333;
+    color: white;
+    border: none;
+    border-radius: 30px;
+    font-weight: bold;
+    margin-top: 10px;
+    cursor: pointer;
+}
+
+
 /* --- Seasonal Theme Colors --- */
 body.spring { border-top: 5px solid #4caf50; }
 body.summer { border-top: 5px solid #ffeb3b; }
