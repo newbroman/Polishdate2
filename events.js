@@ -4,7 +4,33 @@ import culturalData from './cultural.js';
 import grammarRules from './rules.js';
 
 export function setupListeners(state, render) {
-    // ... (Keep existing playBtn, yearBtn, and navCalendar listeners)
+    // --- Audio and Logic Toggles ---
+    const playBtn = document.getElementById('playBtn');
+    if (playBtn) {
+        playBtn.onclick = () => {
+            const textToSpeak = document.getElementById('plPhrase').innerText;
+            if (textToSpeak && !textToSpeak.includes('...')) {
+                speakPolish(textToSpeak);
+            }
+        };
+    }
+
+    const yearBtn = document.getElementById('repeatYearBtn');
+    if (yearBtn) {
+        yearBtn.onclick = () => {
+            state.includeYear = !state.includeYear;
+            yearBtn.innerText = `Include Year: ${state.includeYear ? 'ON' : 'OFF'}`;
+            render();
+        };
+    }
+
+    // --- Navigation Listeners ---
+    document.getElementById('navCalendar').onclick = () => {
+        document.getElementById('calendarSection').style.display = 'block';
+        document.getElementById('culturalHub').style.display = 'none';
+        document.getElementById('rulesPage').style.display = 'none';
+        render();
+    };
 
     document.getElementById('navCulture').onclick = () => {
         document.getElementById('calendarSection').style.display = 'none';
@@ -20,14 +46,42 @@ export function setupListeners(state, render) {
         renderRulesPage();
     };
     
-    // ... (Keep existing navigation and roller listeners)
+    // --- Calendar Arrows and Rollers ---
+    document.getElementById('prevMonth').onclick = () => {
+        state.viewDate.setMonth(state.viewDate.getMonth() - 1);
+        render();
+    };
+
+    document.getElementById('nextMonth').onclick = () => {
+        state.viewDate.setMonth(state.viewDate.getMonth() + 1);
+        render();
+    };
+
+    document.getElementById('todayBtn').onclick = () => {
+        state.selectedDate = new Date();
+        state.viewDate = new Date(state.selectedDate.getFullYear(), state.selectedDate.getMonth(), 1);
+        render();
+    };
+
+    document.getElementById('monthRoller').onchange = (e) => {
+        state.viewDate.setMonth(parseInt(e.target.value));
+        render();
+    };
+
+    document.getElementById('yearRoller').onchange = (e) => {
+        state.viewDate.setFullYear(parseInt(e.target.value));
+        render();
+    };
 }
 
 export function renderCulturalHub(state) {
     const hub = document.getElementById('culturalHub');
     const monthIndex = state.viewDate.getMonth();
+    const year = state.viewDate.getFullYear();
+    
+    // Fetch data from your imported modules
     const monthInfo = culturalData.months[monthIndex] || { pl: "Month", derivation: "N/A", season: "N/A" };
-    const holidays = holidayData.getHolidaysForYear(state.viewDate.getFullYear());
+    const holidays = holidayData.getHolidaysForYear(year);
 
     let html = `
         <div class="culture-page">
@@ -35,26 +89,46 @@ export function renderCulturalHub(state) {
                 <h1>${monthInfo.pl}</h1>
                 <span class="season-label">Season: ${monthInfo.season}</span>
             </header>
+
             <section class="info-block">
                 <h3>📜 Name Meaning & History</h3>
                 <p>${monthInfo.derivation}</p>
             </section>
+
             <section class="info-block">
-                <h3>🎈 Holidays this Month</h3>
+                <h3>🎈 Holidays & Traditions</h3>
                 <div class="holiday-list">`;
 
+    let foundHoliday = false;
     Object.entries(holidays).forEach(([key, name]) => {
         if (key.startsWith(`${monthIndex}-`)) {
-            const day = key.split('-')[1]; // Extracts the date from "0-1" format
+            // FIX: Correctly extract the day from the "month-day" key format
+            const day = key.split('-')[1]; 
+            const explanation = culturalData.holidayExplanations[key] || "A significant Polish tradition.";
+            
             html += `
                 <div class="holiday-entry">
                     <div class="holiday-date">${day} ${monthInfo.pl}</div>
                     <strong>${name}</strong>
+                    <p>${explanation}</p>
                 </div>`;
+            foundHoliday = true;
         }
     });
 
-    hub.innerHTML = html + `</div></section></div>`;
+    if (!foundHoliday) {
+        html += `<p class="no-data">No major holidays listed for this month.</p>`;
+    }
+
+    html += `
+                </div>
+            </section>
+            <button onclick="document.getElementById('navCalendar').click()" class="close-culture-btn">
+                ← Back to Calendar
+            </button>
+        </div>`;
+    
+    hub.innerHTML = html;
 }
 
 export function renderRulesPage() {
@@ -71,5 +145,5 @@ export function renderRulesPage() {
             </div>`;
     });
     
-    page.innerHTML = html + `</div>`;
+    page.innerHTML = html + ` <button onclick="document.getElementById('navCalendar').click()" class="close-culture-btn">← Back</button></div>`;
 }
