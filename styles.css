@@ -236,10 +236,12 @@ body {
 }
 
 .phrase-pl {
-    font-size: 1.25rem;
+    font-size: 1.1rem; /* Slightly reduced from 1.25rem to accommodate long words */
     font-weight: bold;
     color: #fff;
     margin-bottom: 4px;
+    line-height: 1.4;
+    word-wrap: break-word; /* Ensures long Polish words don't break the layout */
 }
 
 .phrase-phonetic {
