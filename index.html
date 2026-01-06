@@ -32,24 +32,25 @@
     </header>
 
 <main id="calendarSection">
-    <div class="calendar-header-container">
+    <div class="calendar-navigation">
         <h2 id="currentMonthDisplay"></h2>
 
         <div class="rollers-container">
             <select id="monthRoller" class="roller-select"></select>
-            <input type="number" id="yearInput" min="0" max="3000" step="1">
+            <input type="number" id="yearInput" min="0" max="3000">
         </div>
 
         <div class="nav-controls">
-            <button id="prevMonth" class="nav-btn" aria-label="Previous Month">←</button>
+            <button id="prevMonth" class="nav-btn">←</button>
             <button id="todayBtn" class="nav-btn">Today</button>
-            <button id="nextMonth" class="nav-btn" aria-label="Next Month">→</button>
+            <button id="nextMonth" class="nav-btn">→</button>
         </div>
     </div>
 
-    <div class="weekdays"></div>
-
-    <div id="calendarGrid" class="calendar-grid"></div>
+    <div class="calendar-container">
+        <div class="weekdays"></div>
+        <div id="calendarGrid" class="calendar-grid"></div>
+    </div>
 </main>
     
     <section id="culturalHub" class="content-overlay" style="display: none;">
