@@ -1,4 +1,4 @@
-//* --- Global & Theme Variables --- */
+/* --- Global & Theme Variables --- */
 :root {
     --accent-color: #e6192e; /* Polish Red */
     --bg-dark: #121212;
@@ -17,52 +17,43 @@ body {
     overflow-x: hidden;
 }
 
-/* --- Navigation Buttons --- */
-.nav-btn {
-    background: #2d2d2d;
-    color: white;
-    border: 1px solid #444;
-    border-radius: 8px;
-    font-size: 1rem;
-    padding: 8px 16px;
-    cursor: pointer;
-    transition: 0.2s;
+/* --- Layout Containers --- */
+main {
+    padding-bottom: 220px; /* Space for fixed bottom info panel */
 }
 
-.nav-btn:hover { background: #444; }
-.nav-btn.active { background: var(--accent-color); border-color: #fff; }
+.calendar-container {
+    max-width: 450px;
+    margin: 0 auto;
+    padding: 0 15px;
+}
 
-#todayBtn { background: #333; font-weight: bold; }
-#todayBtn:hover { background: var(--accent-color); }
-
-/* --- Calendar Header & Rollers --- */
+/* --- Navigation & Header --- */
 .calendar-navigation {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 10px;
-    padding: 20px 10px;
+    gap: 12px;
+    padding: 20px 0;
 }
 
 #currentMonthDisplay {
-    font-size: 1.6rem;
+    font-size: 1.8rem;
     font-weight: 700;
     color: var(--text-main);
     margin: 0;
-    text-align: center;
     text-transform: capitalize;
 }
 
 .rollers-container {
     display: flex;
-    gap: 10px;
+    gap: 0;
     background: #222;
     padding: 5px 15px;
     border-radius: 30px;
     border: 1px solid #444;
 }
 
-/* Combined styling for Select and Year Input */
 .roller-select, #yearInput {
     background: transparent;
     color: white;
@@ -71,41 +62,57 @@ body {
     font-weight: bold;
     outline: none;
     cursor: pointer;
-    padding: 5px;
+    padding: 8px;
     text-align: center;
 }
 
 #yearInput {
-    width: 75px;
-    border-left: 1px solid #444; /* Divider between month and year */
-    transition: border-color 0.2s;
+    width: 80px;
+    border-left: 1px solid #444;
 }
 
-/* Remove spin arrows */
+/* Hide Spin Buttons on Year Input */
 #yearInput::-webkit-outer-spin-button,
 #yearInput::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
 #yearInput[type=number] { -moz-appearance: textfield; }
 
-/* --- Weekday Labels --- */
+.nav-controls {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+}
+
+/* --- Buttons --- */
+.nav-btn {
+    background: #2d2d2d;
+    color: white;
+    border: 1px solid #444;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    padding: 8px 16px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.nav-btn:hover { background: #444; }
+#todayBtn { background: #333; border-color: #555; }
+#todayBtn:hover { background: var(--accent-color); border-color: white; }
+
+/* --- Weekdays & Grid Alignment --- */
 .weekdays {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     text-align: center;
     font-weight: bold;
     font-size: 0.85rem;
-    color: var(--gold); /* Using gold for high visibility */
-    max-width: 500px;
-    margin: 0 auto 10px auto;
+    color: var(--gold);
+    margin-bottom: 10px;
 }
 
-/* --- Calendar Grid --- */
 .calendar-grid {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     gap: 8px;
-    padding: 0 15px 20px 15px;
-    max-width: 500px;
-    margin: 0 auto;
 }
 
 .calendar-day {
@@ -118,22 +125,22 @@ body {
     font-weight: bold;
     cursor: pointer;
     border: 1px solid #333;
-    transition: transform 0.1s;
+    transition: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .calendar-day.spacer { background: transparent; border: none; cursor: default; }
 .calendar-day.today-highlight { border: 2px solid var(--gold); color: var(--gold); }
 
 .calendar-day.selected {
-    background: #007bff !important; /* Selected date is blue */
+    background: var(--accent-color) !important;
     color: white !important;
-    border-color: #fff;
-    transform: scale(1.1);
-    box-shadow: 0 0 10px rgba(0, 123, 255, 0.5);
-    z-index: 5;
+    border-color: white;
+    transform: scale(1.08);
+    z-index: 2;
+    box-shadow: 0 4px 15px rgba(230, 25, 46, 0.4);
 }
 
-.calendar-day.holiday { color: var(--accent-color); box-shadow: inset 0 0 0 1px var(--accent-color); }
+.calendar-day.holiday { color: var(--accent-color); }
 .calendar-day:not(.spacer):hover { background: #333; border-color: var(--gold); }
 
 /* --- Bottom Info Panel --- */
@@ -146,12 +153,41 @@ body {
     border-top: 2px solid #333;
     padding: 20px;
     z-index: 1000;
+    box-shadow: 0 -10px 30px rgba(0,0,0,0.5);
 }
 
-.phrase-display { text-align: center; margin-bottom: 15px; }
-.phrase-pl { font-size: 1.1rem; font-weight: bold; color: #fff; line-height: 1.4; word-wrap: break-word; }
+.phrase-display { text-align: center; }
+.phrase-pl { font-size: 1.25rem; font-weight: bold; color: #fff; margin-bottom: 4px; }
 .phrase-phonetic { font-size: 1.1rem; color: var(--gold); font-style: italic; margin-bottom: 6px; }
-.phrase-en { font-size: 0.9rem; color: var(--text-dim); }
+.phrase-en { font-size: 0.95rem; color: var(--text-dim); }
+
+/* --- Content Pages (Culture/Rules) --- */
+.culture-page {
+    padding: 20px;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.info-block {
+    background: #1a1a1a;
+    padding: 20px;
+    border-radius: 12px;
+    border: 1px solid #333;
+    margin-bottom: 20px;
+}
+
+.info-block h3 { color: var(--gold); margin-top: 0; }
+
+.close-culture-btn {
+    width: 100%;
+    padding: 15px;
+    background: #333;
+    color: white;
+    border: none;
+    border-radius: 30px;
+    font-weight: bold;
+    cursor: pointer;
+}
 
 /* --- Seasonal Theme Colors --- */
 body.spring { border-top: 5px solid #4caf50; }
