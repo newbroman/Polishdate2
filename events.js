@@ -1,78 +1,75 @@
 import { speakPolish } from './audio.js';
 import holidayData from './holiday.js';
 import culturalData from './cultural.js';
+import grammarRules from './rules.js';
 
 export function setupListeners(state, render) {
-    // 1. Audio Button (Matches id="playBtn" in HTML)
-    const playBtn = document.getElementById('playBtn');
-    if (playBtn) {
-        playBtn.onclick = () => {
-            const textToSpeak = document.getElementById('plPhrase').innerText;
-            if (textToSpeak && !textToSpeak.includes('...')) {
-                speakPolish(textToSpeak);
-            }
-        };
-    }
-
-    // 2. Year Toggle (Matches id="repeatYearBtn" in HTML)
-    const yearBtn = document.getElementById('repeatYearBtn');
-    if (yearBtn) {
-        yearBtn.onclick = () => {
-            state.includeYear = !state.includeYear;
-            yearBtn.innerText = `Include Year: ${state.includeYear ? 'ON' : 'OFF'}`;
-            render();
-        };
-    }
-
-    // 3. Navigation
-    document.getElementById('navCalendar').onclick = () => {
-        document.getElementById('calendarSection').style.display = 'block';
-        document.getElementById('culturalHub').style.display = 'none';
-        render();
-    };
+    // ... (Keep existing playBtn, yearBtn, and navCalendar listeners)
 
     document.getElementById('navCulture').onclick = () => {
         document.getElementById('calendarSection').style.display = 'none';
+        document.getElementById('rulesPage').style.display = 'none';
         document.getElementById('culturalHub').style.display = 'block';
-        renderCulturalHub(state);
+        renderCulturalHub(state); 
     };
 
-    // 4. Calendar Controls
-    document.getElementById('prevMonth').onclick = () => {
-        state.viewDate.setMonth(state.viewDate.getMonth() - 1);
-        render();
+    document.getElementById('navRules').onclick = () => {
+        document.getElementById('calendarSection').style.display = 'none';
+        document.getElementById('culturalHub').style.display = 'none';
+        document.getElementById('rulesPage').style.display = 'block';
+        renderRulesPage();
     };
-
-    document.getElementById('nextMonth').onclick = () => {
-        state.viewDate.setMonth(state.viewDate.getMonth() + 1);
-        render();
-    };
-
-    document.getElementById('todayBtn').onclick = () => {
-        state.selectedDate = new Date();
-        state.viewDate = new Date(state.selectedDate.getFullYear(), state.selectedDate.getMonth(), 1);
-        render();
-    };
-
-    // 5. Dropdowns
-    document.getElementById('monthRoller').onchange = (e) => {
-        state.viewDate.setMonth(parseInt(e.target.value));
-        render();
-    };
-
-    document.getElementById('yearRoller').onchange = (e) => {
-        state.viewDate.setFullYear(parseInt(e.target.value));
-        render();
-    };
+    
+    // ... (Keep existing navigation and roller listeners)
 }
 
-function renderCulturalHub(state) {
+export function renderCulturalHub(state) {
     const hub = document.getElementById('culturalHub');
-    const year = state.viewDate.getFullYear();
-    const holidays = holidayData.getHolidaysForYear(year);
-    let html = `<div class="culture-wrap"><h2>🎈 Holidays in ${year}</h2>`;
+    const monthIndex = state.viewDate.getMonth();
+    const monthInfo = culturalData.months[monthIndex] || { pl: "Month", derivation: "N/A", season: "N/A" };
+    const holidays = holidayData.getHolidaysForYear(state.viewDate.getFullYear());
+
+    let html = `
+        <div class="culture-page">
+            <header class="culture-header">
+                <h1>${monthInfo.pl}</h1>
+                <span class="season-label">Season: ${monthInfo.season}</span>
+            </header>
+            <section class="info-block">
+                <h3>📜 Name Meaning & History</h3>
+                <p>${monthInfo.derivation}</p>
+            </section>
+            <section class="info-block">
+                <h3>🎈 Holidays this Month</h3>
+                <div class="holiday-list">`;
+
     Object.entries(holidays).forEach(([key, name]) => {
-        html += `<div class="holiday-card"><strong>${name}</strong><br><small>${culturalData.holidayExplanations[key] || ""}</small></div>`;
+        if (key.startsWith(`${monthIndex}-`)) {
+            const day = key.split('-')[1]; // Extracts the date from "0-1" format
+            html += `
+                <div class="holiday-entry">
+                    <div class="holiday-date">${day} ${monthInfo.pl}</div>
+                    <strong>${name}</strong>
+                </div>`;
+        }
     });
-    hub.innerHTML = html + `</div>`;
+
+    hub.innerHTML = html + `</div></section></div>`;
+}
+
+export function renderRulesPage() {
+    const page = document.getElementById('rulesPage');
+    let html = `<div class="culture-page"><h1>Grammar Rules</h1>`;
+    
+    Object.values(grammarRules).forEach(item => {
+        html += `
+            <div class="info-block">
+                <h3>${item.title}</h3>
+                <p>${item.explanation}</p>
+                ${item.rule ? `<p><strong>Rule:</strong> ${item.rule}</p>` : ''}
+                ${item.example ? `<p><em>Example: ${item.example}</em></p>` : ''}
+            </div>`;
+    });
+    
+    page.innerHTML = html + `</div>`;
 }
