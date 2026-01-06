@@ -3,8 +3,12 @@ import holidayData from './holiday.js';
 import culturalData from './cultural.js';
 import grammarRules from './rules.js';
 
+/**
+ * Sets up all UI event listeners.
+ * Handles the switch from select dropdown to a type-able year input.
+ */
 export function setupListeners(state, render) {
-    // --- Audio and Logic Toggles ---
+    // 1. Audio and Logic Toggles
     const playBtn = document.getElementById('playBtn');
     if (playBtn) {
         playBtn.onclick = () => {
@@ -15,16 +19,16 @@ export function setupListeners(state, render) {
         };
     }
 
-    const yearBtn = document.getElementById('repeatYearBtn');
-    if (yearBtn) {
-        yearBtn.onclick = () => {
+    const yearToggleBtn = document.getElementById('repeatYearBtn');
+    if (yearToggleBtn) {
+        yearToggleBtn.onclick = () => {
             state.includeYear = !state.includeYear;
-            yearBtn.innerText = `Include Year: ${state.includeYear ? 'ON' : 'OFF'}`;
+            yearToggleBtn.innerText = `Include Year: ${state.includeYear ? 'ON' : 'OFF'}`;
             render();
         };
     }
 
-    // --- Navigation Listeners ---
+    // 2. Navigation Switches
     document.getElementById('navCalendar').onclick = () => {
         document.getElementById('calendarSection').style.display = 'block';
         document.getElementById('culturalHub').style.display = 'none';
@@ -45,8 +49,29 @@ export function setupListeners(state, render) {
         document.getElementById('rulesPage').style.display = 'block';
         renderRulesPage();
     };
-    
-    // --- Calendar Arrows and Rollers ---
+
+    // 3. Year Input (Typing 0-3000)
+    const yearInput = document.getElementById('yearInput');
+    if (yearInput) {
+        yearInput.oninput = (e) => {
+            const val = parseInt(e.target.value);
+            if (!isNaN(val) && val >= 0 && val <= 3000) {
+                state.viewDate.setFullYear(val);
+                render(); 
+            }
+        };
+    }
+
+    // 4. Month Dropdown
+    const monthRoller = document.getElementById('monthRoller');
+    if (monthRoller) {
+        monthRoller.onchange = (e) => {
+            state.viewDate.setMonth(parseInt(e.target.value));
+            render();
+        };
+    }
+
+    // 5. Calendar Navigation Arrows
     document.getElementById('prevMonth').onclick = () => {
         state.viewDate.setMonth(state.viewDate.getMonth() - 1);
         render();
@@ -62,49 +87,45 @@ export function setupListeners(state, render) {
         state.viewDate = new Date(state.selectedDate.getFullYear(), state.selectedDate.getMonth(), 1);
         render();
     };
-
-    document.getElementById('monthRoller').onchange = (e) => {
-        state.viewDate.setMonth(parseInt(e.target.value));
-        render();
-    };
-
-    document.getElementById('yearRoller').onchange = (e) => {
-        state.viewDate.setFullYear(parseInt(e.target.value));
-        render();
-    };
 }
 
+/**
+ * Renders the Cultural Hub with localized Month/Year headers.
+ */
 export function renderCulturalHub(state) {
     const hub = document.getElementById('culturalHub');
     const monthIndex = state.viewDate.getMonth();
     const year = state.viewDate.getFullYear();
     
-    // Fetch data from your imported modules
+    // Localization for the Hub Header
+    const monthNamesEn = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    const monthNamesPl = ["Styczeń", "Luty", "Marzec", "Kwiecień", "Maj", "Czerwiec", "Lipiec", "Sierpień", "Wrzesień", "Październik", "Listopad", "Grudzień"];
+    
+    const displayMonthName = state.isPolish ? monthNamesPl[monthIndex] : monthNamesEn[monthIndex];
     const monthInfo = culturalData.months[monthIndex] || { pl: "Month", derivation: "N/A", season: "N/A" };
     const holidays = holidayData.getHolidaysForYear(year);
 
     let html = `
         <div class="culture-page">
             <header class="culture-header">
-                <h1>${monthInfo.pl}</h1>
+                <h1>${displayMonthName} ${year}</h1>
                 <span class="season-label">Season: ${monthInfo.season}</span>
             </header>
 
             <section class="info-block">
-                <h3>📜 Name Meaning & History</h3>
+                <h3>📜 ${state.isPolish ? 'Znaczenie nazwy' : 'Name Meaning & History'}</h3>
                 <p>${monthInfo.derivation}</p>
             </section>
 
             <section class="info-block">
-                <h3>🎈 Holidays & Traditions</h3>
+                <h3>🎈 ${state.isPolish ? 'Święta i tradycje' : 'Holidays & Traditions'}</h3>
                 <div class="holiday-list">`;
 
     let foundHoliday = false;
     Object.entries(holidays).forEach(([key, name]) => {
         if (key.startsWith(`${monthIndex}-`)) {
-            // FIX: Correctly extract the day from the "month-day" key format
             const day = key.split('-')[1]; 
-            const explanation = culturalData.holidayExplanations[key] || "A significant Polish tradition.";
+            const explanation = culturalData.holidayExplanations[key] || "";
             
             html += `
                 <div class="holiday-entry">
@@ -117,20 +138,23 @@ export function renderCulturalHub(state) {
     });
 
     if (!foundHoliday) {
-        html += `<p class="no-data">No major holidays listed for this month.</p>`;
+        html += `<p class="no-data">${state.isPolish ? 'Brak świąt w tym miesiącu.' : 'No major holidays listed for this month.'}</p>`;
     }
 
     html += `
                 </div>
             </section>
             <button onclick="document.getElementById('navCalendar').click()" class="close-culture-btn">
-                ← Back to Calendar
+                ← ${state.isPolish ? 'Powrót' : 'Back to Calendar'}
             </button>
         </div>`;
     
     hub.innerHTML = html;
 }
 
+/**
+ * Renders the Grammar Rules page dynamically from rules.js.
+ */
 export function renderRulesPage() {
     const page = document.getElementById('rulesPage');
     let html = `<div class="culture-page"><h1>Grammar Rules</h1>`;
