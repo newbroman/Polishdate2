@@ -396,6 +396,34 @@ body {
     cursor: pointer;
 }
 
+/* Style for empty spaces before the 1st of the month */
+.calendar-day.spacer {
+    background: transparent;
+    border: none;
+    cursor: default;
+}
+
+/* Highlight for the actual current date in the real world */
+.calendar-day.today-highlight {
+    border: 2px solid var(--gold);
+    color: var(--gold);
+}
+
+/* Selected state (Blue glow) */
+.calendar-day.selected {
+    background: #007bff !important;
+    color: white !important;
+    border-color: #fff;
+    transform: scale(1.1);
+    box-shadow: 0 0 10px rgba(0, 123, 255, 0.5);
+    z-index: 5;
+}
+
+/* Hover effect for better interactivity */
+.calendar-day:not(.spacer):hover {
+    background: #333;
+    border-color: var(--gold);
+}
 
 /* --- Seasonal Theme Colors --- */
 body.spring { border-top: 5px solid #4caf50; }
