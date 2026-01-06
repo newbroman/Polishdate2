@@ -6,6 +6,16 @@ import { getWrittenDay } from './numbers.js';
 export function updateInfoPanel(selectedDate, includeYear) {
     const mIdx = selectedDate.getMonth();
     const dayNamePl = ["niedziela", "poniedziałek", "wtorek", "środa", "czwartek", "piątek", "sobota"][selectedDate.getDay()];
+
+export function updateInfoPanel(date, includeYear) {
+    const day = date.getDate();
+    const monthIndex = date.getMonth();
+    const year = date.getFullYear();
+
+    const monthGenitive = [
+        "stycznia", "lutego", "marca", "kwietnia", "maja", "czerwca",
+        "lipca", "sierpnia", "września", "października", "listopada", "grudnia" 
+    ];
     
     // 1. Get Written Polish (Genitive Case)
     const monthGen = culturalData.months[mIdx].pl
