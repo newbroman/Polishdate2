@@ -1,25 +1,28 @@
-import { renderCalendarGrid } from './calendar-core.js';
 import { updateInfoPanel } from './ui-renderer.js';
 import { setupListeners } from './events.js';
 
-// Initialize state to "Today" instead of a fixed Jan 2024
+// 1. Initialize state with a default language preference
 const state = { 
     viewDate: new Date(), 
     selectedDate: new Date(), 
-    includeYear: true 
+    includeYear: true,
+    isPolish: false // Set to true if you want the app to start in Polish
 };
 
+/**
+ * Main render function to synchronize the UI with the state
+ */
 function render() {
     const mRoller = document.getElementById('monthRoller');
     const yInput = document.getElementById('yearInput');
     const monthIndex = state.viewDate.getMonth();
     const year = state.viewDate.getFullYear();
 
-    // 1. Sync Dropdown and Year Input to match viewDate
+    // Sync Rollers to state
     if (mRoller) mRoller.value = monthIndex;
     if (yInput) yInput.value = year;
 
-    // 2. Localize the Calendar Header (e.g., Styczeń 2026)
+    // Localize Calendar Header
     const monthNamesEn = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     const monthNamesPl = ["Styczeń", "Luty", "Marzec", "Kwiecień", "Maj", "Czerwiec", "Lipiec", "Sierpień", "Wrzesień", "Październik", "Listopad", "Grudzień"];
     
@@ -29,7 +32,7 @@ function render() {
         headerDisplay.innerText = `${displayMonth} ${year}`;
     }
 
-    // 3. Localize Weekday Labels (Sun... vs Nie...)
+    // Localize Weekday Labels
     const daysEn = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
     const daysPl = ["Nie", "Pon", "Wt", "Śr", "Czw", "Pią", "Sob"];
     const weekdayContainer = document.querySelector('.weekdays');
@@ -39,46 +42,85 @@ function render() {
             .map(day => `<div>${day}</div>`).join('');
     }
 
-    // 4. Localize the Navigation Buttons (Today / Dzisiaj)
+    // Localize Buttons
     const todayBtn = document.getElementById('todayBtn');
     if (todayBtn) {
         todayBtn.innerText = state.isPolish ? "Dzisiaj" : "Today";
     }
 
-    // 5. Clear loading text if present
+    // Clear loading text
     const phrase = document.getElementById('plPhrase');
     if (phrase && phrase.innerText.includes('Wczytywanie')) phrase.innerText = "";
 
-    // 6. Draw the Calendar Grid
+    // Draw Grid
     renderCalendarGrid(state.viewDate, state.selectedDate, (newDate) => {
         state.selectedDate = newDate;
-        render(); // Re-render when user clicks a specific date
+        render(); 
     });
 
-    // 7. Update the Info Panel (Polish words, Phonetics, English)
+    // Update Bottom Panel
     updateInfoPanel(state.selectedDate, state.includeYear);
 }
 
+/**
+ * Logic to build the 7-column calendar grid
+ */
+function renderCalendarGrid(viewDate, selectedDate, onDateClick) {
+    const grid = document.getElementById('calendarGrid');
+    if (!grid) return;
+
+    grid.innerHTML = ""; 
+    const year = viewDate.getFullYear();
+    const month = viewDate.getMonth();
+    const firstDayIndex = new Date(year, month, 1).getDay();
+    const lastDay = new Date(year, month + 1, 0).getDate();
+
+    for (let i = 0; i < firstDayIndex; i++) {
+        const spacer = document.createElement('div');
+        spacer.classList.add('calendar-day', 'spacer');
+        grid.appendChild(spacer);
+    }
+
+    const today = new Date();
+    for (let day = 1; day <= lastDay; day++) {
+        const daySquare = document.createElement('div');
+        daySquare.classList.add('calendar-day');
+        daySquare.innerText = day;
+
+        if (selectedDate && day === selectedDate.getDate() && 
+            month === selectedDate.getMonth() && year === selectedDate.getFullYear()) {
+            daySquare.classList.add('selected');
+        }
+
+        if (day === today.getDate() && month === today.getMonth() && year === today.getFullYear()) {
+            daySquare.classList.add('today-highlight');
+        }
+
+        daySquare.onclick = () => {
+            const newSelectedDate = new Date(year, month, day);
+            onDateClick(newSelectedDate);
+        };
+        grid.appendChild(daySquare);
+    }
+}
+
+/**
+ * App Startup
+ */
 window.onload = () => {
     const monthRoller = document.getElementById('monthRoller');
-    const yearRoller = document.getElementById('yearRoller');
-
-    // Populate months with real names (Fixes "Test Month")
     const monthNames = ["January", "February", "March", "April", "May", "June",
                         "July", "August", "September", "October", "November", "December"];
     
-    monthNames.forEach((name, index) => {
-        monthRoller.add(new Option(name, index));
-    });
-
-    // Populate years 2024-2030
-    for (let year = 2024; year <= 2030; year++) {
-        yearRoller.add(new Option(year, year));
+    if (monthRoller) {
+        monthNames.forEach((name, index) => {
+            monthRoller.add(new Option(name, index));
+        });
     }
 
     try {
         setupListeners(state, render);
-        render(); // This first call sets the dropdowns to the current month/year
+        render(); 
     } catch (e) {
         console.error("Startup failed:", e);
     }
