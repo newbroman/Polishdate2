@@ -28,6 +28,21 @@ export function setupListeners(state, render) {
         };
     }
 
+// Language Toggle Logic
+    const langToggle = document.getElementById('langToggle');
+    if (langToggle) {
+        langToggle.onclick = () => {
+            // 1. Flip the state
+            state.isPolish = !state.isPolish;
+            
+            // 2. Update the button text (Optional but helpful)
+            langToggle.innerText = state.isPolish ? "PL" : "EN";
+            
+            // 3. Re-run render to update headers, weekdays, and the Today button
+            render(); 
+        };
+    }
+    
     // 2. Navigation Switches
     document.getElementById('navCalendar').onclick = () => {
         document.getElementById('calendarSection').style.display = 'block';
