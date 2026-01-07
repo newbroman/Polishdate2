@@ -30,40 +30,31 @@ export function setupListeners(state, render) {
         };
     }
 
-    // --- 2. Navigation Logic ---
-   const showSection = (id) => {
+// --- 2. Navigation Logic ---
+const showSection = (id) => {
     const sections = {
         'calendar': document.getElementById('calendarSection'),
         'culture': document.getElementById('culturalHub'),
         'rules': document.getElementById('rulesPage')
     };
-
-    // Hide all first
-    Object.values(sections).forEach(s => { if (s) s.style.display = 'none'; });
-
-    if (id === 'calendar') {
-        // USE FLEX: This allows align-items: center from your CSS to work
-        sections['calendar'].style.display = 'flex'; 
-    } else {
-        if (sections[id]) sections[id].style.display = 'block';
-    }
-};
     const infoPanel = document.querySelector('.info-panel');
 
-    // Hide all
-    Object.values(sections).forEach(s => {
-        if (s) s.style.display = 'none';
-    });
+    // 1. Hide all first
+    Object.values(sections).forEach(s => { if (s) s.style.display = 'none'; });
 
-    // Show the target section correctly
+    // 2. Show the target section correctly
     if (id === 'calendar') {
-        sections['calendar'].style.display = 'flex'; // Use FLEX for the calendar to keep it centered
+        sections['calendar'].style.display = 'flex'; // Fixes the alignment bug
+        if (infoPanel) infoPanel.style.display = 'flex';
     } else {
-        if (sections[id]) sections[id].style.display = 'block'; // Use BLOCK for text pages
+        if (sections[id]) sections[id].style.display = 'block';
+        if (infoPanel) infoPanel.style.display = 'none'; // Hide footer on text pages
     }
 
-    if (infoPanel) infoPanel.style.display = (id === 'calendar') ? 'block' : 'none';
-    document.querySelectorAll('.nav-icon-btn').forEach(b => b.classList.remove('active'));
+    // 3. Update Nav Button Styles
+    document.querySelectorAll('.nav-icon-btn').forEach(b => {
+        b.classList.toggle('active', b.id === `nav${id.charAt(0).toUpperCase() + id.slice(1)}`);
+    });
 };
 
     // --- 3. Click Listeners ---
