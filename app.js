@@ -48,11 +48,7 @@ function render() {
             .map(day => `<div>${day}</div>`).join('');
     }
 
-    // 4. Localize Buttons
-    const todayBtn = document.getElementById('todayBtn');
-    if (todayBtn) todayBtn.innerText = state.isPolish ? "Dzisiaj" : "Today";
-
-    // 5. Draw Grid
+       // 4. Draw Grid
     renderCalendarGrid(state.viewDate, state.selectedDate, (newDate) => {
         state.selectedDate = newDate;
         render(); 
