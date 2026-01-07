@@ -56,11 +56,37 @@ body {
 }
 
 /* --- Seasonal Overrides --- */
-body.spring { --accent-color: #4caf50; --seasonal-bg: rgba(76, 175, 80, 0.1); }
-body.summer { --accent-color: #ffc107; --seasonal-bg: rgba(255, 193, 7, 0.1); }
-body.autumn { --accent-color: #ff5722; --seasonal-bg: rgba(255, 87, 34, 0.1); }
-body.winter { --accent-color: #e6192e; --seasonal-bg: rgba(230, 25, 46, 0.1); }
+/* 1. Base Defaults (What the app looks like on load) */
+:root {
+    --accent-color: #e6192e; /* Default Polish Red */
+    --seasonal-bg: rgba(230, 25, 46, 0.1);
+}
 
+/* 2. Seasonal Overrides (These trigger when JS adds the class) */
+body.spring { 
+    --accent-color: #4caf50; 
+    --seasonal-bg: rgba(76, 175, 80, 0.1); 
+}
+body.summer { 
+    --accent-color: #ffc107; 
+    --seasonal-bg: rgba(255, 193, 7, 0.1); 
+}
+body.autumn { 
+    --accent-color: #ff5722; 
+    --seasonal-bg: rgba(255, 87, 34, 0.1); 
+}
+body.winter { 
+    --accent-color: #e6192e; 
+    --seasonal-bg: rgba(230, 25, 46, 0.1); 
+}
+
+/* 3. The "Engine" (This makes the background actually change) */
+}
+body {
+    background-color: #121212;
+    background-image: linear-gradient(180deg, var(--seasonal-bg) 0%, #121212 400px);
+    transition: background 0.5s ease; /* Smooth fade between seasons */
+}
 /* --- Top Navigation Alignment --- */
 .main-nav-container {
     display: flex;
