@@ -38,19 +38,19 @@ body.winter { --accent-color: #e6192e; --seasonal-bg: rgba(230, 25, 46, 0.1); }
     width: 100%;
     /* Top half White, Bottom half Seasonal Accent */
     background: linear-gradient(to bottom, #ffffff 50%, var(--accent-color) 50%);
-    padding: 20px 0;
+    padding: 8px 0;
     text-align: center;
-    border-bottom: 2px solid rgba(0,0,0,0.1);
+    border-bottom: 1px solid rgba(0,0,0,0.1);
     transition: background 0.5s ease;
 }
 
 .brand-header h1 {
     margin: 0;
-    font-size: 1.6rem;
+    font-size: 1rem;
     font-weight: 900;
     text-transform: uppercase;
     color: #000000; /* Black text as requested */
-    letter-spacing: 2px;
+    letter-spacing: 1px;
 }
 
 /* --- 4. Top Navigation (EN/PL Toggle & Icons) --- */
@@ -167,8 +167,20 @@ body.winter { --accent-color: #e6192e; --seasonal-bg: rgba(230, 25, 46, 0.1); }
 }
 
 .calendar-day.holiday {
+   color: var(--accent-color) !important;
+    border: 1px solid var(--accent-color);
+    font-weight: 900;
+    /* This creates a subtle background glow */
+    background: rgba(255, 255, 255, 0.05);
+}
+
+/* Small dot indicator for holidays */
+.calendar-day.holiday::after {
+    content: '•';
+    position: absolute;
+    bottom: 2px;
+    font-size: 12px;
     color: var(--accent-color);
-    border-color: var(--accent-color);
 }
 
 .calendar-day.selected {
