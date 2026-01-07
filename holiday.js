@@ -4,7 +4,6 @@
  */
 
 const holidayData = {
-    // 1. Fixed holidays: [Month (0-indexed)-Day]
     fixed: {
         "0-1": "Nowy Rok",
         "0-6": "Święto Trzech Króli",
@@ -14,9 +13,9 @@ const holidayData = {
         "3-1": "Prima Aprilis 🤡",
         "4-1": "Święto Pracy",
         "4-3": "Święto Konstytucji 3 Maja",
-        "4-26": "Dzień Matki 💐", // Added Mother's Day (May 26)
+        "4-26": "Dzień Matki 💐",
         "5-1": "Dzień Dziecka 🧸",
-        "5-23": "Dzień Ojca 👔",   // Added Father's Day (June 23)
+        "5-23": "Dzień Ojca 👔",
         "7-15": "Wniebowzięcie NMP",
         "10-1": "Wszystkich Świętych",
         "10-11": "Narodowe Święto Niepodległości",
@@ -27,9 +26,6 @@ const holidayData = {
         "11-26": "Drugi Dzień Świąt"
     },
 
-    /**
-     * Calculates Easter Sunday for a given year.
-     */
     getEaster(year) {
         const a = year % 19;
         const b = Math.floor(year / 100);
@@ -45,16 +41,15 @@ const holidayData = {
         const m = Math.floor((a + 11 * h + 22 * l) / 451);
         const month = Math.floor((h + l - 7 * m + 114) / 31);
         const day = ((h + l - 7 * m + 114) % 31) + 1;
-        
         return new Date(year, month - 1, day);
     },
 
-    /**
-     * Combines fixed and calculated holidays.
-     */
     getHolidaysForYear(year) {
         const holidays = { ...this.fixed };
         const easter = this.getEaster(year);
+
+        // Easter Sunday
+        holidays[`${easter.getMonth()}-${easter.getDate()}`] = "Wielkanoc 🐣";
 
         // Fat Thursday (52 days before Easter)
         const fatThursday = new Date(easter);
