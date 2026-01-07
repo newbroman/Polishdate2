@@ -116,16 +116,13 @@ window.onload = () => {
     // 2. Setup Listeners
     setupListeners(state, render);
     
-    // 3. Force two renders: one immediate and one after a short delay
-    // This helps if the browser is still calculating Flexbox layout
+    // 3. Force render
     render();
     
     setTimeout(() => {
-        console.log("Secondary render triggered to fix layout collapse");
         render();
     }, 100);
 };
 
-    // 4. Watch for System Theme Changes
-    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => render());
-};
+// 5. Watch for System Theme Changes
+window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => render());
