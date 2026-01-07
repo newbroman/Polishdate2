@@ -412,3 +412,19 @@ body {
     background-color: var(--accent-color) !important;
     color: #ffffff !important;
 }
+
+.calendar-day.today-highlight {
+    border: 2px solid var(--gold);
+    color: var(--gold);
+    position: relative;
+}
+
+.calendar-day.today-highlight::after {
+    content: '';
+    position: absolute;
+    bottom: 4px;
+    width: 4px;
+    height: 4px;
+    background: var(--gold);
+    border-radius: 50%;
+}
