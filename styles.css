@@ -98,101 +98,45 @@ body {
 
 .divider { width: 1px; height: 20px; background: var(--border-color); }
 
-/* --- 4. Main Content Area --- */
+/* --- 4 & 5. THE CALENDAR AREA (CLEANED) --- */
 #calendarSection {
     display: flex;
     flex-direction: column;
     align-items: center;
     width: 100%;
-    /* Force a minimum height so it doesn't collapse to 0px */
-    min-height: 400px; 
-    margin-top: 20px;
+    margin-top: 10px;
+    padding-bottom: 220px; /* Space for fixed footer */
 }
 
 .calendar-container {
     width: 95%;
-    max-width: 500px;
-    background: rgba(255, 255, 255, 0.9);
+    max-width: 420px; /* Optimal size for 7-column grid */
+    background: var(--panel-bg);
     border-radius: 15px;
     padding: 15px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-}
-
-#calendarGrid {
-    display: grid !important; /* Force grid display */
-    grid-template-columns: repeat(7, 1fr);
-    gap: 5px;
-    min-height: 250px; /* Ensure space for 5-6 rows of dates */
-}
-
-.calendar-navigation {
-    margin: 10px 0 20px;
-}
-
-.nav-controls-row {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
-.nav-btn-arrow {
-    background: var(--panel-bg);
-    color: var(--text-main);
     border: 1px solid var(--border-color);
-    width: 44px;
-    height: 44px;
-    border-radius: 50%;
-    font-size: 1.2rem;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.rollers-container {
-    display: flex;
-    background: var(--panel-bg);
-    border: 1px solid var(--border-color);
-    border-radius: 25px;
-    overflow: hidden;
-}
-
-.roller-select, #yearInput {
-    background: transparent;
-    color: var(--text-main);
-    border: none;
-    padding: 10px;
-    font-size: 1rem;
-    outline: none;
-    text-align: center;
-}
-
-/* --- 5. THE CALENDAR GRID (FIXED) --- */
-.calendar-container {
-    width: 100%;
-    max-width: 400px;
-    padding: 0 15px 220px; /* Space for the fixed info-panel */
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
 }
 
 .weekdays {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
-    margin-bottom: 10px;
+    margin-bottom: 12px;
 }
 
 .weekdays span {
     text-align: center;
     color: var(--gold);
     font-weight: 800;
-    font-size: 0.75rem;
+    font-size: 0.7rem;
     text-transform: uppercase;
 }
 
 #calendarGrid {
-    display: grid !important; /* Force grid display */
+    display: grid !important;
     grid-template-columns: repeat(7, 1fr);
-    gap: 8px;
-    min-height: 300px; /* Prevents the "disappearing" collapse */
+    gap: 6px;
+    min-height: 280px;
     width: 100%;
 }
 
@@ -201,39 +145,26 @@ body {
     background-color: var(--grid-item-bg);
     border: 1px solid var(--border-color);
     border-radius: 8px;
-    display: flex !important; /* Ensure content is visible */
+    display: flex !important;
     align-items: center;
     justify-content: center;
     font-weight: 600;
     font-size: 1rem;
     color: var(--text-main);
     cursor: pointer;
-    transition: transform 0.1s, background-color 0.2s;
+    user-select: none;
+    transition: all 0.15s ease;
 }
 
-.calendar-day.spacer {
-    visibility: hidden;
-    pointer-events: none;
+/* Hover effect for desktop, but safe for touch */
+@media (hover: hover) {
+    .calendar-day:hover:not(.spacer) {
+        border-color: var(--accent-color);
+        background: var(--seasonal-bg);
+    }
 }
 
-.calendar-day.holiday {
-    color: var(--accent-color) !important;
-    border: 2.5px solid var(--accent-color);
-}
-
-.calendar-day.selected {
-    background-color: var(--accent-color) !important;
-    color: #ffffff !important;
-    border-color: transparent;
-    transform: scale(1.08);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-}
-
-.calendar-day.today-highlight {
-    border: 2.5px solid var(--gold);
-}
-
-/* --- 6. Info Panel (Footer) --- */
+/* --- 6. Info Panel (Footer) Improvements --- */
 .info-panel {
     position: fixed;
     bottom: 0;
@@ -241,27 +172,22 @@ body {
     width: 100%;
     background: var(--panel-bg);
     border-top: 1px solid var(--border-color);
-    padding: 20px 10px 30px;
+    padding: 15px 15px 25px;
     display: flex;
     flex-direction: column;
     align-items: center;
     z-index: 2000;
+    backdrop-filter: blur(10px); /* Modern touch */
     box-shadow: 0 -5px 20px rgba(0,0,0,0.1);
 }
 
-.phrase-display {
-    text-align: center;
-    margin-bottom: 15px;
-    min-height: 80px; /* Keeps panel height stable */
-}
-
-.phrase-pl { font-size: 1.3rem; font-weight: 800; color: var(--text-main); margin-bottom: 2px; }
-.phrase-phonetic { font-size: 1rem; color: var(--tan); font-style: italic; margin-bottom: 4px; }
-.phrase-en { font-size: 0.9rem; color: var(--text-dim); }
-
+/* Ensure buttons don't look squashed on small screens */
 .footer-controls {
     display: flex;
     gap: 12px;
+    width: 100%;
+    max-width: 400px;
+    justify-content: center;
 }
 
 .pill-btn {
