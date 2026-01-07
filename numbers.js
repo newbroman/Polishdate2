@@ -100,19 +100,19 @@ function getSmallOrdinalPl(n) {
  * Returns the written Polish ordinal day in the Genitive case.
  */
 export function getWrittenDay(day) {
-    const writtenDays = {
-        1: "pierwszego", 2: "drugiego", 3: "trzeciego", 4: "czwartego",
-        5: "piątego", 6: "szóstego", 7: "siódmego", 8: "ósmego",
-        9: "dziewiątego", 10: "dziesiątego", 11: "jedenastego",
-        12: "dwunastego", 13: "trzynastego", 14: "czternastego",
-        15: "piętnastego", 16: "szesnastego", 17: "siedemnastego",
-        18: "osiemnastego", 19: "dziewiętnastego", 20: "dwudziestego",
-        21: "dwudziestego pierwszego", 22: "dwudziestego drugiego",
-        23: "dwudziestego trzeciego", 24: "dwudziestego czwartego",
-        25: "dwudziestego piątego", 26: "dwudziestego szóstego",
-        27: "dwudziestego siódmego", 28: "dwudziestego ósmego",
-        29: "dwudziestego dziewiątego", 30: "trzydziestego",
-        31: "trzydziestego pierwszego"
+const writtenDays = {
+        1: "Pierwszy", 2: "Drugi", 3: "Trzeci", 4: "Czwarty",
+        5: "Piąty", 6: "Szósty", 7: "Siódmy", 8: "Ósmy",
+        9: "Dziewiąty", 10: "Dziesiąty", 11: "Jedenasty",
+        12: "Dwunasty", 13: "Trzynasty", 14: "Czternasty",
+        15: "Piętnasty", 16: "Szesnasty", 17: "Siedemnasty",
+        18: "Osiemnasty", 19: "Dziewiętnasty", 20: "Dwudziesty",
+        21: "Dwudziesty pierwszy", 22: "Dwudziesty drugi",
+        23: "Dwudziesty trzeci", 24: "Dwudziesty czwarty",
+        25: "Dwudziesty piąty", 26: "Dwudziesty szósty",
+        27: "Dwudziesty siódmy", 28: "Dwudziesty ósmy",
+        29: "Dwudziesty dziewiąty", 30: "Trzydziesty",
+        31: "Trzydziesty pierwszy"
     };
     return writtenDays[day] || day.toString();
 }
