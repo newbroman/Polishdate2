@@ -1,5 +1,5 @@
 /**
- * ui-renderer.js - Centralized with phonetics.js
+ * ui-renderer.js
  */
 import { getWrittenDay, getPhoneticDay, getYearPolish, getYearPhonetic } from './numbers.js';
 import phonetics from './phonetics.js';
@@ -18,13 +18,17 @@ export function updateInfoPanel(selectedDate, includeYear) {
     const year = selectedDate.getFullYear();
 
     // 1. Centralized Data Mapping
+    // English names for the EN display
     const monthNamesEn = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    
+    // Polish keys that MUST match the keys in phonetics.months
     const monthKeysPl = ["stycznia", "lutego", "marca", "kwietnia", "maja", "czerwca", "lipca", "sierpnia", "września", "października", "listopada", "grudnia"];
     
     const currentMonthKey = monthKeysPl[monthIndex];
-    const monthPhonetic = phonetics.months[currentMonthKey]; // Pulled from phonetics.js
+    const monthPhonetic = phonetics.months[currentMonthKey]; // Directly from phonetics.js
     const monthEn = monthNamesEn[monthIndex];
 
+    // Get Day words and phonetics from numbers.js
     const daySpelling = getWrittenDay(day);      
     const dayPhonetic = getPhoneticDay(day);     
 
@@ -47,7 +51,7 @@ export function updateInfoPanel(selectedDate, includeYear) {
         }
     }
 
-    // 4. Handle the Year (using numbers.js logic)
+    // 4. Handle the Year with phonetic and written logic
     if (includeYear) {
         fullPl += ` ${getYearPolish(year)} roku`;
         fullEn += `, ${year}`;
@@ -61,17 +65,19 @@ export function updateInfoPanel(selectedDate, includeYear) {
 }
 
 /**
- * Audio Engine: Speaks the Polish phrase
+ * Audio Engine: Speaks the Polish phrase displayed on screen
  */
 export function speakPolish() {
     const text = document.getElementById('plPhrase').innerText;
     if (!text || text === "Wybierz datę") return;
 
     window.speechSynthesis.cancel();
+
     const utterance = new SpeechSynthesisUtterance(text);
     utterance.lang = 'pl-PL';
-    utterance.rate = 0.85; 
+    utterance.rate = 0.85; // Slightly slower for clear learning
     utterance.pitch = 1.0;
+
     window.speechSynthesis.speak(utterance);
 }
 
