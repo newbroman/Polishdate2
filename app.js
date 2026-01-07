@@ -80,22 +80,63 @@ function render() {
 /**
  * Logic to build the 7-column calendar grid
  */
+import holidayData from './holiday.js';
+
 function renderCalendarGrid(viewDate, selectedDate, onDateClick) {
     const grid = document.getElementById('calendarGrid');
     if (!grid) return;
+    grid.innerHTML = "";
 
-    grid.innerHTML = ""; 
     const year = viewDate.getFullYear();
     const month = viewDate.getMonth();
+    const today = new Date();
+    
+    // 1. Get the first day of the month to handle spacers
     const firstDayIndex = new Date(year, month, 1).getDay();
     const lastDay = new Date(year, month + 1, 0).getDate();
+    
+    // 2. Fetch the holidays for the current year
+    const holidays = holidayData.getHolidaysForYear(year);
 
-    for (let i = 0; i < firstDayIndex; i++) {
+    // 3. Create Spacers for alignment
+    for (let x = 0; x < firstDayIndex; x++) {
         const spacer = document.createElement('div');
         spacer.classList.add('calendar-day', 'spacer');
         grid.appendChild(spacer);
     }
 
+    // 4. Create Day Squares
+    for (let day = 1; day <= lastDay; day++) {
+        const daySquare = document.createElement('div');
+        daySquare.classList.add('calendar-day');
+        daySquare.innerText = day;
+
+        // --- Holiday Check ---
+        const holidayKey = `${month}-${day}`;
+        if (holidays && holidays[holidayKey]) {
+            daySquare.classList.add('holiday');
+            daySquare.title = holidays[holidayKey]; 
+        }
+
+        // --- Selection Highlight ---
+        if (selectedDate && day === selectedDate.getDate() && 
+            month === selectedDate.getMonth() && year === selectedDate.getFullYear()) {
+            daySquare.classList.add('selected');
+        }
+
+        // --- Today Highlight ---
+        if (day === today.getDate() && month === today.getMonth() && year === today.getFullYear()) {
+            daySquare.classList.add('today-highlight');
+        }
+
+        daySquare.onclick = () => {
+            const newSelectedDate = new Date(year, month, day);
+            onDateClick(newSelectedDate);
+        };
+        
+        grid.appendChild(daySquare);
+    }
+}
     const today = new Date();
     for (let day = 1; day <= lastDay; day++) {
         const daySquare = document.createElement('div');
