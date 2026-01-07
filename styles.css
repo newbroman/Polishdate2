@@ -1,381 +1,257 @@
-/* --- 1. Core Variables & Season Transitions --- */
+/* --- 1. Core Variables (System-Adaptive) --- */
 :root {
     --accent-color: #e6192e; 
-    --bg-dark: #f5f5f5;        /* Light Gray background */
-    --panel-bg: #ffffff;      /* White panels */
-    --text-main: #1a1a1a;     /* Dark text */
-    --text-dim: #666666;      /* Gray text */
-    --gold: #b8860b;          /* Darker gold for visibility on white */
-    --tan: #8b4513;           /* Brownish tan for phonetics */
+    --bg-dark: #f8f9fa;
+    --panel-bg: #ffffff;
+    --grid-item-bg: #ffffff;
+    --text-main: #1a1a1a;
+    --text-dim: #666666;
+    --gold: #b8860b;
+    --tan: #8b4513;
     --seasonal-bg: rgba(230, 25, 46, 0.05);
-    --grid-bg: #ffffff;
-    --border-color: #dddddd;
+    --border-color: #dee2e6;
 }
 
-/* --- 2. Dark Mode Overrides (Triggered by Device) --- */
 @media (prefers-color-scheme: dark) {
     :root {
         --bg-dark: #121212;
         --panel-bg: #1a1a1a;
+        --grid-item-bg: #1e1e1e;
         --text-main: #ffffff;
         --text-dim: #bbbbbb;
         --gold: #ffd700;
         --tan: #D2B48C;
-        --seasonal-bg: rgba(230, 25, 46, 0.1);
-        --grid-bg: #1e1e1e;
+        --seasonal-bg: rgba(230, 25, 46, 0.15);
         --border-color: #333333;
     }
 }
 
-/* Seasonal Overrides controlled by JS */
-body.spring { --accent-color: #4caf50; --seasonal-bg: rgba(76, 175, 80, 0.1); }
-body.summer { --accent-color: #ffc107; --seasonal-bg: rgba(255, 193, 7, 0.1); }
-body.autumn { --accent-color: #ff5722; --seasonal-bg: rgba(255, 87, 34, 0.1); }
-body.winter { --accent-color: #e6192e; --seasonal-bg: rgba(230, 25, 46, 0.1); }
+/* Seasonal Overrides */
+body.spring { --accent-color: #4caf50; }
+body.summer { --accent-color: #ffc107; }
+body.autumn { --accent-color: #ff5722; }
+body.winter { --accent-color: #e6192e; }
 
+/* --- 2. Global Reset --- */
 * {
     box-sizing: border-box;
+    margin: 0;
+    padding: 0;
     -webkit-tap-highlight-color: transparent;
 }
 
 body {
-    margin: 0;
-    padding: 0;
-    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
     background-color: var(--bg-dark);
-    background-image: linear-gradient(180deg, var(--seasonal-bg) 0%, var(--bg-dark) 450px);
+    background-image: linear-gradient(180deg, var(--seasonal-bg) 0%, var(--bg-dark) 600px);
     color: var(--text-main);
-    transition: background 0.5s ease;
+    transition: background 0.4s ease;
     min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
-/* --- 2. Branding Banner --- */
+/* --- 3. Header & Nav --- */
 .brand-header {
     width: 100%;
     background: linear-gradient(to bottom, #ffffff 50%, var(--accent-color) 50%);
-    padding: 8px 0;
+    padding: 10px 0;
     text-align: center;
-    border-bottom: 2px solid rgba(0,0,0,0.1); /* Subtle shadow for light mode */
+    border-bottom: 1px solid rgba(0,0,0,0.1);
     position: sticky;
     top: 0;
     z-index: 1000;
 }
 
 .brand-header h1 {
-    margin: 0;
-    font-size: 1rem;
-    font-weight: 800;
+    font-size: 0.9rem;
     text-transform: uppercase;
-    color: #000000;
-    letter-spacing: 1.5px;
+    color: #000;
+    letter-spacing: 2px;
 }
 
-/* --- 3. Utility Navigation --- */
 .main-nav-container {
     display: flex;
     justify-content: center;
-    padding: 15px 0 5px 0;
+    padding: 20px 0 10px;
 }
 
 .utility-controls {
     display: flex;
     align-items: center;
     gap: 15px;
-    background: rgba(255, 255, 255, 0.05);
-    padding: 8px 18px;
+    background: var(--panel-bg);
+    padding: 10px 20px;
     border-radius: 50px;
-    border: 1px solid #333;
+    border: 1px solid var(--border-color);
 }
 
 .nav-icon-btn {
     background: transparent;
     border: none;
-    font-size: 1.2rem;
+    font-size: 1.3rem;
     cursor: pointer;
+    color: var(--text-main);
 }
 
-.divider {
-    width: 1px;
-    height: 18px;
-    background: #444;
+.divider { width: 1px; height: 20px; background: var(--border-color); }
+
+/* --- 4. Calendar View --- */
+.calendar-container {
+    width: 100%;
+    max-width: 420px;
+    margin: 0 auto;
+    padding: 10px 20px 200px; /* Padding for the fixed footer */
+    flex: 1;
 }
 
-/* --- 4. Calendar Navigation Arrows & Rollers --- */
 .calendar-navigation {
     display: flex;
-    justify-content: center;
-    padding: 10px 0;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
 }
 
 .nav-controls-row {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 10px;
 }
 
 .nav-btn-arrow {
-    background: #2d2d2d;
-    color: white;
-    border: 1px solid #444;
-    width: 38px;
-    height: 38px;
+    background: var(--panel-bg);
+    color: var(--text-main);
+    border: 1px solid var(--border-color);
+    width: 44px;
+    height: 44px;
     border-radius: 50%;
-    cursor: pointer;
     font-size: 1.2rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: 0.2s;
-}
-
-.nav-btn-arrow:hover {
-    background: var(--accent-color);
-    border-color: #fff;
+    cursor: pointer;
 }
 
 .rollers-container {
     display: flex;
-    background: #222;
-    border: 1px solid #444;
-    border-radius: 30px;
-    padding: 2px 10px;
+    background: var(--panel-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 25px;
+    overflow: hidden;
 }
 
 .roller-select, #yearInput {
     background: transparent;
-    color: white;
+    color: var(--text-main);
     border: none;
+    padding: 10px;
     font-size: 1rem;
-    padding: 8px;
     outline: none;
     text-align: center;
 }
 
-#yearInput {
-    width: 75px;
-    border-left: 1px solid #444;
-}
+#yearInput { width: 80px; border-left: 1px solid var(--border-color); }
 
-/* --- 5. Calendar Grid --- */
-.calendar-container {
-    max-width: 400px;
-    margin: 0 auto;
-    padding: 10px 15px 180px 15px;
-}
-
+/* --- 5. THE GRID (The Hidden Part) --- */
 .weekdays {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
+    margin-bottom: 10px;
+}
+
+.weekdays span {
     text-align: center;
     color: var(--gold);
-    font-weight: bold;
-    font-size: 0.8rem;
-    margin-bottom: 10px;
+    font-weight: 800;
+    font-size: 0.75rem;
+    text-transform: uppercase;
 }
 
 .calendar-grid {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
-    gap: 6px;
+    gap: 8px;
+    min-height: 300px; /* Forces visibility */
 }
 
 .calendar-day {
-    aspect-ratio: 1;
+    aspect-ratio: 1/1;
+    background: var(--grid-item-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: var(--grid-bg); /* Uses dynamic variable */
-    border-radius: 6px;
-    cursor: pointer;
-    border: 1px solid var(--border-color); /* Uses dynamic variable */
     font-weight: 600;
-    position: relative;
-    transition: 0.2s;
+    font-size: 1rem;
     color: var(--text-main);
+    cursor: pointer;
+    position: relative;
+    transition: transform 0.1s;
 }
 
-.calendar-day.spacer { background: transparent; border: none; }
+.calendar-day.spacer { visibility: hidden; pointer-events: none; }
 
 .calendar-day.holiday {
     color: var(--accent-color) !important;
-    border: 1.5px solid var(--accent-color);
+    border: 2px solid var(--accent-color);
 }
 
 .calendar-day.holiday::after {
     content: '•';
     position: absolute;
     bottom: 2px;
-    font-size: 10px;
+    font-size: 14px;
 }
 
 .calendar-day.selected {
-    background-color: var(--accent-color) !important;
-    color: white !important;
-    border-color: white;
-    box-shadow: 0 0 10px var(--accent-color);
-    z-index: 2;
+    background: var(--accent-color) !important;
+    color: #fff !important;
+    border-color: transparent;
+    transform: scale(1.08);
+    z-index: 10;
 }
 
 .calendar-day.today-highlight {
-    border-color: var(--gold);
-    background: #2a2a2a;
+    border: 2px solid var(--gold);
 }
 
-/* --- 6. Footer Info Panel --- */
+/* --- 6. Info Panel --- */
 .info-panel {
     position: fixed;
     bottom: 0;
     left: 0;
     width: 100%;
     background: var(--panel-bg);
-    border-top: 1px solid #333;
-    padding: 20px 10px;
+    border-top: 1px solid var(--border-color);
+    padding: 20px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    z-index: 100;
+    z-index: 2000;
 }
 
-.phrase-display {
-    text-align: center;
-    margin-bottom: 15px;
-}
+.phrase-pl { font-size: 1.3rem; font-weight: 800; text-align: center; }
+.phrase-phonetic { color: var(--tan); font-style: italic; margin: 4px 0; }
+.phrase-en { color: var(--text-dim); font-size: 0.9rem; margin-bottom: 15px; }
 
-.phrase-pl {
-    font-size: 1.3rem;
-    font-weight: bold;
-    margin: 0 0 4px 0;
-}
+.footer-controls { display: flex; gap: 10px; }
 
-.phrase-phonetic {
-    font-size: 1.05rem;
-    color: var(--tan);
-    font-style: italic;
-    margin: 0 0 4px 0;
-}
-
-.phrase-en {
-    font-size: 0.9rem;
-    color: var(--text-dim);
-    margin: 0;
-}
-
-.footer-controls {
-    display: flex;
-    justify-content: center;
-    gap: 12px;
-    width: 100%;
-}
-
-.pill-btn-sm {
-    background: #2d2d2d;
-    color: white;
-    border: 1px solid #444;
-    padding: 10px 20px;
-    border-radius: 25px;
-    font-weight: bold;
-    font-size: 0.85rem;
-    cursor: pointer;
-    transition: 0.2s;
-}
-
-.pill-btn-sm:hover {
-    background: var(--accent-color);
-    border-color: white;
-}
-
-/* --- 7. Cultural Hub & Rules View Layouts --- */
+/* --- 7. Other Sections --- */
 #culturalHub, #rulesPage {
-    padding: 20px 15px 180px 15px;
+    padding: 20px 20px 220px;
     max-width: 600px;
     margin: 0 auto;
-    display: none; /* Controlled by JS showSection */
-}
-
-.culture-page {
-    animation: fadeIn 0.4s ease-out;
-}
-
-.culture-header {
-    text-align: center;
-    margin-bottom: 25px;
-}
-
-.season-label {
-    display: inline-block;
-    padding: 4px 12px;
-    background: var(--seasonal-bg);
-    border: 1px solid var(--accent-color);
-    border-radius: 15px;
-    font-size: 0.8rem;
-    text-transform: uppercase;
-    color: var(--accent-color);
-    font-weight: bold;
+    display: none;
 }
 
 .info-block {
-    background: #252525;
-    padding: 18px;
+    background: var(--panel-bg);
+    border: 1px solid var(--border-color);
+    padding: 20px;
     border-radius: 12px;
-    margin-bottom: 20px;
-    border: 1px solid #333;
-}
-
-.info-block h3 {
-    margin-top: 0;
-    color: var(--gold);
-    font-size: 1.1rem;
-    border-bottom: 1px solid #444;
-    padding-bottom: 8px;
-    margin-bottom: 12px;
+    margin-bottom: 15px;
 }
 
 .day-meaning-highlight {
     background: var(--seasonal-bg);
-    border-left: 4px solid var(--accent-color);
-    padding: 1.2rem;
-    border-radius: 8px;
-    margin-bottom: 1.5rem;
-}
-
-.holiday-entry {
-    border-bottom: 1px solid #333;
-    padding: 12px 0;
-}
-
-.holiday-entry:last-child { border-bottom: none; }
-
-.holiday-date {
-    color: var(--accent-color);
-    font-weight: bold;
-    font-size: 0.9rem;
-}
-
-.close-culture-btn {
-    width: 100%;
-    background: #333;
-    color: white;
-    border: 1px solid #444;
-    padding: 15px;
-    border-radius: 30px;
-    font-weight: bold;
-    cursor: pointer;
-    margin-top: 10px;
-    transition: 0.2s;
-}
-
-.close-culture-btn:hover {
-    background: var(--accent-color);
-}
-
-.no-data {
-    color: var(--text-dim);
-    font-style: italic;
-    text-align: center;
-    padding: 20px 0;
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
+    border-left: 5px solid var(--accent-color);
 }
