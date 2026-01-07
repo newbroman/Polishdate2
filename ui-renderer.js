@@ -1,81 +1,56 @@
 /**
  * ui-renderer.js
- * Handles the display of the Polish date, phonetics, and English translation.
  */
+import { getWrittenDay } from './numbers.js';
+import holidayData from './holiday.js';
 
-/**
- * Main function called by render() in app.js
- * @param {Date} selectedDate - The date currently highlighted
- * @param {boolean} includeYear - Whether the "Include Year" toggle is ON
- */
 export function updateInfoPanel(selectedDate, includeYear) {
     const plDisplay = document.getElementById('plPhrase');
     const enDisplay = document.getElementById('enPhrase');
     const phoneticDisplay = document.getElementById('phoneticPhrase');
+    const holidayDisplay = document.getElementById('holidayName'); // Make sure this ID exists in your HTML!
 
-    // Safety check to prevent errors if elements aren't found
-    if (!selectedDate || !plDisplay || !enDisplay || !phoneticDisplay) return;
-
-    const day = selectedDate.getDate();
-    const monthIndex = selectedDate.getMonth();
-    const year = selectedDate.getFullYear();
-/**
- * ui-renderer.js
- * Renders the Polish date phrase using Nominative Days and Genitive Months.
- */
-import { getWrittenDay, getYearPolish, getYearPhonetic } from './numbers.js';
-
-/**
- * Updates the footer info panel based on the selected date.
- * @param {Date} selectedDate 
- * @param {boolean} includeYear 
- */
-export function updateInfoPanel(selectedDate, includeYear) {
-    const plDisplay = document.getElementById('plPhrase');
-    const enDisplay = document.getElementById('enPhrase');
-    const phoneticDisplay = document.getElementById('phoneticPhrase');
-
-    if (!selectedDate || !plDisplay || !enDisplay || !phoneticDisplay) return;
+    if (!selectedDate || !plDisplay) return;
 
     const day = selectedDate.getDate();
     const monthIndex = selectedDate.getMonth();
     const year = selectedDate.getFullYear();
 
-    // 1. Get Month Data (Genitive Case)
+    // 1. Get Month & Day Data
     const monthData = getPolishMonthData(monthIndex);
-
-    // 2. Get Day Spelling (Nominative Case from numbers.js)
     const daySpelling = getWrittenDay(day);
 
-    // 3. Construct the Polish Phrase 
-    // Format: "Siódmy stycznia"
+    // 2. Build Basic Polish Phrase (Nominative Day + Genitive Month)
     let fullPl = `${daySpelling} ${monthData.pl}`;
-    
-    // 4. Construct the English Phrase
-    // Format: "January 7th"
     let fullEn = `${monthData.en} ${day}${getEnglishSuffix(day)}`;
-    
-    // 5. Construct the Phonetic Phrase
-    // Format: "7 stich-nyah"
     let fullPhonetic = `${day} ${monthData.phonetic}`;
 
-    // 6. Handle the Year Logic
+    // 3. Check for Holiday
+    const holidays = holidayData.getHolidaysForYear(year);
+    const holidayKey = `${monthIndex}-${day}`;
+    
+    if (holidayDisplay) {
+        if (holidays[holidayKey]) {
+            holidayDisplay.innerText = `🎉 ${holidays[holidayKey]}`;
+            holidayDisplay.style.display = "block";
+        } else {
+            holidayDisplay.innerText = "";
+            holidayDisplay.style.display = "none";
+        }
+    }
+
     if (includeYear) {
-        // Polish grammar: When year is added to a date, append "roku"
         fullPl += ` ${year} roku`;
         fullEn += `, ${year}`;
         fullPhonetic += ` ${year} ro-koo`;
     }
 
-    // 7. Update the DOM elements
+    // 4. Update UI
     plDisplay.innerText = fullPl;
     enDisplay.innerText = fullEn;
     phoneticDisplay.innerText = fullPhonetic;
 }
 
-/**
- * Helper: Provides English ordinal suffixes
- */
 function getEnglishSuffix(i) {
     const j = i % 10, k = i % 100;
     if (j == 1 && k != 11) return "st";
@@ -84,9 +59,6 @@ function getEnglishSuffix(i) {
     return "th";
 }
 
-/**
- * Helper: Provides Month names in Genitive case and Phonetics
- */
 function getPolishMonthData(index) {
     const months = [
         { pl: "stycznia", en: "January", phonetic: "stich-nyah" },
