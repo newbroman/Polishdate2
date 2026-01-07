@@ -22,8 +22,8 @@ function render() {
     const monthIndex = state.viewDate.getMonth();
     const year = state.viewDate.getFullYear();
 
-    // 2. Seasonal Theming
-    document.body.className = ''; // Clear all classes
+    // 2. Seasonal Theming (Synchronized with your CSS variables)
+    document.body.className = ''; 
     const seasons = ['winter', 'winter', 'spring', 'spring', 'spring', 'summer', 'summer', 'summer', 'autumn', 'autumn', 'autumn', 'winter'];
     document.body.classList.add(seasons[monthIndex]);
 
@@ -42,16 +42,15 @@ function render() {
     // 4. Weekday Labels
     if (weekdayContainer) {
         const days = state.isPolish ? ["Nie", "Pon", "Wt", "Śr", "Czw", "Pią", "Sob"] : ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-        weekdayContainer.innerHTML = days.map(d => `<div>${d}</div>`).join('');
+        weekdayContainer.innerHTML = days.map(d => `<span>${d}</span>`).join('');
     }
 
-    // 5. Draw Grid (Wrapped in try/catch so footer errors don't kill the grid)
-    try {
-        renderCalendarGrid(state.viewDate, state.selectedDate, (newDate) => {
-            state.selectedDate = newDate;
-            render(); 
-        });
-    } catch (e) { console.error("Grid Error:", e); }
+    // 5. Draw Grid
+    // FIX: Make sure your HTML has <div class="calendar-grid" id="calendarGrid"></div>
+    renderCalendarGrid(state.viewDate, state.selectedDate, (newDate) => {
+        state.selectedDate = newDate;
+        render(); 
+    });
 
     // 6. Update Info Panel
     try {
@@ -60,21 +59,23 @@ function render() {
 }
 
 function renderCalendarGrid(viewDate, selectedDate, onDateClick) {
-    const grid = document.getElementById('calendarGrid');
-    if (!grid) return;
+    const grid = document.getElementById('calendarGrid'); 
+    if (!grid) {
+        console.error("Calendar grid element not found! Check your HTML for id='calendarGrid'");
+        return;
+    }
     grid.innerHTML = "";
 
     const year = viewDate.getFullYear();
     const month = viewDate.getMonth();
     const today = new Date();
     
-    // Safety check for holidays
     const holidays = (holidayData && holidayData.getHolidaysForYear) ? holidayData.getHolidaysForYear(year) : {};
 
     const firstDayIndex = new Date(year, month, 1).getDay();
     const lastDay = new Date(year, month + 1, 0).getDate();
 
-    // Spacers
+    // Spacers (Visibility handled by CSS .spacer)
     for (let x = 0; x < firstDayIndex; x++) {
         const spacer = document.createElement('div');
         spacer.className = 'calendar-day spacer';
@@ -90,11 +91,13 @@ function renderCalendarGrid(viewDate, selectedDate, onDateClick) {
         const holidayKey = `${month}-${day}`;
         if (holidays[holidayKey]) daySquare.classList.add('holiday');
 
+        // Check if this day is the selected one
         if (selectedDate && day === selectedDate.getDate() && 
             month === selectedDate.getMonth() && year === selectedDate.getFullYear()) {
             daySquare.classList.add('selected');
         }
 
+        // Highlight today
         if (day === today.getDate() && month === today.getMonth() && year === today.getFullYear()) {
             daySquare.classList.add('today-highlight');
         }
@@ -108,4 +111,7 @@ function renderCalendarGrid(viewDate, selectedDate, onDateClick) {
 window.onload = () => {
     setupListeners(state, render);
     render(); 
+    
+    // Theme Observer: Re-render if system theme changes while app is open
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => render());
 };
