@@ -108,12 +108,22 @@ function renderCalendarGrid(viewDate, selectedDate, onDateClick) {
 
 // 4. Initialize
 window.onload = () => {
+    // 1. Initialize Audio
     checkVoices((ready) => {
-        console.log("Polish TTS Ready:", ready);
+        console.log("Polish voices ready:", ready);
     });
     
+    // 2. Setup Listeners
     setupListeners(state, render);
-    render(); // Initial draw
+    
+    // 3. Force two renders: one immediate and one after a short delay
+    // This helps if the browser is still calculating Flexbox layout
+    render();
+    
+    setTimeout(() => {
+        console.log("Secondary render triggered to fix layout collapse");
+        render();
+    }, 100);
 };
 
     // 4. Watch for System Theme Changes
