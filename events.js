@@ -106,16 +106,19 @@ export function setupListeners(state, render) {
    const prevBtn = document.getElementById('prevMonth');
     if (prevBtn) {
         prevBtn.onclick = () => {
-            state.viewDate.setDate(1); // <--- Add this line
+            // Fix: Set date to 1st to prevent jumping over months (e.g., Jan 31 -> March 3)
+            state.viewDate.setDate(1); 
             state.viewDate.setMonth(state.viewDate.getMonth() - 1);
             render();
         };
     }
 
+    // Next Month Arrow
     const nextBtn = document.getElementById('nextMonth');
     if (nextBtn) {
         nextBtn.onclick = () => {
-            state.viewDate.setDate(1); // <--- Add this line
+            // Fix: Set date to 1st to prevent jumping over months
+            state.viewDate.setDate(1);
             state.viewDate.setMonth(state.viewDate.getMonth() + 1);
             render();
         };
