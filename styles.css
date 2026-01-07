@@ -401,3 +401,9 @@ body {
     color: var(--text-dim); 
     font-weight: 500;
 }
+
+.calendar-day.holiday {
+    color: var(--accent-color) !important;
+    border: 2px solid var(--accent-color) !important;
+    font-weight: 800;
+}
