@@ -1,38 +1,39 @@
 /**
  * Speech synthesis utility for Polish pronunciation
  */
-export function speakPolish(text) {
-    if (!window.speechSynthesis) {
-        console.warn("Speech Synthesis not supported in this browser.");
-        return;
-    }
+let voicesLoaded = false;
 
-    // Stop any current audio before starting new speech
+export function speakPolish(text) {
+    if (!window.speechSynthesis) return;
+
     window.speechSynthesis.cancel();
 
     const utterance = new SpeechSynthesisUtterance(text);
-    
-    // Refresh voices list
     const voices = window.speechSynthesis.getVoices();
     
-    // Specific search for Polish (pl-PL)
+    // Improved search for Polish
     const plVoice = voices.find(v => v.lang.toLowerCase().replace('_', '-') === 'pl-pl') 
                  || voices.find(v => v.lang.startsWith('pl'));
     
-    if (plVoice) {
-        utterance.voice = plVoice;
-    }
-
+    if (plVoice) utterance.voice = plVoice;
     utterance.lang = 'pl-PL';
-    utterance.rate = 0.85; // Natural learning speed
-    utterance.pitch = 1.0;
+    utterance.rate = 0.85; 
     
     window.speechSynthesis.speak(utterance);
 }
 
-// Crucial: Pre-warm the voice engine
-if (typeof window !== 'undefined' && window.speechSynthesis) {
+// Function to check if voices are ready
+export function checkVoices(callback) {
+    const loadVoices = () => {
+        const voices = window.speechSynthesis.getVoices();
+        if (voices.length > 0) {
+            voicesLoaded = true;
+            callback(true);
+        }
+    };
+
     if (window.speechSynthesis.onvoiceschanged !== undefined) {
-        window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
+        window.speechSynthesis.onvoiceschanged = loadVoices;
     }
+    loadVoices(); // Initial check
 }
