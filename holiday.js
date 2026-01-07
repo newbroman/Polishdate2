@@ -55,6 +55,16 @@ const holidayData = {
 
         // 2. Calculate Moveable Holidays
         const easter = this.getEaster(year);
+
+        // Fat Thursday (52 days before Easter)
+        const fatThursday = new Date(easter);
+        fatThursday.setDate(easter.getDate() - 52);
+        holidays[`${fatThursday.getMonth()}-${fatThursday.getDate()}`] = "Tłusty Czwartek 🍩";
+
+        // Ash Wednesday (46 days before Easter)
+        const ashWed = new Date(easter);
+        ashWed.setDate(easter.getDate() - 46);
+        holidays[`${ashWed.getMonth()}-${ashWed.getDate()}`] = "Środa Popielcowa";
         
         // Easter Monday (Poniedziałek Wielkanocny) - 1 day after Easter
         const easterMonday = new Date(easter);
