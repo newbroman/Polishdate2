@@ -2,17 +2,22 @@
  * holiday.js - Updated with Cultural Traditions
  */
 const holidayData = {
-    fixed: {
+fixed: {
         "0-1": "Nowy Rok",
         "0-6": "Święto Trzech Króli",
+        "0-21": "Dzień Babci 👵",         // Grandmother's Day
+        "0-22": "Dzień Dziadka 👴",       // Grandfather's Day
+        "2-8": "Dzień Kobiet 🌷",        // Women's Day (Mar 8)
+        "3-1": "Prima Aprilis 🤡",       // April Fools (Apr 1)
         "4-1": "Święto Pracy",
         "4-3": "Święto Konstytucji 3 Maja",
+        "5-1": "Dzień Dziecka 🧸",        // Children's Day (Jun 1)
         "7-15": "Wniebowzięcie NMP",
         "10-1": "Wszystkich Świętych",
         "10-11": "Narodowe Święto Niepodległości",
-        "11-6": "Mikołajki", // St. Nicholas Day
-        "10-29": "Andrzejki", // St. Andrew's Day (Nov 29)
-        "11-24": "Wigilia",   // Christmas Eve is huge in Poland!
+        "10-29": "Andrzejki 🕯️",
+        "11-6": "Mikołajki 🎅",
+        "11-24": "Wigilia Bożego Narodzenia",
         "11-25": "Boże Narodzenie",
         "11-26": "Drugi Dzień Świąt"
     },
