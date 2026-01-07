@@ -1,23 +1,4 @@
-#calendarGrid {
-    display: grid !important;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 8px;
-    min-height: 320px; /* Forces the grid to occupy space */
-    width: 100%;
-    margin-top: 10px;
-}
-
-.calendar-day {
-    min-height: 45px; /* Ensures days have height on small screens */
-    background-color: var(--grid-item-bg);
-    color: var(--text-main);
-    display: flex !important; /* Ensures flex centering is active */
-    align-items: center;
-    justify-content: center;
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    font-size: 1rem;
-}/* --- 1. Core Variables (System-Adaptive) --- */
+/* --- 1. System-Adaptive Variables --- */
 :root {
     --accent-color: #e6192e; 
     --bg-dark: #f8f9fa;
@@ -34,8 +15,8 @@
 @media (prefers-color-scheme: dark) {
     :root {
         --bg-dark: #121212;
-        --panel-bg: #1a1a1a;
-        --grid-item-bg: #1e1e1e;
+        --panel-bg: #1e1e1e;
+        --grid-item-bg: #252525;
         --text-main: #ffffff;
         --text-dim: #bbbbbb;
         --gold: #ffd700;
@@ -45,13 +26,13 @@
     }
 }
 
-/* Seasonal Overrides */
+/* Seasonal Overrides (Triggered by JS) */
 body.spring { --accent-color: #4caf50; }
 body.summer { --accent-color: #ffc107; }
 body.autumn { --accent-color: #ff5722; }
 body.winter { --accent-color: #e6192e; }
 
-/* --- 2. Global Reset --- */
+/* --- 2. Global Reset & Layout --- */
 * {
     box-sizing: border-box;
     margin: 0;
@@ -64,17 +45,17 @@ body {
     background-color: var(--bg-dark);
     background-image: linear-gradient(180deg, var(--seasonal-bg) 0%, var(--bg-dark) 600px);
     color: var(--text-main);
-    transition: background 0.4s ease;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+    overflow-x: hidden;
 }
 
-/* --- 3. Header & Nav --- */
+/* --- 3. Header & Navigation --- */
 .brand-header {
     width: 100%;
     background: linear-gradient(to bottom, #ffffff 50%, var(--accent-color) 50%);
-    padding: 10px 0;
+    padding: 12px 0;
     text-align: center;
     border-bottom: 1px solid rgba(0,0,0,0.1);
     position: sticky;
@@ -83,16 +64,17 @@ body {
 }
 
 .brand-header h1 {
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     text-transform: uppercase;
     color: #000;
     letter-spacing: 2px;
+    font-weight: 900;
 }
 
 .main-nav-container {
     display: flex;
     justify-content: center;
-    padding: 20px 0 10px;
+    padding: 15px 0;
 }
 
 .utility-controls {
@@ -103,39 +85,36 @@ body {
     padding: 10px 20px;
     border-radius: 50px;
     border: 1px solid var(--border-color);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
 
 .nav-icon-btn {
     background: transparent;
     border: none;
-    font-size: 1.3rem;
+    font-size: 1.4rem;
     cursor: pointer;
     color: var(--text-main);
 }
 
 .divider { width: 1px; height: 20px; background: var(--border-color); }
 
-/* --- 4. Calendar View --- */
-.calendar-container {
-    width: 100%;
-    max-width: 420px;
-    margin: 0 auto;
-    padding: 10px 20px 200px; /* Padding for the fixed footer */
-    flex: 1;
-}
-
-.calendar-navigation {
+/* --- 4. Main Content Area --- */
+#calendarSection {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 15px;
-    margin-bottom: 20px;
+    width: 100%;
+    flex: 1; /* Pushes footer down */
+}
+
+.calendar-navigation {
+    margin: 10px 0 20px;
 }
 
 .nav-controls-row {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
 }
 
 .nav-btn-arrow {
@@ -147,6 +126,9 @@ body {
     border-radius: 50%;
     font-size: 1.2rem;
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .rollers-container {
@@ -167,9 +149,13 @@ body {
     text-align: center;
 }
 
-#yearInput { width: 80px; border-left: 1px solid var(--border-color); }
+/* --- 5. THE CALENDAR GRID (FIXED) --- */
+.calendar-container {
+    width: 100%;
+    max-width: 400px;
+    padding: 0 15px 220px; /* Space for the fixed info-panel */
+}
 
-/* --- 5. THE GRID (The Hidden Part) --- */
 .weekdays {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
@@ -184,62 +170,52 @@ body {
     text-transform: uppercase;
 }
 
-.calendar-grid {
-    display: grid;
+#calendarGrid {
+    display: grid !important; /* Force grid display */
     grid-template-columns: repeat(7, 1fr);
     gap: 8px;
-    min-height: 300px; /* Forces visibility */
+    min-height: 300px; /* Prevents the "disappearing" collapse */
+    width: 100%;
 }
 
 .calendar-day {
-    aspect-ratio: 1/1;
-    background: var(--grid-item-bg);
+    aspect-ratio: 1 / 1;
+    background-color: var(--grid-item-bg);
     border: 1px solid var(--border-color);
     border-radius: 8px;
-    display: flex;
+    display: flex !important; /* Ensure content is visible */
     align-items: center;
     justify-content: center;
     font-weight: 600;
     font-size: 1rem;
     color: var(--text-main);
     cursor: pointer;
-    position: relative;
-    transition: transform 0.1s;
+    transition: transform 0.1s, background-color 0.2s;
 }
 
-.calendar-day.spacer { visibility: hidden; pointer-events: none; }
+.calendar-day.spacer {
+    visibility: hidden;
+    pointer-events: none;
+}
 
 .calendar-day.holiday {
     color: var(--accent-color) !important;
-    border: 2px solid var(--accent-color);
-}
-
-.calendar-day.holiday::after {
-    content: '•';
-    position: absolute;
-    bottom: 2px;
-    font-size: 14px;
+    border: 2.5px solid var(--accent-color);
 }
 
 .calendar-day.selected {
-    background: var(--accent-color) !important;
-    color: #fff !important;
+    background-color: var(--accent-color) !important;
+    color: #ffffff !important;
     border-color: transparent;
     transform: scale(1.08);
-    z-index: 10;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
 }
 
 .calendar-day.today-highlight {
-    border: 2px solid var(--gold);
+    border: 2.5px solid var(--gold);
 }
 
-#calendarSection {
-    display: block !important;
-    visibility: visible !important;
-    opacity: 1 !important;
-}
-
-/* --- 6. Info Panel --- */
+/* --- 6. Info Panel (Footer) --- */
 .info-panel {
     position: fixed;
     bottom: 0;
@@ -247,36 +223,80 @@ body {
     width: 100%;
     background: var(--panel-bg);
     border-top: 1px solid var(--border-color);
-    padding: 20px;
+    padding: 20px 10px 30px;
     display: flex;
     flex-direction: column;
     align-items: center;
     z-index: 2000;
+    box-shadow: 0 -5px 20px rgba(0,0,0,0.1);
 }
 
-.phrase-pl { font-size: 1.3rem; font-weight: 800; text-align: center; }
-.phrase-phonetic { color: var(--tan); font-style: italic; margin: 4px 0; }
-.phrase-en { color: var(--text-dim); font-size: 0.9rem; margin-bottom: 15px; }
+.phrase-display {
+    text-align: center;
+    margin-bottom: 15px;
+    min-height: 80px; /* Keeps panel height stable */
+}
 
-.footer-controls { display: flex; gap: 10px; }
+.phrase-pl { font-size: 1.3rem; font-weight: 800; color: var(--text-main); margin-bottom: 2px; }
+.phrase-phonetic { font-size: 1rem; color: var(--tan); font-style: italic; margin-bottom: 4px; }
+.phrase-en { font-size: 0.9rem; color: var(--text-dim); }
 
-/* --- 7. Other Sections --- */
+.footer-controls {
+    display: flex;
+    gap: 12px;
+}
+
+.pill-btn {
+    background: var(--accent-color);
+    color: #ffffff;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 30px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(230, 25, 46, 0.3);
+}
+
+.pill-btn-sm {
+    background: transparent;
+    color: var(--text-main);
+    border: 1px solid var(--border-color);
+    padding: 6px 15px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
+/* --- 7. Cultural & Rules Sections --- */
 #culturalHub, #rulesPage {
-    padding: 20px 20px 220px;
-    max-width: 600px;
+    width: 100%;
+    max-width: 500px;
     margin: 0 auto;
-    display: none;
+    padding: 20px 20px 250px;
 }
 
 .info-block {
     background: var(--panel-bg);
     border: 1px solid var(--border-color);
-    padding: 20px;
     border-radius: 12px;
+    padding: 20px;
     margin-bottom: 15px;
 }
 
 .day-meaning-highlight {
-    background: var(--seasonal-bg);
     border-left: 5px solid var(--accent-color);
+    background: var(--seasonal-bg);
+}
+
+.close-culture-btn {
+    width: 100%;
+    padding: 15px;
+    border-radius: 12px;
+    border: none;
+    background: var(--panel-bg);
+    color: var(--text-main);
+    border: 1px solid var(--border-color);
+    font-weight: 700;
+    margin-top: 10px;
 }
