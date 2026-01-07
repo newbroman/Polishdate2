@@ -16,6 +16,21 @@ function render() {
     const mRoller = document.getElementById('monthRoller');
     const yInput = document.getElementById('yearInput');
     const monthIndex = state.viewDate.getMonth();
+    // --- Dynamic Seasonal Theming ---
+    const body = document.body;
+    // Remove any existing season classes
+    body.classList.remove('spring', 'summer', 'autumn', 'winter');
+
+    // Add the correct class based on month index (0 = Jan, 11 = Dec)
+    if (monthIndex >= 2 && monthIndex <= 4) {
+        body.classList.add('spring'); // Mar, Apr, May
+    } else if (monthIndex >= 5 && monthIndex <= 7) {
+        body.classList.add('summer'); // Jun, Jul, Aug
+    } else if (monthIndex >= 8 && monthIndex <= 10) {
+        body.classList.add('autumn'); // Sep, Oct, Nov
+    } else {
+        body.classList.add('winter'); // Dec, Jan, Feb
+    }
     const year = state.viewDate.getFullYear();
 
     // Sync Rollers to state
