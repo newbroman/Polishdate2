@@ -18,24 +18,23 @@ export function updateInfoPanel(selectedDate, includeYear) {
     const year = selectedDate.getFullYear();
 
     // 1. Centralized Data Mapping
-    // English names for the EN display
     const monthNamesEn = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-    
-    // Polish keys that MUST match the keys in phonetics.months
     const monthKeysPl = ["stycznia", "lutego", "marca", "kwietnia", "maja", "czerwca", "lipca", "sierpnia", "września", "października", "listopada", "grudnia"];
     
     const currentMonthKey = monthKeysPl[monthIndex];
-    const monthPhonetic = phonetics.months[currentMonthKey]; // Directly from phonetics.js
+    const monthPhonetic = phonetics.months[currentMonthKey]; 
     const monthEn = monthNamesEn[monthIndex];
 
-    // Get Day words and phonetics from numbers.js
     const daySpelling = getWrittenDay(day);      
     const dayPhonetic = getPhoneticDay(day);     
 
-    // 2. Build Basic Polish Phrase
+    // 2. Build Phonetic Phrase with Capitalization Fix
+    // We capitalize the first letter of the dayPhonetic to match the "Title" look.
+    const capitalizedDayPhonetic = dayPhonetic.charAt(0).toUpperCase() + dayPhonetic.slice(1);
+    
     let fullPl = `${daySpelling} ${currentMonthKey}`;
     let fullEn = `${monthEn} ${day}${getEnglishSuffix(day)}`;
-    let fullPhonetic = `${dayPhonetic} ${monthPhonetic}`; 
+    let fullPhonetic = `${capitalizedDayPhonetic} ${monthPhonetic}`; 
 
     // 3. Check for Holiday
     const holidays = holidayData.getHolidaysForYear(year);
@@ -51,7 +50,7 @@ export function updateInfoPanel(selectedDate, includeYear) {
         }
     }
 
-    // 4. Handle the Year with phonetic and written logic
+    // 4. Handle the Year
     if (includeYear) {
         fullPl += ` ${getYearPolish(year)} roku`;
         fullEn += `, ${year}`;
