@@ -266,3 +266,11 @@ body {
     background: var(--accent-color);
     border-color: white;
 }
+
+.day-meaning-highlight {
+    background: rgba(var(--primary-rgb), 0.1);
+    border-left: 4px solid var(--primary-color);
+    padding: 1rem;
+    border-radius: 4px;
+    margin-bottom: 1.5rem;
+}
