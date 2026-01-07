@@ -130,12 +130,17 @@ export function renderCulturalHub(state) {
     const hub = document.getElementById('culturalHub');
     const monthIndex = state.viewDate.getMonth();
     const year = state.viewDate.getFullYear();
+    const selectedDay = state.selectedDate.getDate();
+    const dayOfWeekIndex = state.selectedDate.getDay(); // 0 (Sun) to 6 (Sat)
     
     const monthNamesEn = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     const monthNamesPl = ["Styczeń", "Luty", "Marzec", "Kwiecień", "Maj", "Czerwiec", "Lipiec", "Sierpień", "Wrzesień", "Październik", "Listopad", "Grudzień"];
     
     const displayMonthName = state.isPolish ? monthNamesPl[monthIndex] : monthNamesEn[monthIndex];
     const monthInfo = culturalData.months[monthIndex] || { pl: "Month", derivation: "N/A", season: "N/A" };
+    const dayInfo = culturalData.days[dayOfWeekIndex] || { pl: "Day", meaning: "N/A" };
+    
+    // We get the holidays for the current view year to handle moveable dates like Fat Thursday
     const holidays = holidayData.getHolidaysForYear(year);
 
     let html = `
@@ -145,8 +150,14 @@ export function renderCulturalHub(state) {
                 <span class="season-label">Season: ${monthInfo.season}</span>
             </header>
 
+            <section class="info-block day-meaning-highlight">
+                <h3>📅 ${state.isPolish ? 'Dzień tygodnia' : 'Day of the Week'}</h3>
+                <p><strong>${dayInfo.pl}:</strong> ${dayInfo.meaning}</p>
+                <small><em>${state.isPolish ? 'Wybrany dzień' : 'Currently selected'}: ${selectedDay} ${monthInfo.pl}</em></small>
+            </section>
+
             <section class="info-block">
-                <h3>📜 ${state.isPolish ? 'Znaczenie nazwy' : 'Name Meaning & History'}</h3>
+                <h3>📜 ${state.isPolish ? 'Znaczenie nazwy miesiąca' : 'Month Name History'}</h3>
                 <p>${monthInfo.derivation}</p>
             </section>
 
@@ -157,12 +168,12 @@ export function renderCulturalHub(state) {
     let foundHoliday = false;
     Object.entries(holidays).forEach(([key, name]) => {
         if (key.startsWith(`${monthIndex}-`)) {
-            const day = key.split('-')[1]; 
-            const explanation = culturalData.holidayExplanations[key] || "";
+            const dayNum = key.split('-')[1]; 
+            const explanation = culturalData.holidayExplanations[key] || "No description available yet.";
             
             html += `
                 <div class="holiday-entry">
-                    <div class="holiday-date">${day} ${monthInfo.pl}</div>
+                    <div class="holiday-date">${dayNum} ${monthInfo.pl}</div>
                     <strong>${name}</strong>
                     <p>${explanation}</p>
                 </div>`;
@@ -184,7 +195,6 @@ export function renderCulturalHub(state) {
     
     hub.innerHTML = html;
 
-    // Attach listener to the newly created back button
     document.getElementById('backToCalCulture').onclick = () => {
         document.getElementById('navCalendar').click();
     };
