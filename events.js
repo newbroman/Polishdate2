@@ -31,12 +31,23 @@ export function setupListeners(state, render) {
     }
 
     // --- 2. Navigation Logic ---
-    const showSection = (id) => {
+   const showSection = (id) => {
     const sections = {
         'calendar': document.getElementById('calendarSection'),
         'culture': document.getElementById('culturalHub'),
         'rules': document.getElementById('rulesPage')
     };
+
+    // Hide all first
+    Object.values(sections).forEach(s => { if (s) s.style.display = 'none'; });
+
+    if (id === 'calendar') {
+        // USE FLEX: This allows align-items: center from your CSS to work
+        sections['calendar'].style.display = 'flex'; 
+    } else {
+        if (sections[id]) sections[id].style.display = 'block';
+    }
+};
     const infoPanel = document.querySelector('.info-panel');
 
     // Hide all
