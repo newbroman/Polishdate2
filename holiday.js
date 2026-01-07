@@ -12,10 +12,10 @@ const holidayData = {
         "4-1": "Święto Pracy",
         "4-3": "Święto Konstytucji 3 Maja",
         "7-15": "Wniebowzięcie Najświętszej Maryi Panny",
-        "10-1": "Wszystkich Świętych",
-        "10-11": "Narodowe Święto Niepodległości",
-        "11-25": "Boże Narodzenie (Pierwszy Dzień)",
-        "11-26": "Boże Narodzenie (Drugi Dzień)"
+        "10-1": "Wszystkich Świętych",             // Correct: 10 is November
+        "10-11": "Narodowe Święto Niepodległości", // Correct: 10 is November
+        "11-25": "Boże Narodzenie (Pierwszy Dzień)", // Correct: 11 is December
+        "11-26": "Boże Narodzenie (Drugi Dzień)"    // Correct: 11 is December
     },
 
     /**
