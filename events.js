@@ -40,38 +40,39 @@ export function setupListeners(state, render) {
 
     // --- 3. Section Navigation (Switching Views) ---
     const navCal = document.getElementById('navCalendar');
+    const navCult = document.getElementById('navCulture');
+    const navRul = document.getElementById('navRules');
+
+    const showSection = (id) => {
+        document.getElementById('calendarSection').style.display = id === 'calendar' ? 'block' : 'none';
+        document.getElementById('culturalHub').style.display = id === 'culture' ? 'block' : 'none';
+        document.getElementById('rulesPage').style.display = id === 'rules' ? 'block' : 'none';
+    };
+
     if (navCal) {
         navCal.onclick = () => {
-            document.getElementById('calendarSection').style.display = 'block';
-            document.getElementById('culturalHub').style.display = 'none';
-            document.getElementById('rulesPage').style.display = 'none';
+            showSection('calendar');
             render();
         };
     }
 
-    const navCult = document.getElementById('navCulture');
     if (navCult) {
         navCult.onclick = () => {
-            document.getElementById('calendarSection').style.display = 'none';
-            document.getElementById('rulesPage').style.display = 'none';
-            document.getElementById('culturalHub').style.display = 'block';
+            showSection('culture');
             renderCulturalHub(state); 
         };
     }
 
-    const navRul = document.getElementById('navRules');
     if (navRul) {
         navRul.onclick = () => {
-            document.getElementById('calendarSection').style.display = 'none';
-            document.getElementById('culturalHub').style.display = 'none';
-            document.getElementById('rulesPage').style.display = 'block';
+            showSection('rules');
             renderRulesPage();
         };
     }
 
     // --- 4. Calendar Date/Month/Year Controls ---
     
-    // Year Input (Typing 0-3000)
+    // Year Input
     const yearInput = document.getElementById('yearInput');
     if (yearInput) {
         yearInput.oninput = (e) => {
@@ -92,7 +93,7 @@ export function setupListeners(state, render) {
         };
     }
 
-    // Navigation Arrows
+    // Navigation Arrows (Matching your circular arrows)
     const prevBtn = document.getElementById('prevMonth');
     if (prevBtn) {
         prevBtn.onclick = () => {
@@ -109,16 +110,8 @@ export function setupListeners(state, render) {
         };
     }
 
-    // Today Button
-    const todayBtn = document.getElementById('todayBtn');
-    if (todayBtn) {
-        todayBtn.onclick = () => {
-            const now = new Date();
-            state.selectedDate = now;
-            state.viewDate = new Date(now.getFullYear(), now.getMonth(), 1);
-            render();
-        };
-    }
+    // NOTE: Today Button logic removed as requested. 
+    // Startup defaults to today in app.js state.
 }
 
 /**
@@ -175,12 +168,17 @@ export function renderCulturalHub(state) {
     html += `
                 </div>
             </section>
-            <button onclick="document.getElementById('navCalendar').click()" class="close-culture-btn">
+            <button id="backToCalCulture" class="close-culture-btn">
                 ← ${state.isPolish ? 'Powrót' : 'Back to Calendar'}
             </button>
         </div>`;
     
     hub.innerHTML = html;
+
+    // Attach listener to the newly created back button
+    document.getElementById('backToCalCulture').onclick = () => {
+        document.getElementById('navCalendar').click();
+    };
 }
 
 /**
@@ -200,5 +198,11 @@ export function renderRulesPage() {
             </div>`;
     });
     
-    page.innerHTML = html + ` <button onclick="document.getElementById('navCalendar').click()" class="close-culture-btn">← Back</button></div>`;
+    html += `<button id="backToCalRules" class="close-culture-btn">← Back</button></div>`;
+    page.innerHTML = html;
+
+    // Attach listener to the newly created back button
+    document.getElementById('backToCalRules').onclick = () => {
+        document.getElementById('navCalendar').click();
+    };
 }
