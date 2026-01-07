@@ -19,40 +19,73 @@ export function updateInfoPanel(selectedDate, includeYear) {
     const day = selectedDate.getDate();
     const monthIndex = selectedDate.getMonth();
     const year = selectedDate.getFullYear();
+/**
+ * ui-renderer.js
+ * Renders the Polish date phrase using Nominative Days and Genitive Months.
+ */
+import { getWrittenDay, getYearPolish, getYearPhonetic } from './numbers.js';
 
-    // 1. Fetch the correct grammatical form of the month
+/**
+ * Updates the footer info panel based on the selected date.
+ * @param {Date} selectedDate 
+ * @param {boolean} includeYear 
+ */
+export function updateInfoPanel(selectedDate, includeYear) {
+    const plDisplay = document.getElementById('plPhrase');
+    const enDisplay = document.getElementById('enPhrase');
+    const phoneticDisplay = document.getElementById('phoneticPhrase');
+
+    if (!selectedDate || !plDisplay || !enDisplay || !phoneticDisplay) return;
+
+    const day = selectedDate.getDate();
+    const monthIndex = selectedDate.getMonth();
+    const year = selectedDate.getFullYear();
+
+    // 1. Get Month Data (Genitive Case)
     const monthData = getPolishMonthData(monthIndex);
 
-    // 2. Build the Polish Phrase (Genitive Case for dates)
-    // Example: "7 Stycznia"
-    let fullPl = `${day} ${monthData.pl}`;
+    // 2. Get Day Spelling (Nominative Case from numbers.js)
+    const daySpelling = getWrittenDay(day);
+
+    // 3. Construct the Polish Phrase 
+    // Format: "Siódmy stycznia"
+    let fullPl = `${daySpelling} ${monthData.pl}`;
     
-    // Build the English Phrase (Standard format)
-    // Example: "January 7"
-    let fullEn = `${monthData.en} ${day}`;
+    // 4. Construct the English Phrase
+    // Format: "January 7th"
+    let fullEn = `${monthData.en} ${day}${getEnglishSuffix(day)}`;
     
-    // Build the Phonetic Guide (Tan text in your CSS)
-    // Example: "7 stich-nyah"
+    // 5. Construct the Phonetic Phrase
+    // Format: "7 stich-nyah"
     let fullPhonetic = `${day} ${monthData.phonetic}`;
 
-    // 3. Handle the "Include Year" logic
+    // 6. Handle the Year Logic
     if (includeYear) {
-        // In Polish, years in dates must end with 'roku' (of the year)
+        // Polish grammar: When year is added to a date, append "roku"
         fullPl += ` ${year} roku`;
         fullEn += `, ${year}`;
         fullPhonetic += ` ${year} ro-koo`;
     }
 
-    // 4. Update the DOM
+    // 7. Update the DOM elements
     plDisplay.innerText = fullPl;
     enDisplay.innerText = fullEn;
     phoneticDisplay.innerText = fullPhonetic;
 }
 
 /**
- * Helper mapping for Polish months in the Genitive (Date) case.
- * Dictionary form (Nominative) vs. Date form (Genitive):
- * Styczeń -> Stycznia, Luty -> Lutego, etc.
+ * Helper: Provides English ordinal suffixes
+ */
+function getEnglishSuffix(i) {
+    const j = i % 10, k = i % 100;
+    if (j == 1 && k != 11) return "st";
+    if (j == 2 && k != 12) return "nd";
+    if (j == 3 && k != 13) return "rd";
+    return "th";
+}
+
+/**
+ * Helper: Provides Month names in Genitive case and Phonetics
  */
 function getPolishMonthData(index) {
     const months = [
