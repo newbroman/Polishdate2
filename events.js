@@ -32,22 +32,28 @@ export function setupListeners(state, render) {
 
     // --- 2. Navigation Logic ---
     const showSection = (id) => {
-        const sections = {
-            'calendar': document.getElementById('calendarSection'),
-            'culture': document.getElementById('culturalHub'),
-            'rules': document.getElementById('rulesPage')
-        };
-        const infoPanel = document.querySelector('.info-panel');
-
-        Object.values(sections).forEach(s => {
-            if (s) s.style.display = 'none';
-        });
-        
-        if (sections[id]) sections[id].style.display = 'block';
-        if (infoPanel) infoPanel.style.display = (id === 'calendar') ? 'block' : 'none';
-        
-        document.querySelectorAll('.nav-icon-btn').forEach(b => b.classList.remove('active'));
+    const sections = {
+        'calendar': document.getElementById('calendarSection'),
+        'culture': document.getElementById('culturalHub'),
+        'rules': document.getElementById('rulesPage')
     };
+    const infoPanel = document.querySelector('.info-panel');
+
+    // Hide all
+    Object.values(sections).forEach(s => {
+        if (s) s.style.display = 'none';
+    });
+
+    // Show the target section correctly
+    if (id === 'calendar') {
+        sections['calendar'].style.display = 'flex'; // Use FLEX for the calendar to keep it centered
+    } else {
+        if (sections[id]) sections[id].style.display = 'block'; // Use BLOCK for text pages
+    }
+
+    if (infoPanel) infoPanel.style.display = (id === 'calendar') ? 'block' : 'none';
+    document.querySelectorAll('.nav-icon-btn').forEach(b => b.classList.remove('active'));
+};
 
     // --- 3. Click Listeners ---
     document.getElementById('navCalendar').onclick = () => {
