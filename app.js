@@ -36,7 +36,11 @@ function render() {
         const monthNamesEn = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
         const monthNamesPl = ["Styczeń", "Luty", "Marzec", "Kwiecień", "Maj", "Czerwiec", "Lipiec", "Sierpień", "Wrzesień", "Październik", "Listopad", "Grudzień"];
         const names = state.isPolish ? monthNamesPl : monthNamesEn;
-        mRoller.innerHTML = names.map((name, i) => `<option value="${i}" ${i === monthIndex ? 'selected' : ''}>${name}</option>`).join('');
+        
+        // Populate the dropdown options
+        mRoller.innerHTML = names.map((name, i) => 
+            `<option value="${i}" ${i === monthIndex ? 'selected' : ''}>${name}</option>`
+        ).join('');
     }
     
     if (yInput) yInput.value = year;
