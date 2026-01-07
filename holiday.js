@@ -66,6 +66,11 @@ const holidayData = {
         corpusChristi.setDate(easter.getDate() + 60);
         holidays[`${corpusChristi.getMonth()}-${corpusChristi.getDate()}`] = "Boże Ciało";
 
+        // Pentecost (Zielone Świątki) - 49 days after Easter
+        const pentecost = new Date(easter);
+        pentecost.setDate(easter.getDate() + 49);
+        holidays[`${pentecost.getMonth()}-${pentecost.getDate()}`] = "Zielone Świątki";
+
         return holidays;
     }
 };
