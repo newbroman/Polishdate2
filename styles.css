@@ -102,13 +102,16 @@ body {
 #calendarSection {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: center; /* This centers the children horizontally */
+    justify-content: center;
     width: 100%;
-    margin-top: 10px;
+    margin: 0 auto;
     padding-bottom: 220px; /* Space for fixed footer */
 }
 
 .calendar-container {
+    margin-left: auto;
+    margin-right: auto;
     width: 95%;
     max-width: 420px; /* Optimal size for 7-column grid */
     background: var(--panel-bg);
