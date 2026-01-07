@@ -1,15 +1,14 @@
 /**
- * events.js
+ * events.js - Final Integration
  */
-import { checkVoices, speakText } from './audio.js'; // Note the change to speakText
+import { speakText, checkVoices } from './audio.js'; // Note: speakText, not speakPolish
 import holidayData from './holiday.js';
 import culturalData from './cultural.js';
 import grammarRules from './rules.js';
-import { hideAllSections } from './navigation.js'; // Use your navigation helper
 
 export function setupListeners(state, render) {
     
-    // --- 1. Audio Setup ---
+    // --- 1. Audio and Logic Toggles ---
     const playBtn = document.getElementById('playBtn');
     if (playBtn) {
         playBtn.disabled = true;
@@ -25,72 +24,52 @@ export function setupListeners(state, render) {
 
         playBtn.onclick = () => {
             const textToSpeak = document.getElementById('plPhrase').innerText;
+            // Prevent speaking the placeholder "Wybierz datę"
             if (textToSpeak && textToSpeak !== "Wybierz datę") {
-                speakText(textToSpeak); // Call the clean audio engine
+                speakText(textToSpeak); // Call the clean engine function
             }
         };
     }
 
-    // --- 2. Toggles ---
-    document.getElementById('repeatYearBtn')?.addEventListener('click', (e) => {
-        state.includeYear = !state.includeYear;
-        e.target.innerText = `Include Year: ${state.includeYear ? 'ON' : 'OFF'}`;
+    // --- 2. Toggles & Navigation ---
+    const showSection = (id) => {
+        const sections = {
+            'calendar': document.getElementById('calendarSection'),
+            'culture': document.getElementById('culturalHub'),
+            'rules': document.getElementById('rulesPage')
+        };
+        const infoPanel = document.querySelector('.info-panel');
+
+        // Hide all, then show the target
+        Object.values(sections).forEach(s => s.style.display = 'none');
+        sections[id].style.display = 'block';
+
+        // Toggle the floating phrase panel visibility
+        if (infoPanel) infoPanel.style.display = (id === 'calendar') ? 'block' : 'none';
+        
+        // Remove active class from all nav buttons
+        document.querySelectorAll('.nav-icon-btn').forEach(b => b.classList.remove('active'));
+    };
+
+    document.getElementById('navCalendar').onclick = () => {
+        showSection('calendar');
+        document.getElementById('navCalendar').classList.add('active');
         render();
-    });
+    };
 
-    document.getElementById('langToggle')?.addEventListener('click', (e) => {
-        state.isPolish = !state.isPolish;
-        e.target.innerText = state.isPolish ? "PL" : "EN";
-        render(); 
-    });
-
-    // --- 3. View Switching (Modified to use navigation.js logic) ---
-    document.getElementById('navCalendar')?.addEventListener('click', () => {
-        hideAllSections();
-        document.getElementById('calendarSection').style.display = 'block';
-        document.querySelector('.info-panel').style.display = 'block';
-        render();
-    });
-
-    document.getElementById('navCulture')?.addEventListener('click', () => {
-        hideAllSections();
-        document.getElementById('culturalHub').style.display = 'block';
+    document.getElementById('navCulture').onclick = () => {
+        showSection('culture');
+        document.getElementById('navCulture').classList.add('active');
         renderCulturalHub(state); 
-    });
+    };
 
-    document.getElementById('navRules')?.addEventListener('click', () => {
-        hideAllSections();
-        document.getElementById('rulesPage').style.display = 'block';
+    document.getElementById('navRules').onclick = () => {
+        showSection('rules');
+        document.getElementById('navRules').classList.add('active');
         renderRulesPage();
-    });
+    };
 
-    // --- 4. Inputs ---
-    document.getElementById('yearInput')?.addEventListener('input', (e) => {
-        const val = parseInt(e.target.value);
-        if (!isNaN(val) && val >= 0 && val <= 3000) {
-            state.viewDate.setFullYear(val);
-            render(); 
-        }
-    });
-
-    document.getElementById('monthRoller')?.addEventListener('change', (e) => {
-        state.viewDate.setMonth(parseInt(e.target.value));
-        render();
-    });
-
-    document.getElementById('prevMonth')?.addEventListener('click', () => {
-        state.viewDate.setDate(1); 
-        state.viewDate.setMonth(state.viewDate.getMonth() - 1);
-        render();
-    });
-
-    document.getElementById('nextMonth')?.addEventListener('click', () => {
-        state.viewDate.setDate(1);
-        state.viewDate.setMonth(state.viewDate.getMonth() + 1);
-        render();
-    });
-}
-
+ 
 
 /**
 
