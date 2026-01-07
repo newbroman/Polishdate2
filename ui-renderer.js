@@ -6,11 +6,16 @@ import { getPhoneticDay, getYearPolish, getYearPhonetic, getWrittenDay } from '.
  * Updates the main information panel with the selected date.
  * Displays written Polish words for the Day and Year, along with Phonetics.
  */
-export function updateInfoPanel(date, includeYear) {
-    const day = date.getDate();
-    const monthIndex = date.getMonth();
-    const year = date.getFullYear();
-    const dayOfWeek = date.getDay();
+export function updateInfoPanel(selectedDate, includeYear) {
+    const plDisplay = document.getElementById('plPhrase');
+    const enDisplay = document.getElementById('enPhrase');
+    const phoneticDisplay = document.getElementById('phoneticPhrase');
+
+    if (!selectedDate || !plDisplay) return;
+
+    const day = selectedDate.getDate();
+    const monthIndex = selectedDate.getMonth();
+    const year = selectedDate.getFullYear();
 
     // 1. Month Names (Genitive Case - e.g., "stycznia")
     const monthGenitive = [
