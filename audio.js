@@ -1,9 +1,11 @@
 /**
+ * audio.js
  * Speech synthesis utility for Polish pronunciation
  */
 let voicesLoaded = false;
 
-export function speakPolish(text) {
+// Renamed to speakText to avoid conflict with ui-renderer.js
+export function speakText(text) {
     if (!window.speechSynthesis) return;
 
     window.speechSynthesis.cancel();
@@ -22,18 +24,19 @@ export function speakPolish(text) {
     window.speechSynthesis.speak(utterance);
 }
 
-// Function to check if voices are ready
 export function checkVoices(callback) {
     const loadVoices = () => {
         const voices = window.speechSynthesis.getVoices();
         if (voices.length > 0) {
             voicesLoaded = true;
-            callback(true);
+            // Additional check: Is there actually a Polish voice in the list?
+            const hasPolish = voices.some(v => v.lang.startsWith('pl'));
+            callback(hasPolish);
         }
     };
 
     if (window.speechSynthesis.onvoiceschanged !== undefined) {
         window.speechSynthesis.onvoiceschanged = loadVoices;
     }
-    loadVoices(); // Initial check
+    loadVoices(); 
 }
