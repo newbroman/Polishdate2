@@ -5,10 +5,10 @@ import grammarRules from './rules.js';
 
 /**
  * Sets up all UI event listeners.
- * Handles the switch from select dropdown to a type-able year input.
  */
 export function setupListeners(state, render) {
-    // 1. Audio and Logic Toggles
+    
+    // --- 1. Audio and Logic Toggles ---
     const playBtn = document.getElementById('playBtn');
     if (playBtn) {
         playBtn.onclick = () => {
@@ -28,44 +28,50 @@ export function setupListeners(state, render) {
         };
     }
 
-// Language Toggle Logic
+    // --- 2. Language Toggle ---
     const langToggle = document.getElementById('langToggle');
     if (langToggle) {
         langToggle.onclick = () => {
-            // 1. Flip the state
             state.isPolish = !state.isPolish;
-            
-            // 2. Update the button text (Optional but helpful)
             langToggle.innerText = state.isPolish ? "PL" : "EN";
-            
-            // 3. Re-run render to update headers, weekdays, and the Today button
             render(); 
         };
     }
+
+    // --- 3. Section Navigation (Switching Views) ---
+    const navCal = document.getElementById('navCalendar');
+    if (navCal) {
+        navCal.onclick = () => {
+            document.getElementById('calendarSection').style.display = 'block';
+            document.getElementById('culturalHub').style.display = 'none';
+            document.getElementById('rulesPage').style.display = 'none';
+            render();
+        };
+    }
+
+    const navCult = document.getElementById('navCulture');
+    if (navCult) {
+        navCult.onclick = () => {
+            document.getElementById('calendarSection').style.display = 'none';
+            document.getElementById('rulesPage').style.display = 'none';
+            document.getElementById('culturalHub').style.display = 'block';
+            renderCulturalHub(state); 
+        };
+    }
+
+    const navRul = document.getElementById('navRules');
+    if (navRul) {
+        navRul.onclick = () => {
+            document.getElementById('calendarSection').style.display = 'none';
+            document.getElementById('culturalHub').style.display = 'none';
+            document.getElementById('rulesPage').style.display = 'block';
+            renderRulesPage();
+        };
+    }
+
+    // --- 4. Calendar Date/Month/Year Controls ---
     
-    // 2. Navigation Switches
-    document.getElementById('navCalendar').onclick = () => {
-        document.getElementById('calendarSection').style.display = 'block';
-        document.getElementById('culturalHub').style.display = 'none';
-        document.getElementById('rulesPage').style.display = 'none';
-        render();
-    };
-
-    document.getElementById('navCulture').onclick = () => {
-        document.getElementById('calendarSection').style.display = 'none';
-        document.getElementById('rulesPage').style.display = 'none';
-        document.getElementById('culturalHub').style.display = 'block';
-        renderCulturalHub(state); 
-    };
-
-    document.getElementById('navRules').onclick = () => {
-        document.getElementById('calendarSection').style.display = 'none';
-        document.getElementById('culturalHub').style.display = 'none';
-        document.getElementById('rulesPage').style.display = 'block';
-        renderRulesPage();
-    };
-
-    // 3. Year Input (Typing 0-3000)
+    // Year Input (Typing 0-3000)
     const yearInput = document.getElementById('yearInput');
     if (yearInput) {
         yearInput.oninput = (e) => {
@@ -77,7 +83,7 @@ export function setupListeners(state, render) {
         };
     }
 
-    // 4. Month Dropdown
+    // Month Dropdown
     const monthRoller = document.getElementById('monthRoller');
     if (monthRoller) {
         monthRoller.onchange = (e) => {
@@ -86,33 +92,43 @@ export function setupListeners(state, render) {
         };
     }
 
-    // 5. Calendar Navigation Arrows
-    document.getElementById('prevMonth').onclick = () => {
-        state.viewDate.setMonth(state.viewDate.getMonth() - 1);
-        render();
-    };
+    // Navigation Arrows
+    const prevBtn = document.getElementById('prevMonth');
+    if (prevBtn) {
+        prevBtn.onclick = () => {
+            state.viewDate.setMonth(state.viewDate.getMonth() - 1);
+            render();
+        };
+    }
 
-    document.getElementById('nextMonth').onclick = () => {
-        state.viewDate.setMonth(state.viewDate.getMonth() + 1);
-        render();
-    };
+    const nextBtn = document.getElementById('nextMonth');
+    if (nextBtn) {
+        nextBtn.onclick = () => {
+            state.viewDate.setMonth(state.viewDate.getMonth() + 1);
+            render();
+        };
+    }
 
-    document.getElementById('todayBtn').onclick = () => {
-        state.selectedDate = new Date();
-        state.viewDate = new Date(state.selectedDate.getFullYear(), state.selectedDate.getMonth(), 1);
-        render();
-    };
+    // Today Button
+    const todayBtn = document.getElementById('todayBtn');
+    if (todayBtn) {
+        todayBtn.onclick = () => {
+            const now = new Date();
+            state.selectedDate = now;
+            state.viewDate = new Date(now.getFullYear(), now.getMonth(), 1);
+            render();
+        };
+    }
 }
 
 /**
- * Renders the Cultural Hub with localized Month/Year headers.
+ * Renders the Cultural Hub
  */
 export function renderCulturalHub(state) {
     const hub = document.getElementById('culturalHub');
     const monthIndex = state.viewDate.getMonth();
     const year = state.viewDate.getFullYear();
     
-    // Localization for the Hub Header
     const monthNamesEn = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     const monthNamesPl = ["Styczeń", "Luty", "Marzec", "Kwiecień", "Maj", "Czerwiec", "Lipiec", "Sierpień", "Wrzesień", "Październik", "Listopad", "Grudzień"];
     
@@ -168,7 +184,7 @@ export function renderCulturalHub(state) {
 }
 
 /**
- * Renders the Grammar Rules page dynamically from rules.js.
+ * Renders the Grammar Rules page
  */
 export function renderRulesPage() {
     const page = document.getElementById('rulesPage');
