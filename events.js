@@ -103,9 +103,10 @@ export function setupListeners(state, render) {
     }
 
     // Navigation Arrows (Matching your circular arrows)
-    const prevBtn = document.getElementById('prevMonth');
+   const prevBtn = document.getElementById('prevMonth');
     if (prevBtn) {
         prevBtn.onclick = () => {
+            state.viewDate.setDate(1); // <--- Add this line
             state.viewDate.setMonth(state.viewDate.getMonth() - 1);
             render();
         };
@@ -114,11 +115,11 @@ export function setupListeners(state, render) {
     const nextBtn = document.getElementById('nextMonth');
     if (nextBtn) {
         nextBtn.onclick = () => {
+            state.viewDate.setDate(1); // <--- Add this line
             state.viewDate.setMonth(state.viewDate.getMonth() + 1);
             render();
         };
     }
-
     // NOTE: Today Button logic removed as requested. 
     // Startup defaults to today in app.js state.
 }
