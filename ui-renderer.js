@@ -8,7 +8,7 @@ export function updateInfoPanel(selectedDate, includeYear) {
     const plDisplay = document.getElementById('plPhrase');
     const enDisplay = document.getElementById('enPhrase');
     const phoneticDisplay = document.getElementById('phoneticPhrase');
-    const holidayDisplay = document.getElementById('holidayName'); // Make sure this ID exists in your HTML!
+    const holidayDisplay = document.getElementById('holidayName'); 
 
     if (!selectedDate || !plDisplay) return;
 
@@ -20,10 +20,13 @@ export function updateInfoPanel(selectedDate, includeYear) {
     const monthData = getPolishMonthData(monthIndex);
     const daySpelling = getWrittenDay(day);
 
-    // 2. Build Basic Polish Phrase (Nominative Day + Genitive Month)
+    // 2. Build Basic Polish Phrase
+    // fullPl uses words (e.g., "Dwunasty stycznia")
     let fullPl = `${daySpelling} ${monthData.pl}`;
     let fullEn = `${monthData.en} ${day}${getEnglishSuffix(day)}`;
-    let fullPhonetic = `${day} ${monthData.phonetic}`;
+    
+    // Fix: Using daySpelling for phonetic as well so it matches the sound
+    let fullPhonetic = `${daySpelling} ${monthData.phonetic}`; 
 
     // 3. Check for Holiday
     const holidays = holidayData.getHolidaysForYear(year);
@@ -42,6 +45,7 @@ export function updateInfoPanel(selectedDate, includeYear) {
     if (includeYear) {
         fullPl += ` ${year} roku`;
         fullEn += `, ${year}`;
+        // Phonetic approximation for "roku"
         fullPhonetic += ` ${year} ro-koo`;
     }
 
@@ -49,6 +53,24 @@ export function updateInfoPanel(selectedDate, includeYear) {
     plDisplay.innerText = fullPl;
     enDisplay.innerText = fullEn;
     phoneticDisplay.innerText = fullPhonetic;
+}
+
+/**
+ * Audio Engine: Speaks the Polish phrase
+ */
+export function speakPolish() {
+    const text = document.getElementById('plPhrase').innerText;
+    if (!text || text === "Wybierz datę") return;
+
+    // Cancel current speech to prevent overlapping
+    window.speechSynthesis.cancel();
+
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = 'pl-PL';
+    utterance.rate = 0.85; // Slightly slower for learning
+    utterance.pitch = 1.0;
+
+    window.speechSynthesis.speak(utterance);
 }
 
 function getEnglishSuffix(i) {
