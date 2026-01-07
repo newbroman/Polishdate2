@@ -123,21 +123,4 @@ const phonetics = {
 
 export default phonetics;
 
-    // 4. Year Ordinals 1-99 (Nominative - for building 2024, etc.)
-    // Used by getYearPhonetic in numbers.js
-    ordinals: {
-        1: "pyer-vshi", 2: "droo-gee", 3: "ts-sheh-tsee", 4: "chvahr-ti",
-        5: "pyon-ti", 6: "shooss-ti", 7: "shood-mi", 8: "ooss-mi",
-        9: "jyev-yon-ti", 10: "jyeh-shon-ti", 11: "yeh-deh-nahs-ti",
-        12: "dvoo-nahs-ti", 13: "t-sheh-nahs-ti", 14: "chver-nahs-ti",
-        15: "pyent-nahs-ti", 16: "shes-nahs-ti", 17: "shyeh-dem-nahs-ti",
-        18: "oh-syem-nahs-ti", 19: "jyev-yet-nahs-ti", 20: "dvoo-jyes-ti",
-        21: "dvoo-jyes-ti pyer-vshi", 22: "dvoo-jyes-ti droo-gee",
-        23: "dvoo-jyes-ti ts-sheh-tsee", 24: "dvoo-jyes-ti chvahr-ti",
-        30: "ts-sheh-jyes-ti", 40: "chter-jyes-ti", 50: "pyent-jyeh-shon-ti",
-        60: "shes-jyeh-shon-ti", 70: "shye-dem-jyeh-shon-ti", 
-        80: "oh-syem-jyeh-shon-ti", 90: "jyev-yen-jyeh-shon-ti"
-    }
-};
 
-export default phonetics;
