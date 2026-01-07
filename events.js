@@ -1,18 +1,16 @@
-import { speakPolish } from './audio.js';
+import { speakPolish, checkVoices } from './audio.js'; 
 import holidayData from './holiday.js';
 import culturalData from './cultural.js';
 import grammarRules from './rules.js';
 
-/**
- * Sets up all UI event listeners.
- */
 export function setupListeners(state, render) {
     
     // --- 1. Audio and Logic Toggles ---
     const playBtn = document.getElementById('playBtn');
     if (playBtn) {
+        // This was likely the crash point because checkVoices was undefined
         playBtn.disabled = true;
-        playBtn.innerText = "⌛ Loading Voice...";
+        playBtn.innerText = "⌛ Loading...";
         playBtn.style.opacity = "0.5";
 
         checkVoices((ready) => {
@@ -22,8 +20,14 @@ export function setupListeners(state, render) {
                 playBtn.style.opacity = "1";
             }
         });
-    }
 
+        playBtn.onclick = () => {
+            const textToSpeak = document.getElementById('plPhrase').innerText;
+            if (textToSpeak && !textToSpeak.includes('...')) {
+                speakPolish(textToSpeak);
+            }
+        };
+    }
     const yearToggleBtn = document.getElementById('repeatYearBtn');
     if (yearToggleBtn) {
         yearToggleBtn.onclick = () => {
