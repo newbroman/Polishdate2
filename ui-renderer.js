@@ -1,7 +1,8 @@
 /**
- * ui-renderer.js
+ * ui-renderer.js - Centralized with phonetics.js
  */
-import { getWrittenDay } from './numbers.js';
+import { getWrittenDay, getPhoneticDay, getYearPolish, getYearPhonetic } from './numbers.js';
+import phonetics from './phonetics.js';
 import holidayData from './holiday.js';
 
 export function updateInfoPanel(selectedDate, includeYear) {
@@ -16,17 +17,21 @@ export function updateInfoPanel(selectedDate, includeYear) {
     const monthIndex = selectedDate.getMonth();
     const year = selectedDate.getFullYear();
 
-    // 1. Get Month & Day Data
-    const monthData = getPolishMonthData(monthIndex);
-    const daySpelling = getWrittenDay(day);
+    // 1. Centralized Data Mapping
+    const monthNamesEn = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    const monthKeysPl = ["stycznia", "lutego", "marca", "kwietnia", "maja", "czerwca", "lipca", "sierpnia", "września", "października", "listopada", "grudnia"];
+    
+    const currentMonthKey = monthKeysPl[monthIndex];
+    const monthPhonetic = phonetics.months[currentMonthKey]; // Pulled from phonetics.js
+    const monthEn = monthNamesEn[monthIndex];
+
+    const daySpelling = getWrittenDay(day);      
+    const dayPhonetic = getPhoneticDay(day);     
 
     // 2. Build Basic Polish Phrase
-    // fullPl uses words (e.g., "Dwunasty stycznia")
-    let fullPl = `${daySpelling} ${monthData.pl}`;
-    let fullEn = `${monthData.en} ${day}${getEnglishSuffix(day)}`;
-    
-    // Fix: Using daySpelling for phonetic as well so it matches the sound
-    let fullPhonetic = `${daySpelling} ${monthData.phonetic}`; 
+    let fullPl = `${daySpelling} ${currentMonthKey}`;
+    let fullEn = `${monthEn} ${day}${getEnglishSuffix(day)}`;
+    let fullPhonetic = `${dayPhonetic} ${monthPhonetic}`; 
 
     // 3. Check for Holiday
     const holidays = holidayData.getHolidaysForYear(year);
@@ -42,14 +47,14 @@ export function updateInfoPanel(selectedDate, includeYear) {
         }
     }
 
+    // 4. Handle the Year (using numbers.js logic)
     if (includeYear) {
-        fullPl += ` ${year} roku`;
+        fullPl += ` ${getYearPolish(year)} roku`;
         fullEn += `, ${year}`;
-        // Phonetic approximation for "roku"
-        fullPhonetic += ` ${year} ro-koo`;
+        fullPhonetic += ` ${getYearPhonetic(year)} ro-koo`;
     }
 
-    // 4. Update UI
+    // 5. Update UI
     plDisplay.innerText = fullPl;
     enDisplay.innerText = fullEn;
     phoneticDisplay.innerText = fullPhonetic;
@@ -62,14 +67,11 @@ export function speakPolish() {
     const text = document.getElementById('plPhrase').innerText;
     if (!text || text === "Wybierz datę") return;
 
-    // Cancel current speech to prevent overlapping
     window.speechSynthesis.cancel();
-
     const utterance = new SpeechSynthesisUtterance(text);
     utterance.lang = 'pl-PL';
-    utterance.rate = 0.85; // Slightly slower for learning
+    utterance.rate = 0.85; 
     utterance.pitch = 1.0;
-
     window.speechSynthesis.speak(utterance);
 }
 
@@ -79,22 +81,4 @@ function getEnglishSuffix(i) {
     if (j == 2 && k != 12) return "nd";
     if (j == 3 && k != 13) return "rd";
     return "th";
-}
-
-function getPolishMonthData(index) {
-    const months = [
-        { pl: "stycznia", en: "January", phonetic: "stich-nyah" },
-        { pl: "lutego", en: "February", phonetic: "loo-teh-go" },
-        { pl: "marca", en: "March", phonetic: "mar-tsah" },
-        { pl: "kwietnia", en: "April", phonetic: "kyet-nyah" },
-        { pl: "maja", en: "May", phonetic: "ma-yah" },
-        { pl: "czerwca", en: "June", phonetic: "cher-vtsah" },
-        { pl: "lipca", en: "July", phonetic: "leep-tsah" },
-        { pl: "sierpnia", en: "August", phonetic: "syerp-nyah" },
-        { pl: "września", en: "September", phonetic: "v-zhesh-nyah" },
-        { pl: "października", en: "October", phonetic: "paz-dye-nyee-kah" },
-        { pl: "listopada", en: "November", phonetic: "lees-toh-pah-dah" },
-        { pl: "grudnia", en: "December", phonetic: "grood-nyah" }
-    ];
-    return months[index];
 }
