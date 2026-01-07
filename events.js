@@ -11,12 +11,17 @@ export function setupListeners(state, render) {
     // --- 1. Audio and Logic Toggles ---
     const playBtn = document.getElementById('playBtn');
     if (playBtn) {
-        playBtn.onclick = () => {
-            const textToSpeak = document.getElementById('plPhrase').innerText;
-            if (textToSpeak && !textToSpeak.includes('...')) {
-                speakPolish(textToSpeak);
+        playBtn.disabled = true;
+        playBtn.innerText = "⌛ Loading Voice...";
+        playBtn.style.opacity = "0.5";
+
+        checkVoices((ready) => {
+            if (ready) {
+                playBtn.disabled = false;
+                playBtn.innerText = "🔊 Listen";
+                playBtn.style.opacity = "1";
             }
-        };
+        });
     }
 
     const yearToggleBtn = document.getElementById('repeatYearBtn');
