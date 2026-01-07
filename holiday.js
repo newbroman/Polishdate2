@@ -14,7 +14,9 @@ const holidayData = {
         "3-1": "Prima Aprilis 🤡",
         "4-1": "Święto Pracy",
         "4-3": "Święto Konstytucji 3 Maja",
+        "4-26": "Dzień Matki 💐", // Added Mother's Day (May 26)
         "5-1": "Dzień Dziecka 🧸",
+        "5-23": "Dzień Ojca 👔",   // Added Father's Day (June 23)
         "7-15": "Wniebowzięcie NMP",
         "10-1": "Wszystkich Świętych",
         "10-11": "Narodowe Święto Niepodległości",
@@ -51,7 +53,6 @@ const holidayData = {
      * Combines fixed and calculated holidays.
      */
     getHolidaysForYear(year) {
-        // Start by copying the fixed dates
         const holidays = { ...this.fixed };
         const easter = this.getEaster(year);
 
@@ -84,5 +85,4 @@ const holidayData = {
     }
 };
 
-export default holidayData;
 export default holidayData;
