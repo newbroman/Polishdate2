@@ -1,54 +1,64 @@
-const CACHE_NAME = 'pl-dates-v450'; // Incremented to v11 to force a fresh start
+/**
+ * sw.js - Service Worker for Polish Date Master
+ * Handles offline caching for standalone app performance.
+ */
+
+const CACHE_NAME = 'pl-date-v1';
+
+// All files required for the app to function offline
 const ASSETS = [
   './',
   './index.html',
   './styles.css',
-  './manifest.json',
-  /* Main Orchestrator & New Event Logic */
   './app.js',
   './events.js',
-  /* Logic Modules */
-  './navigation.js',
   './ui-renderer.js',
-  './calendar-core.js',
-  /* Data Modules */
-  './cultural.js',
-  './holiday.js',
   './phonetics.js',
-  './rules.js',
   './numbers.js',
-  './year.js',
-  /* Icons */
+  './audio.js',
+  './holiday.js',
+  './cultural.js',
+  './rules.js',
+  './manifest.json',
   './icon-192.png',
   './icon-512.png'
 ];
 
-// Install Event - Caches everything immediately
+// 1. Install Event: Cache all assets
 self.addEventListener('install', (event) => {
-  self.skipWaiting(); // Forces the new service worker to become active immediately
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
+      console.log('PWA: Caching all assets');
       return cache.addAll(ASSETS);
     })
   );
+  // Force the waiting service worker to become the active service worker
+  self.skipWaiting();
 });
 
-// Activate Event - Deletes all old caches (v10, v9, etc.)
+// 2. Activate Event: Clean up old versions of the cache
 self.addEventListener('activate', (event) => {
   event.waitUntil(
     caches.keys().then((keys) => {
       return Promise.all(
-        keys.filter(key => key !== CACHE_NAME).map(key => caches.delete(key))
+        keys.map((key) => {
+          if (key !== CACHE_NAME) {
+            console.log('PWA: Clearing old cache', key);
+            return caches.delete(key);
+          }
+        })
       );
     })
   );
+  return self.clients.claim();
 });
 
-// Fetch Event - Tries to get the latest from network, falls back to cache if offline
+// 3. Fetch Event: Serve from cache, fallback to network
 self.addEventListener('fetch', (event) => {
   event.respondWith(
-    fetch(event.request).catch(() => {
-      return caches.match(event.request);
+    caches.match(event.request).then((cachedResponse) => {
+      // Return the cached version if we have it, otherwise hit the network
+      return cachedResponse || fetch(event.request);
     })
   );
 });
