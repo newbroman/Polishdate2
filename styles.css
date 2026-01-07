@@ -25,6 +25,36 @@ body {
     overflow-x: hidden;
 }
 
+/* Polish Flag Branding */
+.brand-header {
+    width: 100%;
+    /* Creates the White (top) and Red (bottom) split */
+    background: linear-gradient(to bottom, #ffffff 50%, #dc143c 50%);
+    padding: 20px 0;
+    text-align: center;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
+.brand-header h1 {
+    margin: 0;
+    font-size: 1.5rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    /* Mixed color logic: Black text on white background, White text on red */
+    /* Using text-shadow to ensure readability across the split */
+    color: #000;
+    text-shadow: 0px 0px 1px rgba(255,255,255,0.5);
+    mix-blend-mode: difference; /* Optional: creates high contrast across the split */
+    color: white; /* Simpler alternative: pure white with a black outline */
+    -webkit-text-stroke: 0.5px black;
+}
+
+/* Remove the old header style since we deleted the element */
+#currentMonthDisplay {
+    display: none;
+}
+
 /* --- Seasonal Overrides --- */
 body.spring { --accent-color: #4caf50; --seasonal-bg: rgba(76, 175, 80, 0.1); }
 body.summer { --accent-color: #ffc107; --seasonal-bg: rgba(255, 193, 7, 0.1); }
