@@ -48,4 +48,38 @@ const culturalData = {
     }
 };
 
+export function getCulturalHTML() {
+    // 1. Generate Months Section
+    const monthsHtml = Object.entries(culturalData.months).map(([index, info]) => `
+        <div class="info-block ${info.season}">
+            <h3>${info.pl}</h3>
+            <p><strong>Origin:</strong> ${info.derivation}</p>
+            <span class="badge">${info.season.toUpperCase()}</span>
+        </div>
+    `).join('');
+
+    // 2. Generate Days Section
+    const daysHtml = Object.entries(culturalData.days).map(([index, info]) => `
+        <div class="info-block">
+            <h3>${info.pl}</h3>
+            <p>${info.meaning}</p>
+        </div>
+    `).join('');
+
+    return `
+        <div class="culture-container">
+            <h2 class="section-title">The Origins of Polish Dates</h2>
+            <div class="culture-section">
+                <h3 class="subsection-title">Months & Seasons</h3>
+                <div class="culture-grid">${monthsHtml}</div>
+            </div>
+            <div class="culture-section">
+                <h3 class="subsection-title">Days of the Week</h3>
+                <div class="culture-grid">${daysHtml}</div>
+            </div>
+            <button class="pill-btn" onclick="document.getElementById('navCalendar').click()">Back to Calendar</button>
+        </div>
+    `;
+}
+
 export default culturalData;
