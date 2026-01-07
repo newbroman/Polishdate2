@@ -4,6 +4,18 @@
 import { updateInfoPanel } from './ui-renderer.js';
 import { setupListeners } from './events.js';
 import holidayData from './holiday.js';
+import { checkVoices } from './audio.js';
+
+window.onload = () => {
+    // Initializing voices ensures the 'Listen' button 
+    // lights up as soon as the browser is ready.
+    checkVoices((ready) => {
+        console.log("Polish voices ready:", ready);
+    });
+    
+    setupListeners(state, render);
+    render(); 
+};
 
 // 1. Initialize Global State
 const state = { 
