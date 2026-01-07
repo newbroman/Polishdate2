@@ -1,86 +1,4 @@
-/* --- 7. Cultural Hub & Rules Styling --- */
-.culture-page {
-    animation: fadeIn 0.4s ease-out;
-    padding-bottom: 40px;
-}
-
-.culture-header {
-    text-align: center;
-    margin-bottom: 25px;
-}
-
-.season-label {
-    display: inline-block;
-    padding: 4px 12px;
-    background: var(--seasonal-bg);
-    border: 1px solid var(--accent-color);
-    border-radius: 15px;
-    font-size: 0.8rem;
-    text-transform: uppercase;
-    color: var(--accent-color);
-}
-
-.info-block {
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid #333;
-    padding: 20px;
-    border-radius: 12px;
-    margin-bottom: 20px;
-}
-
-.info-block h3 {
-    margin-top: 0;
-    color: var(--gold);
-    font-size: 1.1rem;
-}
-
-/* Fix for the Highlight Box using your seasonal variables */
-.day-meaning-highlight {
-    background: var(--seasonal-bg);
-    border-left: 4px solid var(--accent-color);
-    padding: 1.2rem;
-    border-radius: 8px;
-    margin-bottom: 1.5rem;
-}
-
-.holiday-list {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
-
-.holiday-entry {
-    border-bottom: 1px solid #333;
-    padding-bottom: 15px;
-}
-
-.holiday-entry:last-child {
-    border-bottom: none;
-}
-
-.holiday-date {
-    color: var(--accent-color);
-    font-weight: bold;
-    font-size: 0.85rem;
-    margin-bottom: 4px;
-}
-
-.close-culture-btn {
-    width: 100%;
-    margin-top: 10px;
-    background: #333;
-    color: white;
-    border: 1px solid #444;
-    padding: 15px;
-    border-radius: 30px;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
-}/* --- 1. Core Variables & Season Transitions --- */
+/* --- 1. Core Variables & Season Transitions --- */
 :root {
     --accent-color: #e6192e; /* Polish Red Default */
     --bg-dark: #121212;
@@ -114,7 +32,7 @@ body {
     min-height: 100vh;
 }
 
-/* --- 2. Branding Banner (Absolute Top) --- */
+/* --- 2. Branding Banner --- */
 .brand-header {
     width: 100%;
     background: linear-gradient(to bottom, #ffffff 50%, var(--accent-color) 50%);
@@ -132,11 +50,11 @@ body {
     font-size: 1rem;
     font-weight: 800;
     text-transform: uppercase;
-    color: #000000; /* Black text */
+    color: #000000;
     letter-spacing: 1.5px;
 }
 
-/* --- 3. Utility Navigation (Icons & Toggle) --- */
+/* --- 3. Utility Navigation --- */
 .main-nav-container {
     display: flex;
     justify-content: center;
@@ -166,7 +84,7 @@ body {
     background: #444;
 }
 
-/* --- 4. Flanked Calendar Navigation (Arrows + Rollers) --- */
+/* --- 4. Calendar Navigation Arrows & Rollers --- */
 .calendar-navigation {
     display: flex;
     justify-content: center;
@@ -185,7 +103,7 @@ body {
     border: 1px solid #444;
     width: 38px;
     height: 38px;
-    border-radius: 50%; /* Circular */
+    border-radius: 50%;
     cursor: pointer;
     font-size: 1.2rem;
     display: flex;
@@ -222,11 +140,11 @@ body {
     border-left: 1px solid #444;
 }
 
-/* --- 5. Calendar Grid & Holidays --- */
+/* --- 5. Calendar Grid --- */
 .calendar-container {
     max-width: 400px;
     margin: 0 auto;
-    padding: 10px 15px 180px 15px; /* Bottom padding for footer clearance */
+    padding: 10px 15px 180px 15px;
 }
 
 .weekdays {
@@ -286,7 +204,7 @@ body {
     background: #2a2a2a;
 }
 
-/* --- 6. Centralized Footer Info Panel --- */
+/* --- 6. Footer Info Panel --- */
 .info-panel {
     position: fixed;
     bottom: 0;
@@ -297,7 +215,7 @@ body {
     padding: 20px 10px;
     display: flex;
     flex-direction: column;
-    align-items: center; /* Center column content */
+    align-items: center;
     z-index: 100;
 }
 
@@ -314,7 +232,7 @@ body {
 
 .phrase-phonetic {
     font-size: 1.05rem;
-    color: var(--tan); /* Tan Phonetics */
+    color: var(--tan);
     font-style: italic;
     margin: 0 0 4px 0;
 }
@@ -327,7 +245,7 @@ body {
 
 .footer-controls {
     display: flex;
-    justify-content: center; /* Centering the buttons */
+    justify-content: center;
     gap: 12px;
     width: 100%;
 }
@@ -349,23 +267,33 @@ body {
     border-color: white;
 }
 
-.day-meaning-highlight {
-    background: rgba(var(--primary-rgb), 0.1);
-    border-left: 4px solid var(--primary-color);
-    padding: 1rem;
-    border-radius: 4px;
-    margin-bottom: 1.5rem;
-}
-
-/* --- 7. Culture & Rules View Layouts --- */
+/* --- 7. Cultural Hub & Rules View Layouts --- */
 #culturalHub, #rulesPage {
-    padding: 20px 15px 100px 15px; /* Space for footer */
+    padding: 20px 15px 180px 15px;
     max-width: 600px;
     margin: 0 auto;
+    display: none; /* Controlled by JS showSection */
 }
 
 .culture-page {
-    animation: fadeIn 0.3s ease-in;
+    animation: fadeIn 0.4s ease-out;
+}
+
+.culture-header {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.season-label {
+    display: inline-block;
+    padding: 4px 12px;
+    background: var(--seasonal-bg);
+    border: 1px solid var(--accent-color);
+    border-radius: 15px;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    color: var(--accent-color);
+    font-weight: bold;
 }
 
 .info-block {
@@ -382,9 +310,9 @@ body {
     font-size: 1.1rem;
     border-bottom: 1px solid #444;
     padding-bottom: 8px;
+    margin-bottom: 12px;
 }
 
-/* Fix for the Day Meaning Highlight using your variables */
 .day-meaning-highlight {
     background: var(--seasonal-bg);
     border-left: 4px solid var(--accent-color);
@@ -404,7 +332,6 @@ body {
     color: var(--accent-color);
     font-weight: bold;
     font-size: 0.9rem;
-    text-transform: uppercase;
 }
 
 .close-culture-btn {
@@ -416,7 +343,19 @@ body {
     border-radius: 30px;
     font-weight: bold;
     cursor: pointer;
-    margin-top: 20px;
+    margin-top: 10px;
+    transition: 0.2s;
+}
+
+.close-culture-btn:hover {
+    background: var(--accent-color);
+}
+
+.no-data {
+    color: var(--text-dim);
+    font-style: italic;
+    text-align: center;
+    padding: 20px 0;
 }
 
 @keyframes fadeIn {
