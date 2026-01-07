@@ -233,6 +233,12 @@ body {
     border: 2px solid var(--gold);
 }
 
+#calendarSection {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
 /* --- 6. Info Panel --- */
 .info-panel {
     position: fixed;
