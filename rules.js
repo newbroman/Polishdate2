@@ -24,5 +24,21 @@ const grammarRules = {
         example: "Kwiecień (April) comes from 'kwiat' (flower)."
     }
 };
+export function getRulesHTML() {
+    return `
+        <div class="rules-header">
+            <h2>Polish Grammar Rules</h2>
+        </div>
+        ${Object.values(grammarRules).map(section => `
+            <div class="info-block">
+                <h3>${section.title}</h3>
+                <p>${section.explanation}</p>
+                <div class="rule-tip"><strong>Rule:</strong> ${section.rule}</div>
+                <div class="rule-example"><em>Example:</em> ${section.example}</div>
+            </div>
+        `).join('')}
+        <button class="close-culture-btn" onclick="document.getElementById('navCalendar').click()">Back to Calendar</button>
+    `;
+}
 
 export default grammarRules;
