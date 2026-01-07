@@ -6,7 +6,13 @@
     <title>Polish Date Master</title>
     <link rel="stylesheet" href="styles.css">
 </head>
-<body class="winter"> <header class="main-nav-container">
+<body class="winter">
+
+    <div class="brand-header">
+        <h1>Learn Polish Dates</h1>
+    </div>
+
+    <header class="main-nav-container">
         <div class="utility-controls">
             <button id="navCalendar" class="nav-icon-btn" title="Calendar">📅</button>
             <button id="navCulture" class="nav-icon-btn" title="Culture">📖</button>
@@ -17,21 +23,18 @@
     </header>
 
     <main id="calendarSection">
-        
-        <div class="brand-header">
-            <h1>Learn Polish Dates</h1>
-        </div>
-
         <div class="calendar-navigation">
-            <div class="rollers-container">
-                <select id="monthRoller" class="roller-select"></select>
-                <input type="number" id="yearInput" value="2026" min="0" max="3000">
-            </div>
+            
+            <div class="nav-controls-row">
+                <button id="prevMonth" class="nav-btn-arrow" aria-label="Previous Month">←</button>
+                
+                <div class="rollers-container">
+                    <select id="monthRoller" class="roller-select">
+                        </select>
+                    <input type="number" id="yearInput" value="2026" min="0" max="3000">
+                </div>
 
-            <div class="nav-controls">
-                <button id="prevMonth" class="nav-btn">←</button>
-                <button id="todayBtn" class="nav-btn">Today</button>
-                <button id="nextMonth" class="nav-btn">→</button>
+                <button id="nextMonth" class="nav-btn-arrow" aria-label="Next Month">→</button>
             </div>
         </div>
 
@@ -43,8 +46,8 @@
         </div>
     </main>
 
-    <div id="culturalHub" style="display: none;"></div>
-    <div id="rulesPage" style="display: none;"></div>
+    <section id="culturalHub" style="display: none;"></section>
+    <section id="rulesPage" style="display: none;"></section>
 
     <footer class="info-panel">
         <div class="phrase-display">
@@ -53,12 +56,4 @@
             <p id="enPhrase" class="phrase-en">Select a date</p>
         </div>
 
-        <div class="footer-controls">
-            <button id="playBtn" class="pill-btn-sm">🔊 Listen</button>
-            <button id="repeatYearBtn" class="pill-btn-sm">Include Year: ON</button>
-        </div>
-    </footer>
-
-    <script type="module" src="app.js"></script>
-</body>
-</html>
+        <div class="footer-
