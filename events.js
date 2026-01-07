@@ -44,7 +44,7 @@ const showSection = (id) => {
 
     // 2. Show the target section correctly
     if (id === 'calendar') {
-        sections['calendar'].style.display = 'flex'; // Fixes the alignment bug
+        if (sections['calendar']) sections['calendar'].style.display = 'flex'; 
         if (infoPanel) infoPanel.style.display = 'flex';
     } else {
         if (sections[id]) sections[id].style.display = 'block';
@@ -53,6 +53,7 @@ const showSection = (id) => {
 
     // 3. Update Nav Button Styles
     document.querySelectorAll('.nav-icon-btn').forEach(b => {
+        // This dynamically finds the button by matching the ID or data attribute
         b.classList.toggle('active', b.id === `nav${id.charAt(0).toUpperCase() + id.slice(1)}`);
     });
 };
