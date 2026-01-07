@@ -189,8 +189,41 @@ main {
     cursor: pointer;
 }
 
-/* --- Seasonal Theme Colors --- */
-body.spring { border-top: 5px solid #4caf50; }
-body.summer { border-top: 5px solid #ffeb3b; }
-body.autumn { border-top: 5px solid #ff9800; }
-body.winter { border-top: 5px solid #2196f3; }
+/* --- Seasonal Overrides --- */
+
+/* Spring: Fresh Greens */
+body.spring {
+    --accent-color: #4caf50;
+    --seasonal-bg: rgba(76, 175, 80, 0.05);
+}
+
+/* Summer: Golden Sun & Warmth */
+body.summer {
+    --accent-color: #ffc107;
+    --seasonal-bg: rgba(255, 193, 7, 0.05);
+}
+
+/* Autumn: Deep Oranges & Earth */
+body.autumn {
+    --accent-color: #ff5722;
+    --seasonal-bg: rgba(255, 87, 34, 0.05);
+}
+
+/* Winter: Crisp Blues & Polish Red */
+body.winter {
+    --accent-color: #e6192e; /* Classic Polish Red for winter */
+    --seasonal-bg: rgba(230, 25, 46, 0.05);
+}
+
+/* Apply a subtle seasonal tint to the main background */
+body {
+    background-color: var(--bg-dark);
+    background-image: linear-gradient(180deg, var(--seasonal-bg) 0%, var(--bg-dark) 300px);
+    transition: background 0.5s ease, border-color 0.5s ease;
+}
+
+/* Ensure the selected day matches the seasonal accent */
+.calendar-day.selected {
+    background: var(--accent-color) !important;
+    box-shadow: 0 4px 15px var(--seasonal-bg);
+}
