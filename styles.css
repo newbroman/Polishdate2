@@ -407,3 +407,8 @@ body {
     border: 2px solid var(--accent-color) !important;
     font-weight: 800;
 }
+
+.calendar-day.selected.holiday {
+    background-color: var(--accent-color) !important;
+    color: #ffffff !important;
+}
