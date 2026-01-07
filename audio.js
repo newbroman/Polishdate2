@@ -1,24 +1,38 @@
+/**
+ * Speech synthesis utility for Polish pronunciation
+ */
 export function speakPolish(text) {
     if (!window.speechSynthesis) {
-        console.error("Browser does not support Speech Synthesis");
+        console.warn("Speech Synthesis not supported in this browser.");
         return;
     }
 
-    // Cancel current speech
+    // Stop any current audio before starting new speech
     window.speechSynthesis.cancel();
 
     const utterance = new SpeechSynthesisUtterance(text);
     
-    // Find a Polish voice specifically
+    // Refresh voices list
     const voices = window.speechSynthesis.getVoices();
-    const plVoice = voices.find(v => v.lang.startsWith('pl'));
     
-    if (plVoice) utterance.voice = plVoice;
+    // Specific search for Polish (pl-PL)
+    const plVoice = voices.find(v => v.lang.toLowerCase().replace('_', '-') === 'pl-pl') 
+                 || voices.find(v => v.lang.startsWith('pl'));
+    
+    if (plVoice) {
+        utterance.voice = plVoice;
+    }
+
     utterance.lang = 'pl-PL';
-    utterance.rate = 0.85; // Slightly slower for learning
+    utterance.rate = 0.85; // Natural learning speed
+    utterance.pitch = 1.0;
     
     window.speechSynthesis.speak(utterance);
 }
 
-// Pre-load voices (Required for some mobile browsers)
-window.speechSynthesis.getVoices();
+// Crucial: Pre-warm the voice engine
+if (typeof window !== 'undefined' && window.speechSynthesis) {
+    if (window.speechSynthesis.onvoiceschanged !== undefined) {
+        window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
+    }
+}
