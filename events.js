@@ -1,19 +1,22 @@
 /**
- * events.js - Final Integration Fixed
+ * events.js - Fixed Syntax & Integration
  */
 import { speakText, checkVoices } from './audio.js';
 import holidayData from './holiday.js';
 import culturalData from './cultural.js';
-import grammarRules, { getRulesHTML } from './rules.js'; // Added getRulesHTML import
+import grammarRules, { getRulesHTML } from './rules.js';
 
 export function setupListeners(state, render) {
     
     // --- 1. Audio and Logic Toggles ---
- const meetingBtn = document.getElementById('meetingToggle');
-if (meetingBtn) {
-    meetingBtn.onclick = () => {
-        state.isFormal = !state.isFormal; // Ensure this matches state.isFormal
-        render(); // This triggers updateInfoPanel with the new state
+    const playBtn = document.getElementById('playBtn');
+    if (playBtn) {
+        // Corrected block: Wait for voices, then enable button
+        checkVoices((ready) => {
+            if (ready) {
+                playBtn.disabled = false;
+                playBtn.style.opacity = "1";
+                render(); 
             }
         });
 
@@ -25,24 +28,29 @@ if (meetingBtn) {
         };
     }
 
-const meetingBtn = document.getElementById('meetingToggle');
-if (meetingBtn) {
-    // Set initial class based on default Formal state
-    meetingBtn.className = state.isFormal ? 'pill-btn mode-btn-formal' : 'pill-btn mode-btn-informal';
+    // --- Formal/Informal Toggle (Consolidated) ---
+    const meetingBtn = document.getElementById('meetingToggle');
+    if (meetingBtn) {
+        // Set initial class based on default Formal state
+        meetingBtn.className = state.isFormal ? 'pill-btn mode-btn-formal' : 'pill-btn mode-btn-informal';
 
-    meetingBtn.onclick = () => {
-        state.isFormal = !state.isFormal;
-        
-        // 1. Update text
-        meetingBtn.innerText = state.isFormal ? "📅 Mode: Formal" : "📅 Mode: Informal";
-        
-        // 2. Update button color (CSS classes)
-        meetingBtn.className = `pill-btn ${state.isFormal ? 'mode-btn-formal' : 'mode-btn-informal'}`;
-        
-        // 3. Trigger full UI update (this will update the footer theme via ui-renderer.js)
-        render(); 
-    };
-}
+        meetingBtn.onclick = () => {
+            state.isFormal = !state.isFormal;
+            
+            // 1. Update button text
+            const label = state.isPolish ? "Tryb" : "Mode";
+            const status = state.isFormal ? 
+                (state.isPolish ? "Formalny" : "Formal") : 
+                (state.isPolish ? "Nieformalny" : "Informal");
+            meetingBtn.innerText = `📅 ${label}: ${status}`;
+            
+            // 2. Update button color (CSS classes)
+            meetingBtn.className = `pill-btn ${state.isFormal ? 'mode-btn-formal' : 'mode-btn-informal'}`;
+            
+            // 3. Trigger full UI update
+            render(); 
+        };
+    }
 
     // --- 2. Navigation Logic ---
     const showSection = (id) => {
@@ -189,16 +197,14 @@ export function renderCulturalHub(state) {
 }
 
 /**
- * Renders the Grammar Rules page using the function from rules.js
+ * Renders the Grammar Rules page
  */
 export function renderRulesPage() {
     const page = document.getElementById('rulesPage');
     if (!page) return;
     
-    // Using your custom HTML builder from rules.js for consistency
     page.innerHTML = `<div class="culture-page">${getRulesHTML()}</div>`;
 
-    // Ensure the button in your getRulesHTML triggers navigation
     const backBtn = page.querySelector('.close-culture-btn');
     if (backBtn) {
         backBtn.onclick = () => document.getElementById('navCalendar').click();
