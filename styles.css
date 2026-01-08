@@ -53,22 +53,27 @@ body {
 
 /* --- 3. Header & Navigation --- */
 .brand-header {
-    width: 100%;
-    background: linear-gradient(to bottom, #ffffff 50%, var(--accent-color) 50%);
-    padding: 12px 0;
     text-align: center;
-    border-bottom: 1px solid rgba(0,0,0,0.1);
-    position: sticky;
-    top: 0;
-    z-index: 1000;
+    padding: 2rem 1rem 1.5rem; /* Added more breathing room */
 }
 
 .brand-header h1 {
-    font-size: 0.85rem;
+    font-size: 2.5rem; /* Increased from standard size */
+    font-weight: 800;
+    color: #c41224; /* Polish Red */
     text-transform: uppercase;
-    color: #000;
-    letter-spacing: 2px;
-    font-weight: 900;
+    letter-spacing: -1px;
+    margin: 0;
+    line-height: 1.1;
+    /* Optional: subtle shadow to make it feel more like a "brand" */
+    text-shadow: 2px 2px 0px rgba(255, 255, 255, 0.5);
+}
+
+/* Adjust for smaller screens so it doesn't wrap awkwardly */
+@media (max-width: 400px) {
+    .brand-header h1 {
+        font-size: 1.8rem;
+    }
 }
 
 .main-nav-container {
