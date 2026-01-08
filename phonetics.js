@@ -1,11 +1,9 @@
 /**
- * phonetics.js
- * Central database for Polish pronunciations.
- * Uses Nominative for Days/Ordinals and Genitive for Months.
+ * phonetics.js - Corrected Syntax
  */
 
 const phonetics = {
-    // 1. Days of the Week (Nominative)
+    // 1. Days of the Week
     days: {
         "niedziela": "nyeh-jyeh-lah",
         "poniedziałek": "poh-nyeh-jah-wek",
@@ -16,8 +14,7 @@ const phonetics = {
         "sobota": "soh-boh-tah"
     },
 
-    // 2. Months (Genitive Case - "of ...")
-    // In Polish dates, the month always takes the genitive form.
+    // 2. Months (Genitive)
     months: {
         "stycznia": "stich-nyah",
         "lutego": "loo-teh-go",
@@ -33,9 +30,7 @@ const phonetics = {
         "grudnia": "grood-nyah"
     },
 
-    // 3. Ordinal Days 1-31 (Nominative - "The Seventh")
-    // Adjusted to match written titles (Siódmy, etc.)
-// Standard sounds for "Today is..." (Nominative)
+    // 3. Ordinal Days (Informal / Nominative)
     ordinalDays: {
         1: "pyer-v-shy", 2: "droo-gy", 3: "t-sheh-chee", 4: "chvar-ty", 5: "pyon-ty",
         6: "shoos-ty", 7: "shood-my", 8: "oos-my", 9: "jyev-yon-ty", 10: "jyeh-shon-ty",
@@ -47,7 +42,7 @@ const phonetics = {
         30: "t-shy-jyes-ty", 31: "t-shy-jyes-ty pyer-v-shy"
     },
 
-    // Meeting Mode sounds for "Meeting is on..." (Genitive)
+    // 4. Ordinal Days (Formal / Genitive)
     ordinalDaysGenitive: {
         1: "pyer-v-sheh-go", 2: "droo-gyeh-go", 3: "t-sheh-chyeh-go", 4: "chvar-teh-go", 5: "pyon-teh-go",
         6: "shoos-teh-go", 7: "shood-meh-go", 8: "oos-meh-go", 9: "jyev-yon-teh-go", 10: "jyeh-shon-teh-go",
@@ -59,8 +54,7 @@ const phonetics = {
         30: "t-shy-jyes-teh-go", 31: "t-shy-jyes-teh-go pyer-v-sheh-go"
     },
 
-
-    // 4. Large Ordinals for Years (Unchanged)
+    // 5. Year Ordinals
     ordinals: {
         1: "pyer-vshi", 2: "droo-gee", 3: "ts-sheh-tsee", 4: "chvahr-ti",
         5: "pyon-ti", 6: "shooss-ti", 7: "shood-mi", 8: "ooss-mi",
