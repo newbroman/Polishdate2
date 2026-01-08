@@ -14,7 +14,68 @@ const state = {
     isPolish: false 
 };
 
-note: { opened at line 18, column 19
+// 2. Main Render Function
+function render() {
+    const grid = document.getElementById('calendarGrid');
+    const mRoller = document.getElementById('monthRoller');
+    const yInput = document.getElementById('yearInput');
+    const weekdayContainer = document.querySelector('.weekdays');
+    
+    if (!grid) return; // Safety check
+
+    const monthIndex = state.viewDate.getMonth();
+    const year = state.viewDate.getFullYear();
+
+    // Seasonal Themes
+    document.body.className = ''; 
+    const seasons = ['winter', 'winter', 'spring', 'spring', 'spring', 'summer', 'summer', 'summer', 'autumn', 'autumn', 'autumn', 'winter'];
+    document.body.classList.add(seasons[monthIndex]);
+
+    // Update Month Dropdown
+    if (mRoller) {
+        const monthNamesEn = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+        const monthNamesPl = ["Styczeń", "Luty", "Marzec", "Kwiecień", "Maj", "Czerwiec", "Lipiec", "Sierpień", "Wrzesień", "Październik", "Listopad", "Grudzień"];
+        const names = state.isPolish ? monthNamesPl : monthNamesEn;
+        
+        mRoller.innerHTML = names.map((name, i) => 
+            `<option value="${i}" ${i === monthIndex ? 'selected' : ''}>${name}</option>`
+        ).join('');
+    }
+    
+    if (yInput) yInput.value = year;
+
+    // Weekday Labels
+    if (weekdayContainer) {
+        const days = state.isPolish ? ["Nie", "Pon", "Wt", "Śr", "Czw", "Pią", "Sob"] : ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+        weekdayContainer.innerHTML = days.map(d => `<span>${d}</span>`).join('');
+    }
+
+    // --- BUTTON TRANSLATIONS ---
+    const playBtn = document.getElementById('playBtn');
+    const repeatYearBtn = document.getElementById('repeatYearBtn');
+
+    if (playBtn) {
+        if (!playBtn.innerText.includes("⌛")) {
+            playBtn.innerText = state.isPolish ? "🔊 Słuchaj" : "🔊 Listen";
+        }
+    }
+
+    if (repeatYearBtn) {
+        const yearLabel = state.isPolish ? "Dodaj rok" : "Include Year";
+        const status = state.includeYear ? "ON" : "OFF";
+        repeatYearBtn.innerText = `${yearLabel}: ${status}`;
+    }
+
+    // Render the grid
+    renderCalendarGrid(state.viewDate, state.selectedDate, (newDate) => {
+        state.selectedDate = newDate;
+        render(); 
+    });
+
+    try {
+        updateInfoPanel(state.selectedDate, state.includeYear);
+    } catch (e) { console.error("Info Panel Error:", e); }
+}
 
 // 3. Grid Drawing Logic
 function renderCalendarGrid(viewDate, selectedDate, onDateClick) {
@@ -26,7 +87,6 @@ function renderCalendarGrid(viewDate, selectedDate, onDateClick) {
     const month = viewDate.getMonth();
     const today = new Date();
     
-    // 1. Fetch holidays for the currently viewed year
     const holidays = (holidayData && typeof holidayData.getHolidaysForYear === 'function') 
         ? holidayData.getHolidaysForYear(year) 
         : {};
@@ -34,48 +94,39 @@ function renderCalendarGrid(viewDate, selectedDate, onDateClick) {
     const firstDayIndex = new Date(year, month, 1).getDay();
     const lastDay = new Date(year, month + 1, 0).getDate();
 
-    // 2. Create Blank Spacers for start of month
+    // Create Blank Spacers
     for (let x = 0; x < firstDayIndex; x++) {
         const spacer = document.createElement('div');
         spacer.className = 'calendar-day spacer';
         grid.appendChild(spacer);
     }
 
-    // 3. Generate Actual Days
+    // Generate Actual Days
     for (let day = 1; day <= lastDay; day++) {
         const daySquare = document.createElement('div');
         daySquare.className = 'calendar-day';
         daySquare.innerText = day;
 
-        // --- Holiday Highlighting ---
         const holidayKey = `${month}-${day}`;
         if (holidays[holidayKey]) {
             daySquare.classList.add('holiday');
-            daySquare.title = holidays[holidayKey]; // Hover tooltip
+            daySquare.title = holidays[holidayKey];
         }
 
-        // --- Selection Logic (Precise Date Match) ---
         const isSelected = selectedDate && 
                            day === selectedDate.getDate() && 
                            month === selectedDate.getMonth() && 
                            year === selectedDate.getFullYear();
         
-        if (isSelected) {
-            daySquare.classList.add('selected');
-        }
+        if (isSelected) daySquare.classList.add('selected');
 
-        // --- "Today" Highlighting ---
         const isToday = day === today.getDate() && 
                         month === today.getMonth() && 
                         year === today.getFullYear();
         
-        if (isToday) {
-            daySquare.classList.add('today-highlight');
-        }
+        if (isToday) daySquare.classList.add('today-highlight');
 
-        // --- Interaction ---
         daySquare.onclick = () => {
-            // Create a new date object for the clicked day
             const newSelected = new Date(year, month, day);
             onDateClick(newSelected);
         };
@@ -86,15 +137,13 @@ function renderCalendarGrid(viewDate, selectedDate, onDateClick) {
 
 // 4. Initialize
 window.onload = () => {
-    // 1. Initialize Audio
     checkVoices((ready) => {
         console.log("Polish voices ready:", ready);
+        // Initial render to set correct button text once voices are checked
+        render();
     });
     
-    // 2. Setup Listeners
     setupListeners(state, render);
-    
-    // 3. Force render
     render();
     
     setTimeout(() => {
@@ -103,4 +152,5 @@ window.onload = () => {
 };
 
 // 5. Watch for System Theme Changes
+window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => render());
 window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => render());
