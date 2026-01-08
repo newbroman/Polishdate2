@@ -54,28 +54,38 @@ body {
 /* --- 3. Header & Navigation --- */
 .brand-header {
     text-align: center;
-    padding: 2rem 1rem 1.5rem; /* Added more breathing room */
+    padding: 2.5rem 1rem;
+    /* This creates the Polish Flag background */
+    background: linear-gradient(
+        to bottom, 
+        #ffffff 0%, 
+        #ffffff 50%, 
+        #dc143c 50%, 
+        #dc143c 100%
+    );
+    border-bottom: 2px solid #a0102b;
+    margin-bottom: 1rem;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
 }
 
 .brand-header h1 {
-    font-size: 2.5rem; /* Increased from standard size */
-    font-weight: 800;
-    color: #c41224; /* Polish Red */
+    font-size: 2.2rem;
+    font-weight: 900;
+    /* Black writing as requested */
+    color: #000000; 
     text-transform: uppercase;
-    letter-spacing: -1px;
+    letter-spacing: 2px;
     margin: 0;
-    line-height: 1.1;
-    /* Optional: subtle shadow to make it feel more like a "brand" */
-    text-shadow: 2px 2px 0px rgba(255, 255, 255, 0.5);
+    /* A tiny white glow helps the text pop against the red half */
+    text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
 }
 
-/* Adjust for smaller screens so it doesn't wrap awkwardly */
+/* Ensure it looks good on smaller phones */
 @media (max-width: 400px) {
     .brand-header h1 {
-        font-size: 1.8rem;
+        font-size: 1.6rem;
     }
 }
-
 .main-nav-container {
     display: flex;
     justify-content: center;
