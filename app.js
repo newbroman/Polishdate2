@@ -14,66 +14,7 @@ const state = {
     isPolish: false 
 };
 
-// 2. Main Render Function
-function render() {
-    const grid = document.getElementById('calendarGrid');
-    const mRoller = document.getElementById('monthRoller');
-    const yInput = document.getElementById('yearInput');
-    const weekdayContainer = document.querySelector('.weekdays');
-    
-    if (!grid) return; // Safety check
-
-    const monthIndex = state.viewDate.getMonth();
-    const year = state.viewDate.getFullYear();
-
-    // Seasonal Themes
-    document.body.className = ''; 
-    const seasons = ['winter', 'winter', 'spring', 'spring', 'spring', 'summer', 'summer', 'summer', 'autumn', 'autumn', 'autumn', 'winter'];
-    document.body.classList.add(seasons[monthIndex]);
-
-    // Update Month Dropdown
-    if (mRoller) {
-        const monthNamesEn = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-        const monthNamesPl = ["Styczeń", "Luty", "Marzec", "Kwiecień", "Maj", "Czerwiec", "Lipiec", "Sierpień", "Wrzesień", "Październik", "Listopad", "Grudzień"];
-        const names = state.isPolish ? monthNamesPl : monthNamesEn;
-        
-        // Populate the dropdown options
-        mRoller.innerHTML = names.map((name, i) => 
-            `<option value="${i}" ${i === monthIndex ? 'selected' : ''}>${name}</option>`
-        ).join('');
-    }
-    
-    if (yInput) yInput.value = year;
-
-    // Weekday Labels
-    if (weekdayContainer) {
-        const days = state.isPolish ? ["Nie", "Pon", "Wt", "Śr", "Czw", "Pią", "Sob"] : ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-        weekdayContainer.innerHTML = days.map(d => `<span>${d}</span>`).join('');
-    }
-
-    const playBtn = document.getElementById('playBtn');
-    const repeatYearBtn = document.getElementById('repeatYearBtn');
-
-    if (playBtn) {
-        if (!playBtn.innerText.includes("⌛")) {
-            playBtn.innerText = state.isPolish ? "🔊 Słuchaj" : "🔊 Listen";
-        }
-    }
-
-    if (repeatYearBtn) {
-        const yearLabel = state.isPolish ? "Dodaj rok" : "Include Year";
-        const status = state.includeYear ? "ON" : "OFF";
-        repeatYearBtn.innerText = `${yearLabel}: ${status}`;
-                              
-    renderCalendarGrid(state.viewDate, state.selectedDate, (newDate) => {
-        state.selectedDate = newDate;
-        render(); 
-    });
-
-    try {
-        updateInfoPanel(state.selectedDate, state.includeYear);
-    } catch (e) { console.error("Info Panel Error:", e); }
-}
+note: { opened at line 18, column 19
 
 // 3. Grid Drawing Logic
 function renderCalendarGrid(viewDate, selectedDate, onDateClick) {
