@@ -20,6 +20,16 @@ export function updateInfoPanel(selectedDate, includeYear, isMeetingMode) {
     const monthIndex = selectedDate.getMonth();
     const year = selectedDate.getFullYear();
 
+    const tipContainer = document.getElementById('grammarTipContainer');
+    const tipText = document.getElementById('grammarTipText');
+
+if (tipContainer && tipText) {
+    tipContainer.style.display = isMeetingMode ? 'block' : 'none';
+    tipText.innerText = isMeetingMode ? 
+        "💡 Genitive Case: Day ends in '-ego' for 'on a day'." : 
+        "💡 Nominative Case: Day ends in '-y/-i' for 'today is'.";
+}
+
     // 1. Centralized Data Mapping
     const monthNamesEn = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     const monthKeysPl = ["stycznia", "lutego", "marca", "kwietnia", "maja", "czerwca", "lipca", "sierpnia", "września", "października", "listopada", "grudnia"];
