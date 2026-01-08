@@ -1,25 +1,25 @@
 /**
  * numbers.js - Logic for converting numbers to Polish words and phonetics
- * Includes Nominative (Today is...) and Genitive (Meeting on...) cases.
+ * Includes Nominative (Informal) and Genitive (Formal) cases.
  */
 import phonetics from './phonetics.js';
 
 /**
  * Returns the written Polish ordinal day.
  * @param {number} day - The day of the month.
- * @param {boolean} isGenitive - If true, returns "pierwszego", if false "pierwszy".
+ * @param {boolean} isFormal - If true, returns Genitive (-ego), else Nominative (-y/-i).
  */
-export function getWrittenDay(day, isGenitive = false) {
+export function getWrittenDay(day, isFormal = false) {
     const nominativeDays = {
-        1: "Pierwszy", 2: "Drugi", 3: "Trzeci", 4: "Czwarty", 5: "Piąty",
-        6: "Szósty", 7: "Siódmy", 8: "Ósmy", 9: "Dziewiąty", 10: "Dziesiąty",
-        11: "Jedenasty", 12: "Dwunasty", 13: "Trzynasty", 14: "Czternasty",
-        15: "Piętnasty", 16: "Szesnasty", 17: "Siedemnasty", 18: "Osiemnasty",
-        19: "Dziewiętnasty", 20: "Dwudziesty", 21: "Dwudziesty pierwszy",
-        22: "Dwudziesty drugi", 23: "Dwudziesty trzeci", 24: "Dwudziesty czwarty",
-        25: "Dwudziesty piąty", 26: "Dwudziesty szósty", 27: "Dwudziesty siódmy",
-        28: "Dwudziesty ósmy", 29: "Dwudziesty dziewiąty", 30: "Trzydziesty",
-        31: "Trzydziesty pierwszy"
+        1: "pierwszy", 2: "drugi", 3: "trzeci", 4: "czwarty", 5: "piąty",
+        6: "szósty", 7: "siódmy", 8: "ósmy", 9: "dziewiąty", 10: "dziesiąty",
+        11: "jedenasty", 12: "dwunasty", 13: "trzynasty", 14: "czternasty",
+        15: "piętnasty", 16: "szesnasty", 17: "siedemnasty", 18: "osiemnasty",
+        19: "dziewiętnasty", 20: "dwudziesty", 21: "dwudziesty pierwszy",
+        22: "dwudziesty drugi", 23: "dwudziesty trzeci", 24: "dwudziesty czwarty",
+        25: "dwudziesty piąty", 26: "dwudziesty szósty", 27: "dwudziesty siódmy",
+        28: "dwudziesty ósmy", 29: "dwudziesty dziewiąty", 30: "trzydziesty",
+        31: "trzydziesty pierwszy"
     };
 
     const genitiveDays = {
@@ -34,27 +34,72 @@ export function getWrittenDay(day, isGenitive = false) {
         31: "trzydziestego pierwszego"
     };
 
-    if (isGenitive) return genitiveDays[day] || day.toString();
-    return nominativeDays[day] || day.toString();
+    return isFormal ? (genitiveDays[day] || day) : (nominativeDays[day] || day);
 }
 
 /**
  * Returns the Phonetic Day from phonetics.js
  */
-export function getPhoneticDay(day, isGenitive = false) {
-    if (isGenitive) {
-        // Appends "go" or "eh-go" sounds to the standard phonetic
-        return phonetics.ordinalDaysGenitive[day] || phonetics.ordinalDays[day] + "-go";
+export function getPhoneticDay(day, isFormal = false) {
+    // If isFormal is true, we need the phonetic Genitive sound
+    if (isFormal) {
+        return phonetics.ordinalDaysGenitive[day] || phonetics.ordinalDays[day] + "-eh-go";
     }
     return phonetics.ordinalDays[day] || day.toString();
 }
 
 /**
+ * Logic for Written Ordinal Years
+ * Years in a full date phrase are almost always Genitive in Polish.
+ */
+export function getYearPolish(year, isFormal = true) {
+    if (year === 0) return "zerowy";
+    
+    const thousands = Math.floor(year / 1000);
+    const hundreds = Math.floor((year % 1000) / 100);
+    const lastTwo = year % 100;
+    let parts = [];
+
+    // Thousands (Cardinal)
+    if (thousands > 0) {
+        parts.push(thousands === 1 ? "tysiąc" : (thousands === 2 ? "dwa tysiące" : "trzy tysiące"));
+    }
+
+    // Hundreds (Cardinal)
+    const hundredsMap = { 
+        1: "sto", 2: "dwieście", 3: "trzysta", 4: "czterysta", 5: "pięćset", 
+        6: "sześćset", 7: "siedemset", 8: "osiemset", 9: "dziewięćset" 
+    };
+    if (hundreds > 0) parts.push(hundredsMap[hundreds]);
+
+    // Tens and Units (Ordinal)
+    if (lastTwo > 0 || (thousands === 0 && hundreds === 0)) {
+        const units = ["", "pierwszy", "drugi", "trzeci", "czwarty", "piąty", "szósty", "siódmy", "ósmy", "dziewiąty"];
+        const teens = ["dziesiąty", "jedenasty", "dwunasty", "trzynasty", "czternasty", "piętnasty", "szesnasty", "siedemnasty", "osiemnasty", "dziewiętnasty"];
+        const tens = ["", "", "dwudziesty", "trzydziesty", "czterdziesty", "pięćdziesiąty", "sześćdziesiąty", "siedemdziesiąty", "osiemdziesiąty", "dziewięćdziesiąty"];
+
+        let yearWord = "";
+        if (lastTwo < 10) yearWord = units[lastTwo];
+        else if (lastTwo < 20) yearWord = teens[lastTwo - 10];
+        else {
+            yearWord = tens[Math.floor(lastTwo / 10)];
+            if (lastTwo % 10 !== 0) yearWord += " " + units[lastTwo % 10];
+        }
+
+        // Years in dates take the Genitive case (dwudziestego)
+        if (isFormal) {
+            yearWord = yearWord.replace(/y /g, "ego ").replace(/y$/, "ego").replace(/i$/, "iego");
+        }
+        parts.push(yearWord);
+    }
+    
+    return parts.join(" ");
+}
+
+/**
  * Builds the Phonetic Year using phonetics.js
  */
-export function getYearPhonetic(year, isGenitive = false) {
-    if (year === 0) return "ze-ro-vi";
-    
+export function getYearPhonetic(year, isFormal = true) {
     const thousands = Math.floor(year / 1000);
     const hundreds = Math.floor((year % 1000) / 100);
     const lastTwo = year % 100;
@@ -68,55 +113,13 @@ export function getYearPhonetic(year, isGenitive = false) {
     if (hundreds > 0) pParts.push(pHundreds[hundreds]);
 
     if (lastTwo > 0) {
-        let phoneticYear = phonetics.ordinals[lastTwo] || lastTwo.toString();
-        // Adjust phonetic ending for Meeting Mode
-        if (isGenitive) {
-            phoneticYear = phoneticYear.replace(/-y$/, "-eh-go").replace(/-ee$/, "-eh-go");
+        let pYear = phonetics.ordinals[lastTwo] || lastTwo.toString();
+        if (isFormal) {
+            // Convert ending sound from -y/-ee to -eh-go
+            pYear = pYear.replace(/-y$/, "-eh-go").replace(/-ee$/, "-eh-go");
         }
-        pParts.push(phoneticYear);
-    } else if (isGenitive) {
-        // Handles even centuries like "2000" -> "tysięcznego"
-        pParts[pParts.length - 1] += "-neh-go";
+        pParts.push(pYear);
     }
 
     return pParts.join(" ");
-}
-
-/**
- * Logic for Written Ordinal Years (Now with Genitive support)
- */
-export function getYearPolish(year, isGenitive = false) {
-    if (year === 0) return "zerowy";
-    const thousands = Math.floor(year / 1000);
-    const hundreds = Math.floor((year % 1000) / 100);
-    const lastTwo = year % 100;
-    let parts = [];
-
-    if (thousands > 0) {
-        parts.push(thousands === 1 ? "tysiąc" : (thousands === 2 ? "dwa tysiące" : "trzy tysiące"));
-    }
-
-    const hundredsMap = { 1: "sto", 2: "dwieście", 3: "trzysta", 4: "czterysta", 5: "pięćset", 6: "sześćset", 7: "siedemset", 8: "osiemset", 9: "dziewięćset" };
-    if (hundreds > 0) parts.push(hundredsMap[hundreds]);
-
-    if (lastTwo > 0) {
-        const units = ["", "pierwszy", "drugi", "trzeci", "czwarty", "piąty", "szósty", "siódmy", "ósmy", "dziewiąty"];
-        const teens = ["dziesiąty", "jedenasty", "dwunasty", "trzynasty", "czternasty", "piętnasty", "szesnasty", "siedemnasty", "osiemnasty", "dziewiętnasty"];
-        const tens = ["", "", "dwudziesty", "trzydziesty", "czterdziesty", "pięćdziesiąty", "sześćdziesiąty", "siedemdziesiąty", "osiemdziesiąty", "dziewięćdziesiąty"];
-
-        let yearWord = "";
-        if (lastTwo < 10) yearWord = units[lastTwo];
-        else if (lastTwo < 20) yearWord = teens[lastTwo - 10];
-        else {
-            yearWord = tens[Math.floor(lastTwo / 10)];
-            if (lastTwo % 10 !== 0) yearWord += " " + units[lastTwo % 10];
-        }
-
-        if (isGenitive) {
-            // Transform to Genitive (dwudziesty -> dwudziestego)
-            yearWord = yearWord.replace(/y /g, "ego ").replace(/y$/, "ego").replace(/i$/, "iego");
-        }
-        parts.push(yearWord);
-    }
-    return parts.join(" ");
 }
