@@ -11,14 +11,16 @@ export function setupListeners(state, render) {
     // --- 1. Audio and Logic Toggles ---
     const playBtn = document.getElementById('playBtn');
     if (playBtn) {
+        // Initial state
         playBtn.disabled = true;
         playBtn.innerText = "⌛ Loading...";
 
         checkVoices((ready) => {
             if (ready) {
                 playBtn.disabled = false;
-                playBtn.innerText = "🔊 Listen";
+                // We don't set innerText here, render() will do it
                 playBtn.style.opacity = "1";
+                render(); 
             }
         });
 
@@ -30,54 +32,46 @@ export function setupListeners(state, render) {
         };
     }
 
-// --- 2. Navigation Logic ---
-const showSection = (id) => {
-    const sections = {
-        'calendar': document.getElementById('calendarSection'),
-        'culture': document.getElementById('culturalHub'),
-        'rules': document.getElementById('rulesPage')
+    // --- 2. Navigation Logic ---
+    const showSection = (id) => {
+        const sections = {
+            'calendar': document.getElementById('calendarSection'),
+            'culture': document.getElementById('culturalHub'),
+            'rules': document.getElementById('rulesPage')
+        };
+        const infoPanel = document.querySelector('.info-panel');
+
+        Object.values(sections).forEach(s => { if (s) s.style.display = 'none'; });
+
+        if (id === 'calendar') {
+            if (sections['calendar']) sections['calendar'].style.display = 'flex'; 
+            if (infoPanel) infoPanel.style.display = 'flex';
+        } else {
+            if (sections[id]) sections[id].style.display = 'block';
+            if (infoPanel) infoPanel.style.display = 'none';
+        }
+
+        document.querySelectorAll('.nav-icon-btn').forEach(b => {
+            b.classList.toggle('active', b.id === `nav${id.charAt(0).toUpperCase() + id.slice(1)}`);
+        });
     };
-    const infoPanel = document.querySelector('.info-panel');
-
-    // 1. Hide all first
-    Object.values(sections).forEach(s => { if (s) s.style.display = 'none'; });
-
-    // 2. Show the target section correctly
-    if (id === 'calendar') {
-        if (sections['calendar']) sections['calendar'].style.display = 'flex'; 
-        if (infoPanel) infoPanel.style.display = 'flex';
-    } else {
-        if (sections[id]) sections[id].style.display = 'block';
-        if (infoPanel) infoPanel.style.display = 'none'; // Hide footer on text pages
-    }
-
-    // 3. Update Nav Button Styles
-    document.querySelectorAll('.nav-icon-btn').forEach(b => {
-        // This dynamically finds the button by matching the ID or data attribute
-        b.classList.toggle('active', b.id === `nav${id.charAt(0).toUpperCase() + id.slice(1)}`);
-    });
-};
 
     // --- 3. Click Listeners ---
     document.getElementById('navCalendar').onclick = () => {
         showSection('calendar');
-        document.getElementById('navCalendar').classList.add('active');
         render();
     };
 
     document.getElementById('navCulture').onclick = () => {
         showSection('culture');
-        document.getElementById('navCulture').classList.add('active');
         renderCulturalHub(state); 
     };
 
     document.getElementById('navRules').onclick = () => {
         showSection('rules');
-        document.getElementById('navRules').classList.add('active');
         renderRulesPage();
     };
 
-    // Month & Year Input Listeners
     document.getElementById('prevMonth').onclick = () => {
         state.viewDate.setMonth(state.viewDate.getMonth() - 1);
         render();
@@ -98,21 +92,24 @@ const showSection = (id) => {
         render();
     };
 
+    // LANGUAGE TOGGLE - CLEANED UP
     document.getElementById('langToggle').onclick = (e) => {
         state.isPolish = !state.isPolish;
+        // Toggle the button label between PL and EN
         e.target.innerText = state.isPolish ? 'PL' : 'EN';
-        render();
+        render(); // app.js now handles translating the other buttons
     };
 
-    document.getElementById('repeatYearBtn').onclick = (e) => {
+    // INCLUDE YEAR TOGGLE - CLEANED UP
+    document.getElementById('repeatYearBtn').onclick = () => {
         state.includeYear = !state.includeYear;
-        e.target.innerText = `Include Year: ${state.includeYear ? 'ON' : 'OFF'}`;
-        render();
+        // No manual innerText here anymore!
+        render(); // app.js handles the text and translation
     };
-} // <--- THIS WAS MISSING: Closes setupListeners
+} 
 
 /**
- * Renders the Cultural Hub
+ * Renders the Cultural Hub (Existing Logic)
  */
 export function renderCulturalHub(state) {
     const hub = document.getElementById('culturalHub');
@@ -180,7 +177,7 @@ export function renderCulturalHub(state) {
 }
 
 /**
- * Renders the Grammar Rules page
+ * Renders the Grammar Rules page (Existing Logic)
  */
 export function renderRulesPage() {
     const page = document.getElementById('rulesPage');
