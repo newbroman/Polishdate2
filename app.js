@@ -1,5 +1,5 @@
 /**
- * app.js - Final Integration
+ * app.js - Final Integration Fixed
  */
 import { updateInfoPanel } from './ui-renderer.js';
 import { setupListeners } from './events.js';
@@ -11,8 +11,8 @@ const state = {
     viewDate: new Date(),    
     selectedDate: new Date(), 
     includeYear: true,
-    isPolish: false 
-    isMeetingMode: false // New property
+    isPolish: false, // <-- FIXED: Added missing comma here
+    isMeetingMode: false 
 };
 
 // 2. Main Render Function
@@ -22,25 +22,25 @@ function render() {
     const yInput = document.getElementById('yearInput');
     const weekdayContainer = document.querySelector('.weekdays');
     
-    if (!grid) return; // Safety check
+    if (!grid) return;
 
     const monthIndex = state.viewDate.getMonth();
     const year = state.viewDate.getFullYear();
 
+    // Update Meeting Toggle Button Text
     const meetingBtn = document.getElementById('meetingToggle');
     if (meetingBtn) {
-    const label = state.isPolish ? "Spotkanie" : "Meeting";
-    const status = state.isMeetingMode ? "ON" : "OFF";
-    meetingBtn.innerText = `${label}: ${status}`;
-}
+        const label = state.isPolish ? "Spotkanie" : "Meeting";
+        const status = state.isMeetingMode ? "ON" : "OFF";
+        meetingBtn.innerText = `${label}: ${status}`;
+    }
 
-// Update the call to updateInfoPanel
-try {
+    // --- UPDATED: Passing all 3 arguments to the panel ---
+    try {
         updateInfoPanel(state.selectedDate, state.includeYear, state.isMeetingMode);
     } catch (e) { 
         console.error("Info Panel Error:", e); 
     }
-
     
     // Seasonal Themes
     document.body.className = ''; 
@@ -66,7 +66,7 @@ try {
         weekdayContainer.innerHTML = days.map(d => `<span>${d}</span>`).join('');
     }
 
-    // --- BUTTON TRANSLATIONS ---
+    // Button Translations
     const playBtn = document.getElementById('playBtn');
     const repeatYearBtn = document.getElementById('repeatYearBtn');
 
@@ -87,10 +87,6 @@ try {
         state.selectedDate = newDate;
         render(); 
     });
-
-    try {
-        updateInfoPanel(state.selectedDate, state.includeYear);
-    } catch (e) { console.error("Info Panel Error:", e); }
 }
 
 // 3. Grid Drawing Logic
@@ -110,14 +106,12 @@ function renderCalendarGrid(viewDate, selectedDate, onDateClick) {
     const firstDayIndex = new Date(year, month, 1).getDay();
     const lastDay = new Date(year, month + 1, 0).getDate();
 
-    // Create Blank Spacers
     for (let x = 0; x < firstDayIndex; x++) {
         const spacer = document.createElement('div');
         spacer.className = 'calendar-day spacer';
         grid.appendChild(spacer);
     }
 
-    // Generate Actual Days
     for (let day = 1; day <= lastDay; day++) {
         const daySquare = document.createElement('div');
         daySquare.className = 'calendar-day';
@@ -153,19 +147,12 @@ function renderCalendarGrid(viewDate, selectedDate, onDateClick) {
 
 // 4. Initialize
 window.onload = () => {
-    // 1. Setup Listeners first so the button is ready for state changes
     setupListeners(state, render);
-    
-    // 2. Check voices with a callback that forces a UI update
     checkVoices((ready) => {
-        console.log("Polish voices ready:", ready);
-        render(); // This will flip the button from "Loading" to "Listen"
+        render(); 
     });
-    
-    // 3. Initial draw
     render();
 };
 
 // 5. Watch for System Theme Changes
-window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => render());
 window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => render());
