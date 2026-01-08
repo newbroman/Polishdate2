@@ -3,7 +3,7 @@
  * Handles offline caching for standalone app performance.
  */
 
-const CACHE_NAME = 'pl-date-v640';
+const CACHE_NAME = 'pl-date-v650';
 
 // All files required for the app to function offline
 const ASSETS = [
