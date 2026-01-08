@@ -14,7 +14,7 @@
 
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">    
+   
 </head>
 <body class="winter">
 <noscript>
@@ -66,17 +66,21 @@
     <section id="rulesPage" style="display: none;"></section>
 
     <footer class="info-panel">
-        <div class="phrase-display">
-            <p id="plPhrase" class="phrase-pl">Wybierz datę</p>
-            <p id="phoneticPhrase" class="phrase-phonetic">vye-byezh dah-teh</p>
-            <p id="enPhrase" class="phrase-en">Select a date</p>
-        </div>
+    <div id="grammarTipContainer" class="grammar-tip-box" style="display: none;">
+        <span id="grammarTipText"></span>
+    </div>
 
-        <div class="footer-controls">
-            <button id="playBtn" class="pill-btn">🔊 Listen</button>
-            <button id="repeatYearBtn" class="pill-btn">Include Year: ON</button>
-        </div>
-    </footer>
+    <div class="phrase-display">
+        <p id="plPhrase" class="phrase-pl">Wybierz datę</p>
+        <p id="phoneticPhrase" class="phrase-phonetic">vye-byezh dah-teh</p>
+        <p id="enPhrase" class="phrase-en">Select a date</p>
+    </div>
+
+       <div class="footer-controls">
+        <button id="playBtn" class="pill-btn">🔊 Listen</button>
+        <button id="repeatYearBtn" class="pill-btn">Include Year: ON</button>
+    </div>
+</footer>
 
     <script type="module" src="app.js"></script>
 </body>
