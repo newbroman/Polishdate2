@@ -5,7 +5,10 @@ import { getWrittenDay, getPhoneticDay, getYearPolish, getYearPhonetic } from '.
 import phonetics from './phonetics.js';
 import holidayData from './holiday.js';
 
-export function updateInfoPanel(selectedDate, includeYear) {
+/**
+ * Updates the UI with the selected date, incorporating Meeting Mode logic.
+ */
+export function updateInfoPanel(selectedDate, includeYear, isMeetingMode) {
     const plDisplay = document.getElementById('plPhrase');
     const enDisplay = document.getElementById('enPhrase');
     const phoneticDisplay = document.getElementById('phoneticPhrase');
@@ -28,15 +31,20 @@ export function updateInfoPanel(selectedDate, includeYear) {
     const daySpelling = getWrittenDay(day);      
     const dayPhonetic = getPhoneticDay(day);     
 
-    // 2. Build Phonetic Phrase with Capitalization Fix
-    // We capitalize the first letter of the dayPhonetic to match the "Title" look.
-    const capitalizedDayPhonetic = dayPhonetic.charAt(0).toUpperCase() + dayPhonetic.slice(1);
-    
-    let fullPl = `${daySpelling} ${currentMonthKey}`;
-    let fullEn = `${monthEn} ${day}${getEnglishSuffix(day)}`;
-    let fullPhonetic = `${capitalizedDayPhonetic} ${monthPhonetic}`; 
+    // 2. Determine Intros (Prefixes)
+    const plIntro = isMeetingMode ? "Spotkanie odbędzie się" : "Dzisiaj jest";
+    const enIntro = isMeetingMode ? "The meeting will be on" : "Today is";
+    const phoneticIntro = isMeetingMode ? "Spot-ka-nyeh od-ben-jeh sheh" : "Djee-shigh yest";
 
-    // 3. Check for Holiday
+    // 3. Build Phonetic Phrase with Capitalization Fix
+    // We capitalize the first letter of the phonetic intro
+    const capitalizedPhoneticIntro = phoneticIntro.charAt(0).toUpperCase() + phoneticIntro.slice(1);
+    
+    let fullPl = `${plIntro} ${daySpelling} ${currentMonthKey}`;
+    let fullEn = `${enIntro} ${monthEn} ${day}${getEnglishSuffix(day)}`;
+    let fullPhonetic = `${capitalizedPhoneticIntro} ${dayPhonetic} ${monthPhonetic}`; 
+
+    // 4. Check for Holiday
     const holidays = holidayData.getHolidaysForYear(year);
     const holidayKey = `${monthIndex}-${day}`;
     
@@ -50,14 +58,14 @@ export function updateInfoPanel(selectedDate, includeYear) {
         }
     }
 
-    // 4. Handle the Year
+    // 5. Handle the Year
     if (includeYear) {
         fullPl += ` ${getYearPolish(year)} roku`;
         fullEn += `, ${year}`;
         fullPhonetic += ` ${getYearPhonetic(year)} ro-koo`;
     }
 
-    // 5. Update UI
+    // 6. Update UI
     plDisplay.innerText = fullPl;
     enDisplay.innerText = fullEn;
     phoneticDisplay.innerText = fullPhonetic;
@@ -74,7 +82,7 @@ export function speakPolish() {
 
     const utterance = new SpeechSynthesisUtterance(text);
     utterance.lang = 'pl-PL';
-    utterance.rate = 0.85; // Slightly slower for clear learning
+    utterance.rate = 0.85; 
     utterance.pitch = 1.0;
 
     window.speechSynthesis.speak(utterance);
