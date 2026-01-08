@@ -1,28 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+ <!DOCTYPE html>
+<html lang="en">
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Polish Date Master</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="manifest" href="manifest.json">
 
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="PL Date">
-<link rel="apple-touch-startup-image" href="icon-512.png">
-
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-
-   
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="PL Date">
+    <link rel="apple-touch-startup-image" href="icon-512.png">
 </head>
 <body class="winter">
-<noscript>
-    <div style="text-align: center; padding: 50px;">
-        <h2>Oops! JavaScript is required.</h2>
-        <p>Please enable JavaScript to use the Polish Date Master.</p>
-    </div>
-</noscript>
+    <noscript>
+        <div style="text-align: center; padding: 50px;">
+            <h2>Oops! JavaScript is required.</h2>
+            <p>Please enable JavaScript to use the Polish Date Master.</p>
+        </div>
+    </noscript>
+
     <div class="brand-header">
         <h1>Learn Polish Dates</h1>
     </div>
@@ -33,32 +33,26 @@
             <button id="navCulture" class="nav-icon-btn" title="Culture">📖</button>
             <button id="navRules" class="nav-icon-btn" title="Grammar">⚖️</button>
             <div class="divider"></div>
-          <button id="meetingToggle" class="pill-btn">📅 Mode: Formal</button>
+            <button id="meetingToggle" class="pill-btn">MODE: FORMAL</button>
             <button id="langToggle" class="pill-btn-sm">EN</button>
         </div>
     </header>
 
     <main id="calendarSection">
         <div class="calendar-navigation">
-            
             <div class="nav-controls-row">
                 <button id="prevMonth" class="nav-btn-arrow" aria-label="Previous Month">←</button>
-                
                 <div class="rollers-container">
-                    <select id="monthRoller" class="roller-select">
-                        </select>
+                    <select id="monthRoller" class="roller-select"></select>
                     <input type="number" id="yearInput" value="2026" min="0" max="3000">
                 </div>
-
                 <button id="nextMonth" class="nav-btn-arrow" aria-label="Next Month">→</button>
             </div>
         </div>
 
         <div class="calendar-container">
-            <div class="weekdays">
-                </div>
-            <div id="calendarGrid" class="calendar-grid">
-                </div>
+            <div class="weekdays"></div>
+            <div id="calendarGrid" class="calendar-grid"></div>
         </div>
     </main>
 
@@ -66,21 +60,17 @@
     <section id="rulesPage" style="display: none;"></section>
 
     <footer class="info-panel">
-    <div id="grammarTipContainer" class="grammar-tip-box" style="display: none;">
-        <span id="grammarTipText"></span>
-    </div>
+        <div class="phrase-display">
+            <p id="plPhrase" class="phrase-pl">Wybierz datę</p>
+            <p id="phoneticPhrase" class="phrase-phonetic">vye-byezh dah-teh</p>
+            <p id="enPhrase" class="phrase-en">Select a date</p>
+        </div>
 
-    <div class="phrase-display">
-        <p id="plPhrase" class="phrase-pl">Wybierz datę</p>
-        <p id="phoneticPhrase" class="phrase-phonetic">vye-byezh dah-teh</p>
-        <p id="enPhrase" class="phrase-en">Select a date</p>
-    </div>
-
-       <div class="footer-controls">
-        <button id="playBtn" class="pill-btn">🔊 Listen</button>
-        <button id="repeatYearBtn" class="pill-btn">Include Year: ON</button>
-    </div>
-</footer>
+        <div class="footer-controls">
+            <button id="playBtn" class="pill-btn">🔊 Listen</button>
+            <button id="repeatYearBtn" class="pill-btn">YEAR: ON</button>
+        </div>
+    </footer>
 
     <script type="module" src="app.js"></script>
 </body>
