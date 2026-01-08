@@ -25,18 +25,41 @@ export function speakText(text) {
 }
 
 export function checkVoices(callback) {
-    const loadVoices = () => {
-        const voices = window.speechSynthesis.getVoices();
-        if (voices.length > 0) {
-            voicesLoaded = true;
-            // Additional check: Is there actually a Polish voice in the list?
-            const hasPolish = voices.some(v => v.lang.startsWith('pl'));
-            callback(hasPolish);
+    const synth = window.speechSynthesis;
+    
+    const tryToGetVoices = () => {
+        const voices = synth.getVoices();
+        // Look specifically for Polish
+        const plVoice = voices.find(v => v.lang.startsWith('pl'));
+        
+        if (plVoice || voices.length > 0) {
+            callback(true);
+            return true;
+        }
+        return false;
+    };
+
+    // 1. Try immediately
+    if (tryToGetVoices()) return;
+
+    // 2. If not ready, wait for the event
+    synth.onvoiceschanged = () => {
+        if (tryToGetVoices()) {
+            synth.onvoiceschanged = null; // Clean up
         }
     };
 
-    if (window.speechSynthesis.onvoiceschanged !== undefined) {
-        window.speechSynthesis.onvoiceschanged = loadVoices;
-    }
-    loadVoices(); 
+    // 3. Fail-safe: Enable it anyway after 1.5 seconds 
+    // (Sometimes browsers have the voice but don't fire the event)
+    setTimeout(() => {
+        callback(true);
+    }, 1500);
+}
+
+export function speakText(text) {
+    window.speechSynthesis.cancel();
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = 'pl-PL';
+    utterance.rate = 0.9;
+    window.speechSynthesis.speak(utterance);
 }
