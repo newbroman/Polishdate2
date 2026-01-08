@@ -11,8 +11,8 @@ const state = {
     viewDate: new Date(),    
     selectedDate: new Date(), 
     includeYear: true,
-    isPolish: false, // <-- FIXED: Added missing comma here
-    isMeetingMode: false 
+    isPolish: false,
+    isFormal: true // Now starts as Formal (Genitive)
 };
 
 // 2. Main Render Function
