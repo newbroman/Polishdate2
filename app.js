@@ -51,7 +51,7 @@ function render() {
         weekdayContainer.innerHTML = days.map(d => `<span>${d}</span>`).join('');
     }
 
-const playBtn = document.getElementById('playBtn');
+    const playBtn = document.getElementById('playBtn');
     const repeatYearBtn = document.getElementById('repeatYearBtn');
 
     if (playBtn) {
