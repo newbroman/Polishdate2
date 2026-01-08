@@ -35,7 +35,11 @@ function render() {
 }
 
 // Update the call to updateInfoPanel
-updateInfoPanel(state.selectedDate, state.includeYear, state.isPolish, state.isMeetingMode);
+try {
+        updateInfoPanel(state.selectedDate, state.includeYear, state.isMeetingMode);
+    } catch (e) { 
+        console.error("Info Panel Error:", e); 
+    }
 
     
     // Seasonal Themes
