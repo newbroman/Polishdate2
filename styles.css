@@ -470,3 +470,56 @@ body {
     font-style: italic;
     font-size: 0.85rem;
 }
+/* --- 10. Formal vs. Informal Themes --- */
+
+/* Transition for smooth color shifting */
+.info-panel {
+    transition: background 0.4s ease, border-top 0.4s ease, box-shadow 0.4s ease;
+}
+
+/* Formal Mode (Default): Gold/Professional Theme */
+.info-panel.formal-theme {
+    border-top: 4px solid var(--gold) !important;
+    background: linear-gradient(to bottom, var(--panel-bg), rgba(184, 134, 11, 0.05));
+    box-shadow: 0 -5px 25px rgba(184, 134, 11, 0.15);
+}
+
+/* Informal Mode: Blue/Friendly Theme */
+.info-panel.informal-theme {
+    border-top: 4px solid #00d4ff !important;
+    background: linear-gradient(to bottom, var(--panel-bg), rgba(0, 212, 255, 0.05));
+    box-shadow: 0 -5px 25px rgba(0, 212, 255, 0.15);
+}
+
+/* Dynamic Button Coloring */
+.mode-btn-formal {
+    background-color: var(--gold) !important;
+    color: #ffffff !important;
+    box-shadow: 0 4px 10px rgba(184, 134, 11, 0.3) !important;
+}
+
+.mode-btn-informal {
+    background-color: #00d4ff !important;
+    color: #ffffff !important;
+    box-shadow: 0 4px 10px rgba(0, 212, 255, 0.3) !important;
+}
+
+/* --- 11. Grammar Tip Refinements --- */
+.grammar-tip-box {
+    background: var(--seasonal-bg);
+    border-left: 3px solid var(--accent-color);
+    padding: 10px 15px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    width: 100%;
+    max-width: 400px;
+}
+
+.formal-theme .grammar-tip-box {
+    border-left-color: var(--gold);
+}
+
+.informal-theme .grammar-tip-box {
+    border-left-color: #00d4ff;
+}
