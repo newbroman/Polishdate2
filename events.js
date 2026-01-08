@@ -35,21 +35,19 @@ export function setupListeners(state, render) {
         meetingBtn.className = state.isFormal ? 'pill-btn mode-btn-formal' : 'pill-btn mode-btn-informal';
 
         meetingBtn.onclick = () => {
-            state.isFormal = !state.isFormal;
-            
-            // 1. Update button text
-            const label = state.isPolish ? "Tryb" : "Mode";
-            const status = state.isFormal ? 
-                (state.isPolish ? "Formalny" : "Formal") : 
-                (state.isPolish ? "Nieformalny" : "Informal");
-            meetingBtn.innerText = `📅 ${label}: ${status}`;
-            
-            // 2. Update button color (CSS classes)
-            meetingBtn.className = `pill-btn ${state.isFormal ? 'mode-btn-formal' : 'mode-btn-informal'}`;
-            
-            // 3. Trigger full UI update
-            render(); 
-        };
+    state.isFormal = !state.isFormal;
+    
+    // Updated text: removed 📅 icon
+    const label = state.isPolish ? "Tryb" : "Mode";
+    const status = state.isFormal ? 
+        (state.isPolish ? "Formalny" : "Informalny") : 
+        (state.isPolish ? "Informal" : "Formal");
+
+    meetingBtn.innerText = `${label}: ${status}`;
+    
+    meetingBtn.className = `pill-btn ${state.isFormal ? 'mode-btn-formal' : 'mode-btn-informal'}`;
+    render(); 
+       };
     }
 
     // --- 2. Navigation Logic ---
