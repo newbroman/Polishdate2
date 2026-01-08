@@ -46,7 +46,7 @@ if (meetingBtn) {
 
     // --- UPDATED: Passing all 3 arguments to the panel ---
     try {
-        updateInfoPanel(state.selectedDate, state.includeYear, state.isMeetingMode);
+         updateInfoPanel(state.selectedDate, state.includeYear, state.isFormal);
     } catch (e) { 
         console.error("Info Panel Error:", e); 
     }
