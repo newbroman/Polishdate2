@@ -523,3 +523,18 @@ body {
 .informal-theme .grammar-tip-box {
     border-left-color: #00d4ff;
 }
+/* Styling for the Rules Page Content */
+.rule-tip {
+    background: var(--seasonal-bg);
+    padding: 8px 12px;
+    border-radius: 6px;
+    margin: 10px 0 5px;
+    font-size: 0.9rem;
+    color: var(--text-main);
+}
+
+.rule-example {
+    font-size: 0.85rem;
+    color: var(--tan);
+    padding-left: 12px;
+}
