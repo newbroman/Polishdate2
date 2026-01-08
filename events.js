@@ -145,18 +145,23 @@ export function renderCulturalHub(state) {
 
     let foundHoliday = false;
     Object.entries(holidays).forEach(([key, name]) => {
-        if (key.startsWith(`${monthIndex}-`)) {
-            const dayNum = key.split('-')[1]; 
-            const explanation = culturalData.holidayExplanations[key] || "No description available yet.";
-            html += `
-                <div class="holiday-entry">
-                    <div class="holiday-date">${dayNum} ${monthInfo.pl}</div>
-                    <strong>${name}</strong>
-                    <p>${explanation}</p>
-                </div>`;
-            foundHoliday = true;
-        }
-    });
+    if (key.startsWith(`${monthIndex}-`)) {
+        const dayNum = key.split('-')[1]; 
+        
+        // Look for explanation by key (fixed dates) OR by the holiday name (moveable feasts)
+        const explanation = culturalData.holidayExplanations[key] || 
+                           culturalData.holidayExplanations[name] || 
+                           "No description available yet.";
+        
+        html += `
+            <div class="holiday-entry">
+                <div class="holiday-date">${dayNum} ${monthInfo.pl}</div>
+                <strong>${name}</strong>
+                <p>${explanation}</p>
+            </div>`;
+        foundHoliday = true;
+    }
+});
 
     if (!foundHoliday) {
         html += `<p class="no-data">${state.isPolish ? 'Brak świąt w tym miesiącu.' : 'No major holidays listed for this month.'}</p>`;
