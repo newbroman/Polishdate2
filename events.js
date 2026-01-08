@@ -9,13 +9,11 @@ import grammarRules, { getRulesHTML } from './rules.js'; // Added getRulesHTML i
 export function setupListeners(state, render) {
     
     // --- 1. Audio and Logic Toggles ---
-    const playBtn = document.getElementById('playBtn');
-    if (playBtn) {
-        checkVoices((ready) => {
-            if (ready) {
-                playBtn.disabled = false;
-                playBtn.style.opacity = "1";
-                render(); 
+ const meetingBtn = document.getElementById('meetingToggle');
+if (meetingBtn) {
+    meetingBtn.onclick = () => {
+        state.isFormal = !state.isFormal; // Ensure this matches state.isFormal
+        render(); // This triggers updateInfoPanel with the new state
             }
         });
 
