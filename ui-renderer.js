@@ -6,9 +6,10 @@ import phonetics from './phonetics.js';
 import holidayData from './holiday.js';
 
 /**
- * Updates the UI with the selected date, incorporating Meeting Mode logic.
+ * Updates the UI with the selected date.
+ * Default is now Formal (Genitive Case).
  */
-export function updateInfoPanel(selectedDate, includeYear, isMeetingMode) {
+export function updateInfoPanel(selectedDate, includeYear, isFormal) {
     const plDisplay = document.getElementById('plPhrase');
     const enDisplay = document.getElementById('enPhrase');
     const phoneticDisplay = document.getElementById('phoneticPhrase');
@@ -20,17 +21,18 @@ export function updateInfoPanel(selectedDate, includeYear, isMeetingMode) {
     const monthIndex = selectedDate.getMonth();
     const year = selectedDate.getFullYear();
 
+    // 1. Update Grammar Tip Labeling
     const tipContainer = document.getElementById('grammarTipContainer');
     const tipText = document.getElementById('grammarTipText');
 
-if (tipContainer && tipText) {
-    tipContainer.style.display = isMeetingMode ? 'block' : 'none';
-    tipText.innerText = isMeetingMode ? 
-        "💡 Genitive Case: Day ends in '-ego' for 'on a day'." : 
-        "💡 Nominative Case: Day ends in '-y/-i' for 'today is'.";
-}
+    if (tipContainer && tipText) {
+        tipContainer.style.display = 'block'; // Keep visible to show the difference
+        tipText.innerText = isFormal ? 
+            "💡 Formal (Genitive): Used for scheduling. Endings change to '-ego'." : 
+            "💡 Informal (Nominative): Used for today's date. Endings are '-y/-i'.";
+    }
 
-    // 1. Centralized Data Mapping
+    // 2. Centralized Data Mapping
     const monthNamesEn = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     const monthKeysPl = ["stycznia", "lutego", "marca", "kwietnia", "maja", "czerwca", "lipca", "sierpnia", "września", "października", "listopada", "grudnia"];
     
@@ -38,23 +40,25 @@ if (tipContainer && tipText) {
     const monthPhonetic = phonetics.months[currentMonthKey]; 
     const monthEn = monthNamesEn[monthIndex];
 
-    const daySpelling = getWrittenDay(day);      
-    const dayPhonetic = getPhoneticDay(day);     
+    // Pass isFormal (true for Genitive, false for Nominative)
+    const daySpelling = getWrittenDay(day, isFormal);      
+    const dayPhonetic = getPhoneticDay(day, isFormal);     
 
-    // 2. Determine Intros (Prefixes)
-    const plIntro = isMeetingMode ? "Spotkanie odbędzie się" : "Dzisiaj jest";
-    const enIntro = isMeetingMode ? "The meeting will be on" : "Today is";
-    const phoneticIntro = isMeetingMode ? "Spot-ka-nyeh od-ben-jeh sheh" : "Djee-shigh yest";
+    // 3. Determine Intros (Prefixes)
+    // Formal = Meeting phrasing (The current phrasing)
+    // Informal = Today is phrasing (The ex-startup phrasing)
+    const plIntro = isFormal ? "Spotkanie odbędzie się" : "Dzisiaj jest";
+    const enIntro = isFormal ? "The meeting will be on" : "Today is";
+    const phoneticIntro = isFormal ? "Spot-ka-nyeh od-ben-jeh sheh" : "Djee-shigh yest";
 
-    // 3. Build Phonetic Phrase with Capitalization Fix
-    // We capitalize the first letter of the phonetic intro
+    // 4. Build Phrases
     const capitalizedPhoneticIntro = phoneticIntro.charAt(0).toUpperCase() + phoneticIntro.slice(1);
     
     let fullPl = `${plIntro} ${daySpelling} ${currentMonthKey}`;
     let fullEn = `${enIntro} ${monthEn} ${day}${getEnglishSuffix(day)}`;
     let fullPhonetic = `${capitalizedPhoneticIntro} ${dayPhonetic} ${monthPhonetic}`; 
 
-    // 4. Check for Holiday
+    // 5. Check for Holiday
     const holidays = holidayData.getHolidaysForYear(year);
     const holidayKey = `${monthIndex}-${day}`;
     
@@ -68,33 +72,30 @@ if (tipContainer && tipText) {
         }
     }
 
-    // 5. Handle the Year
+    // 6. Handle the Year (Years are Genitive in both modes for dates)
     if (includeYear) {
-        fullPl += ` ${getYearPolish(year)} roku`;
+        fullPl += ` ${getYearPolish(year, true)} roku`;
         fullEn += `, ${year}`;
-        fullPhonetic += ` ${getYearPhonetic(year)} ro-koo`;
+        fullPhonetic += ` ${getYearPhonetic(year, true)} ro-koo`;
     }
 
-    // 6. Update UI
+    // 7. Update UI
     plDisplay.innerText = fullPl;
     enDisplay.innerText = fullEn;
     phoneticDisplay.innerText = fullPhonetic;
 }
 
 /**
- * Audio Engine: Speaks the Polish phrase displayed on screen
+ * Audio Engine
  */
 export function speakPolish() {
     const text = document.getElementById('plPhrase').innerText;
     if (!text || text === "Wybierz datę") return;
 
     window.speechSynthesis.cancel();
-
     const utterance = new SpeechSynthesisUtterance(text);
     utterance.lang = 'pl-PL';
     utterance.rate = 0.85; 
-    utterance.pitch = 1.0;
-
     window.speechSynthesis.speak(utterance);
 }
 
