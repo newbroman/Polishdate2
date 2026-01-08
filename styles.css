@@ -452,3 +452,21 @@ body {
     background: var(--gold);
     border-radius: 50%;
 }
+/* Highlight the Meeting Mode button when active */
+.pill-btn.active-meeting {
+    background-color: #2e7d32; /* Deep green */
+    color: white;
+    border: 1px solid #1b5e20;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+/* Style for the context-sensitive grammar tip */
+.grammar-tip-box {
+    background: rgba(255, 255, 255, 0.1);
+    border-left: 3px solid #ffd700;
+    padding: 8px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    font-style: italic;
+    font-size: 0.85rem;
+}
