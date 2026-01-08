@@ -51,6 +51,20 @@ function render() {
         weekdayContainer.innerHTML = days.map(d => `<span>${d}</span>`).join('');
     }
 
+const playBtn = document.getElementById('playBtn');
+    const repeatYearBtn = document.getElementById('repeatYearBtn');
+
+    if (playBtn) {
+        if (!playBtn.innerText.includes("⌛")) {
+            playBtn.innerText = state.isPolish ? "🔊 Słuchaj" : "🔊 Listen";
+        }
+    }
+
+    if (repeatYearBtn) {
+        const yearLabel = state.isPolish ? "Dodaj rok" : "Include Year";
+        const status = state.includeYear ? "ON" : "OFF";
+        repeatYearBtn.innerText = `${yearLabel}: ${status}`;
+                              
     renderCalendarGrid(state.viewDate, state.selectedDate, (newDate) => {
         state.selectedDate = newDate;
         render(); 
