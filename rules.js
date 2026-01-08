@@ -27,11 +27,11 @@ const grammarRules = {
         rule: "Vocabulary tip: Look for root words like 'flower', 'leaf', or 'ice'.",
         example: "Kwiecień (April) comes from 'kwiat' (flower)."
     },
-    meetingMode: {
-        title: "5. Arranging Meetings (Nominative vs. Genitive)",
-        explanation: "When you simply state today's date, you use the Nominative case. However, when you say 'the meeting is ON a certain day', the day itself must shift to the Genitive case.",
-        rule: "For meetings, the ending of the day changes from -y/-i to -ego.",
-        example: "Today is: pierwszy (1.) vs. Meeting is on: pierwszego (1-go)"
+    formalVsInformal: { // Renamed from meetingMode
+        title: "5. Formal vs. Informal (Cases)",
+        explanation: "By default, this app uses the Formal (Genitive) case, which is standard for scheduling meetings. The Informal (Nominative) case is used for simple statements like 'Today is...'.",
+        rule: "Formal endings use -ego (the 'Time Case'), while Informal endings use -y/-i.",
+        example: "Formal: pierwszego (1-go) vs. Informal: pierwszy (1.)"
     }
 };
 
