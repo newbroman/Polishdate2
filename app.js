@@ -137,18 +137,17 @@ function renderCalendarGrid(viewDate, selectedDate, onDateClick) {
 
 // 4. Initialize
 window.onload = () => {
+    // 1. Setup Listeners first so the button is ready for state changes
+    setupListeners(state, render);
+    
+    // 2. Check voices with a callback that forces a UI update
     checkVoices((ready) => {
         console.log("Polish voices ready:", ready);
-        // Initial render to set correct button text once voices are checked
-        render();
+        render(); // This will flip the button from "Loading" to "Listen"
     });
     
-    setupListeners(state, render);
+    // 3. Initial draw
     render();
-    
-    setTimeout(() => {
-        render();
-    }, 100);
 };
 
 // 5. Watch for System Theme Changes
