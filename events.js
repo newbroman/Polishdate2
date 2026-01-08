@@ -4,27 +4,23 @@
 import { speakText, checkVoices } from './audio.js';
 import holidayData from './holiday.js';
 import culturalData from './cultural.js';
-import grammarRules from './rules.js';
+import grammarRules, { getRulesHTML } from './rules.js'; // Added getRulesHTML import
 
 export function setupListeners(state, render) {
     
-  // --- 1. Audio and Logic Toggles ---
+    // --- 1. Audio and Logic Toggles ---
     const playBtn = document.getElementById('playBtn');
     if (playBtn) {
-        // We no longer manually set .innerText = "Loading" here.
-        // render() in app.js will handle the text.
-
         checkVoices((ready) => {
             if (ready) {
                 playBtn.disabled = false;
                 playBtn.style.opacity = "1";
-                render(); // This ensures "Listen" or "Słuchaj" appears
+                render(); 
             }
         });
 
         playBtn.onclick = () => {
             const textToSpeak = document.getElementById('plPhrase').innerText;
-            // Check for both English and Polish default text
             if (textToSpeak && textToSpeak !== "Wybierz datę" && textToSpeak !== "Select a date") {
                 speakText(textToSpeak);
             }
@@ -32,12 +28,13 @@ export function setupListeners(state, render) {
     }
 
     const meetingBtn = document.getElementById('meetingToggle');
-if (meetingBtn) {
-    meetingBtn.onclick = () => {
-        state.isMeetingMode = !state.isMeetingMode;
-        render(); // This will trigger the UI update
-    };
-}
+    if (meetingBtn) {
+        meetingBtn.onclick = () => {
+            state.isMeetingMode = !state.isMeetingMode;
+            render(); 
+        };
+    }
+
     // --- 2. Navigation Logic ---
     const showSection = (id) => {
         const sections = {
@@ -78,6 +75,7 @@ if (meetingBtn) {
         renderRulesPage();
     };
 
+    // Calendar Controls
     document.getElementById('prevMonth').onclick = () => {
         state.viewDate.setMonth(state.viewDate.getMonth() - 1);
         render();
@@ -98,24 +96,20 @@ if (meetingBtn) {
         render();
     };
 
-    // LANGUAGE TOGGLE - CLEANED UP
     document.getElementById('langToggle').onclick = (e) => {
         state.isPolish = !state.isPolish;
-        // Toggle the button label between PL and EN
         e.target.innerText = state.isPolish ? 'PL' : 'EN';
-        render(); // app.js now handles translating the other buttons
+        render(); 
     };
 
-    // INCLUDE YEAR TOGGLE - CLEANED UP
     document.getElementById('repeatYearBtn').onclick = () => {
         state.includeYear = !state.includeYear;
-        // No manual innerText here anymore!
-        render(); // app.js handles the text and translation
+        render(); 
     };
 } 
 
 /**
- * Renders the Cultural Hub (Existing Logic)
+ * Renders the Cultural Hub
  */
 export function renderCulturalHub(state) {
     const hub = document.getElementById('culturalHub');
@@ -153,23 +147,21 @@ export function renderCulturalHub(state) {
 
     let foundHoliday = false;
     Object.entries(holidays).forEach(([key, name]) => {
-    if (key.startsWith(`${monthIndex}-`)) {
-        const dayNum = key.split('-')[1]; 
-        
-        // Look for explanation by key (fixed dates) OR by the holiday name (moveable feasts)
-        const explanation = culturalData.holidayExplanations[key] || 
-                           culturalData.holidayExplanations[name] || 
-                           "No description available yet.";
-        
-        html += `
-            <div class="holiday-entry">
-                <div class="holiday-date">${dayNum} ${monthInfo.pl}</div>
-                <strong>${name}</strong>
-                <p>${explanation}</p>
-            </div>`;
-        foundHoliday = true;
-    }
-});
+        if (key.startsWith(`${monthIndex}-`)) {
+            const dayNum = key.split('-')[1]; 
+            const explanation = culturalData.holidayExplanations[key] || 
+                               culturalData.holidayExplanations[name] || 
+                               "No description available yet.";
+            
+            html += `
+                <div class="holiday-entry">
+                    <div class="holiday-date">${dayNum} ${monthInfo.pl}</div>
+                    <strong>${name}</strong>
+                    <p>${explanation}</p>
+                </div>`;
+            foundHoliday = true;
+        }
+    });
 
     if (!foundHoliday) {
         html += `<p class="no-data">${state.isPolish ? 'Brak świąt w tym miesiącu.' : 'No major holidays listed for this month.'}</p>`;
@@ -188,24 +180,18 @@ export function renderCulturalHub(state) {
 }
 
 /**
- * Renders the Grammar Rules page (Existing Logic)
+ * Renders the Grammar Rules page using the function from rules.js
  */
 export function renderRulesPage() {
     const page = document.getElementById('rulesPage');
-    let html = `<div class="culture-page"><h1>Grammar Rules</h1>`;
-    Object.values(grammarRules).forEach(item => {
-        html += `
-            <div class="info-block">
-                <h3>${item.title}</h3>
-                <p>${item.explanation}</p>
-                ${item.rule ? `<p><strong>Rule:</strong> ${item.rule}</p>` : ''}
-                ${item.example ? `<p><em>Example: ${item.example}</em></p>` : ''}
-            </div>`;
-    });
-    html += `<button id="backToCalRules" class="close-culture-btn">← Back</button></div>`;
-    page.innerHTML = html;
+    if (!page) return;
+    
+    // Using your custom HTML builder from rules.js for consistency
+    page.innerHTML = `<div class="culture-page">${getRulesHTML()}</div>`;
 
-    document.getElementById('backToCalRules').onclick = () => {
-        document.getElementById('navCalendar').click();
-    };
+    // Ensure the button in your getRulesHTML triggers navigation
+    const backBtn = page.querySelector('.close-culture-btn');
+    if (backBtn) {
+        backBtn.onclick = () => document.getElementById('navCalendar').click();
+    }
 }
