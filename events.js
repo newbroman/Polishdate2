@@ -30,6 +30,14 @@ export function setupListeners(state, render) {
             }
         };
     }
+
+    const meetingBtn = document.getElementById('meetingToggle');
+if (meetingBtn) {
+    meetingBtn.onclick = () => {
+        state.isMeetingMode = !state.isMeetingMode;
+        render(); // This will trigger the UI update
+    };
+}
     // --- 2. Navigation Logic ---
     const showSection = (id) => {
         const sections = {
