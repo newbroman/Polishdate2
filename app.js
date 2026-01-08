@@ -27,13 +27,22 @@ function render() {
     const monthIndex = state.viewDate.getMonth();
     const year = state.viewDate.getFullYear();
 
-    // Update Meeting Toggle Button Text
-    const meetingBtn = document.getElementById('meetingToggle');
-    if (meetingBtn) {
-        const label = state.isPolish ? "Spotkanie" : "Meeting";
-        const status = state.isMeetingMode ? "ON" : "OFF";
-        meetingBtn.innerText = `${label}: ${status}`;
-    }
+ // Update Formal/Informal Toggle Button
+const meetingBtn = document.getElementById('meetingToggle');
+if (meetingBtn) {
+    // Labels adapt to the language toggle (PL/EN)
+    const label = state.isPolish ? "Tryb" : "Mode";
+    
+    // Status reflects our new Formal/Informal logic
+    const status = state.isFormal ? 
+        (state.isPolish ? "Formalny" : "Formal") : 
+        (state.isPolish ? "Informalny" : "Informal");
+
+    meetingBtn.innerText = `📅 ${label}: ${status}`;
+    
+    // Sync the CSS classes so the button color matches the mode
+    meetingBtn.className = `pill-btn ${state.isFormal ? 'mode-btn-formal' : 'mode-btn-informal'}`;
+}
 
     // --- UPDATED: Passing all 3 arguments to the panel ---
     try {
