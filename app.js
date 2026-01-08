@@ -12,6 +12,7 @@ const state = {
     selectedDate: new Date(), 
     includeYear: true,
     isPolish: false 
+    isMeetingMode: false // New property
 };
 
 // 2. Main Render Function
