@@ -29,10 +29,19 @@ export function setupListeners(state, render) {
 
 const meetingBtn = document.getElementById('meetingToggle');
 if (meetingBtn) {
+    // Set initial class based on default Formal state
+    meetingBtn.className = state.isFormal ? 'pill-btn mode-btn-formal' : 'pill-btn mode-btn-informal';
+
     meetingBtn.onclick = () => {
         state.isFormal = !state.isFormal;
-        // Update button text based on the new state
+        
+        // 1. Update text
         meetingBtn.innerText = state.isFormal ? "📅 Mode: Formal" : "📅 Mode: Informal";
+        
+        // 2. Update button color (CSS classes)
+        meetingBtn.className = `pill-btn ${state.isFormal ? 'mode-btn-formal' : 'mode-btn-informal'}`;
+        
+        // 3. Trigger full UI update (this will update the footer theme via ui-renderer.js)
         render(); 
     };
 }
