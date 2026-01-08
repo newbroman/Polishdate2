@@ -1,32 +1,49 @@
 /**
- * audio.js - Robust version for Standalone PWA
+ * audio.js - Speech Synthesis Engine
+ */
+
+let polishVoice = null;
+
+/**
+ * Finds and caches the best Polish voice available on the device.
  */
 export function checkVoices(callback) {
-    // We immediately say "ready" so the button is never stuck.
-    // Voices will load in the background.
-    callback(true);
+    const findVoice = () => {
+        const voices = window.speechSynthesis.getVoices();
+        // Look for a native Polish voice
+        polishVoice = voices.find(v => v.lang === 'pl-PL' || v.lang === 'pl_PL');
+        
+        if (polishVoice && callback) {
+            callback(true);
+        }
+    };
+
+    if (window.speechSynthesis.onvoiceschanged !== undefined) {
+        window.speechSynthesis.onvoiceschanged = findVoice;
+    }
+    findVoice();
 }
 
+/**
+ * Speaks the provided text using the Polish voice.
+ */
 export function speakText(text) {
-    if (!window.speechSynthesis) return;
+    if (!text) return;
 
-    // 1. Cancel any existing speech
+    // Stop any current speech
     window.speechSynthesis.cancel();
 
-    // 2. Create the utterance
     const utterance = new SpeechSynthesisUtterance(text);
     
-    // 3. Try to force a Polish voice
-    const voices = window.speechSynthesis.getVoices();
-    const plVoice = voices.find(v => v.lang.startsWith('pl') || v.name.includes('Polish'));
-    
-    if (plVoice) {
-        utterance.voice = plVoice;
+    if (polishVoice) {
+        utterance.voice = polishVoice;
+    } else {
+        utterance.lang = 'pl-PL'; // Fallback to language code
     }
 
-    utterance.lang = 'pl-PL';
-    utterance.rate = 0.8;
-    
-    // 4. Speak
+    // Natural Polish speech usually sounds better slightly slower for learners
+    utterance.rate = 0.8; 
+    utterance.pitch = 1.0;
+
     window.speechSynthesis.speak(utterance);
 }
