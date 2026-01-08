@@ -27,6 +27,17 @@ function render() {
     const monthIndex = state.viewDate.getMonth();
     const year = state.viewDate.getFullYear();
 
+    const meetingBtn = document.getElementById('meetingToggle');
+    if (meetingBtn) {
+    const label = state.isPolish ? "Spotkanie" : "Meeting";
+    const status = state.isMeetingMode ? "ON" : "OFF";
+    meetingBtn.innerText = `${label}: ${status}`;
+}
+
+// Update the call to updateInfoPanel
+updateInfoPanel(state.selectedDate, state.includeYear, state.isPolish, state.isMeetingMode);
+
+    
     // Seasonal Themes
     document.body.className = ''; 
     const seasons = ['winter', 'winter', 'spring', 'spring', 'spring', 'summer', 'summer', 'summer', 'autumn', 'autumn', 'autumn', 'winter'];
