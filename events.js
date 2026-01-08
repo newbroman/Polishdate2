@@ -27,13 +27,15 @@ export function setupListeners(state, render) {
         };
     }
 
-    const meetingBtn = document.getElementById('meetingToggle');
-    if (meetingBtn) {
-        meetingBtn.onclick = () => {
-            state.isMeetingMode = !state.isMeetingMode;
-            render(); 
-        };
-    }
+const meetingBtn = document.getElementById('meetingToggle');
+if (meetingBtn) {
+    meetingBtn.onclick = () => {
+        state.isFormal = !state.isFormal;
+        // Update button text based on the new state
+        meetingBtn.innerText = state.isFormal ? "📅 Mode: Formal" : "📅 Mode: Informal";
+        render(); 
+    };
+}
 
     // --- 2. Navigation Logic ---
     const showSection = (id) => {
