@@ -8,31 +8,28 @@ import grammarRules from './rules.js';
 
 export function setupListeners(state, render) {
     
-    // --- 1. Audio and Logic Toggles ---
-   const playBtn = document.getElementById('playBtn');
-if (playBtn) {
-    playBtn.disabled = true;
-    // Keep this initial state
-    playBtn.innerText = "⌛ Loading..."; 
+  // --- 1. Audio and Logic Toggles ---
+    const playBtn = document.getElementById('playBtn');
+    if (playBtn) {
+        // We no longer manually set .innerText = "Loading" here.
+        // render() in app.js will handle the text.
 
-    checkVoices((ready) => {
-        if (ready) {
-            playBtn.disabled = false;
-            playBtn.style.opacity = "1";
-            // REMOVE the line: playBtn.innerText = "🔊 Listen";
-            // JUST call render() instead
-            render(); 
-        }
-    });
+        checkVoices((ready) => {
+            if (ready) {
+                playBtn.disabled = false;
+                playBtn.style.opacity = "1";
+                render(); // This ensures "Listen" or "Słuchaj" appears
+            }
+        });
 
         playBtn.onclick = () => {
             const textToSpeak = document.getElementById('plPhrase').innerText;
-            if (textToSpeak && textToSpeak !== "Wybierz datę") {
+            // Check for both English and Polish default text
+            if (textToSpeak && textToSpeak !== "Wybierz datę" && textToSpeak !== "Select a date") {
                 speakText(textToSpeak);
             }
         };
     }
-
     // --- 2. Navigation Logic ---
     const showSection = (id) => {
         const sections = {
