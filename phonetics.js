@@ -57,8 +57,8 @@ const phonetics = {
         24: "dvoo-jyes-teh-go chvar-teh-go", 25: "dvoo-jyes-teh-go pyon-teh-go", 26: "dvoo-jyes-teh-go shoos-teh-go",
         27: "dvoo-jyes-teh-go shood-meh-go", 28: "dvoo-jyes-teh-go oos-meh-go", 29: "dvoo-jyes-teh-go jyev-yon-teh-go",
         30: "t-shy-jyes-teh-go", 31: "t-shy-jyes-teh-go pyer-v-sheh-go"
-    }
-};
+    },
+
 
     // 4. Large Ordinals for Years (Unchanged)
     ordinals: {
