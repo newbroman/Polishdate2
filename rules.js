@@ -1,3 +1,7 @@
+/**
+ * rules.js - Polish Grammar & Cultural Rules
+ */
+
 const grammarRules = {
     ordinalNumbers: {
         title: "1. Ordinal Numbers",
@@ -22,8 +26,17 @@ const grammarRules = {
         explanation: "Polish month names aren't based on Latin gods (like March/Mars). They are based on what happens in nature in Poland.",
         rule: "Vocabulary tip: Look for root words like 'flower', 'leaf', or 'ice'.",
         example: "Kwiecień (April) comes from 'kwiat' (flower)."
+    },
+    meetingMode: {
+        title: "5. Arranging Meetings (Nominative vs. Genitive)",
+        explanation: "When you simply state today's date, you use the Nominative case. However, when you say 'the meeting is ON a certain day', the day itself must shift to the Genitive case.",
+        rule: "For meetings, the ending of the day changes from -y/-i to -ego.",
+        example: "Today is: pierwszy (1.) vs. Meeting is on: pierwszego (1-go)"
     }
 };
+
+
+
 export function getRulesHTML() {
     return `
         <div class="rules-header">
