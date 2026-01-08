@@ -30,17 +30,13 @@ function render() {
  // Update Formal/Informal Toggle Button
 const meetingBtn = document.getElementById('meetingToggle');
 if (meetingBtn) {
-    // Labels adapt to the language toggle (PL/EN)
     const label = state.isPolish ? "Tryb" : "Mode";
-    
-    // Status reflects our new Formal/Informal logic
     const status = state.isFormal ? 
-        (state.isPolish ? "Formalny" : "Formal") : 
-        (state.isPolish ? "Informalny" : "Informal");
+        (state.isPolish ? "Formalny" : "Informalny") : 
+        (state.isPolish ? "Informal" : "Formal");
 
-    meetingBtn.innerText = `📅 ${label}: ${status}`;
-    
-    // Sync the CSS classes so the button color matches the mode
+    // Icon removed here as well
+    meetingBtn.innerText = `${label}: ${status}`;
     meetingBtn.className = `pill-btn ${state.isFormal ? 'mode-btn-formal' : 'mode-btn-informal'}`;
 }
 
