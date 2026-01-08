@@ -9,20 +9,21 @@ import grammarRules from './rules.js';
 export function setupListeners(state, render) {
     
     // --- 1. Audio and Logic Toggles ---
-    const playBtn = document.getElementById('playBtn');
-    if (playBtn) {
-        // Initial state
-        playBtn.disabled = true;
-        playBtn.innerText = "⌛ Loading...";
+   const playBtn = document.getElementById('playBtn');
+if (playBtn) {
+    playBtn.disabled = true;
+    // Keep this initial state
+    playBtn.innerText = "⌛ Loading..."; 
 
-        checkVoices((ready) => {
-            if (ready) {
-                playBtn.disabled = false;
-                // We don't set innerText here, render() will do it
-                playBtn.style.opacity = "1";
-                render(); 
-            }
-        });
+    checkVoices((ready) => {
+        if (ready) {
+            playBtn.disabled = false;
+            playBtn.style.opacity = "1";
+            // REMOVE the line: playBtn.innerText = "🔊 Listen";
+            // JUST call render() instead
+            render(); 
+        }
+    });
 
         playBtn.onclick = () => {
             const textToSpeak = document.getElementById('plPhrase').innerText;
