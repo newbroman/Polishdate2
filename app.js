@@ -12,7 +12,7 @@ const state = {
     selectedDate: new Date(), 
     includeYear: true,
     isPolish: false,
-    isFormal: true // Correctly starts as Formal/Genitive
+    isFormal: true // Correctly starts as Formal/Genitive by default
 };
 
 // 2. Main Render Function
@@ -33,7 +33,6 @@ function render() {
     // 1. Update Formal/Informal Mode Button
     if (meetingBtn) {
         const label = state.isPolish ? "Tryb" : "Mode";
-        // Fixed Logic: state.isFormal true -> "Formal"
         const status = state.isFormal ? 
             (state.isPolish ? "Formalny" : "Formal") : 
             (state.isPolish ? "Informalny" : "Informal");
@@ -42,7 +41,7 @@ function render() {
         meetingBtn.className = `pill-btn ${state.isFormal ? 'mode-btn-formal' : 'mode-btn-informal'}`;
     }
 
-    // 2. Update Info Panel (Crucial: Passing 4 arguments for Language Toggle)
+    // 2. Update Info Panel
     try {
          updateInfoPanel(state.selectedDate, state.includeYear, state.isFormal, state.isPolish);
     } catch (e) { 
@@ -67,7 +66,7 @@ function render() {
     
     if (yInput) yInput.value = year;
 
-    // 5. Weekday Labels
+    // 5. Weekday Labels (Alignment fixed via grid in CSS)
     if (weekdayContainer) {
         const days = state.isPolish ? ["Nie", "Pon", "Wt", "Śr", "Czw", "Pią", "Sob"] : ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
         weekdayContainer.innerHTML = days.map(d => `<span>${d}</span>`).join('');
@@ -79,12 +78,12 @@ function render() {
     }
 
     if (repeatYearBtn) {
-        const yearLabel = state.isPolish ? "Dodaj rok" : "Include Year";
+        const yearLabel = state.isPolish ? "Rok" : "Year";
         const status = state.includeYear ? "ON" : "OFF";
         repeatYearBtn.innerText = `${yearLabel}: ${status}`;
     }
 
-    // 7. Render Grid
+    // 7. Render Calendar Grid
     renderCalendarGrid(state.viewDate, state.selectedDate, (newDate) => {
         state.selectedDate = newDate;
         render(); 
@@ -108,54 +107,54 @@ function renderCalendarGrid(viewDate, selectedDate, onDateClick) {
     const firstDayIndex = new Date(year, month, 1).getDay();
     const lastDay = new Date(year, month + 1, 0).getDate();
 
-    // Spacers
+    // Spacers for first week
     for (let x = 0; x < firstDayIndex; x++) {
         const spacer = document.createElement('div');
         spacer.className = 'calendar-day spacer';
         grid.appendChild(spacer);
     }
 
-    // Days
-
+    // Day Squares
     for (let day = 1; day <= lastDay; day++) {
-    const daySquare = document.createElement('div');
-    daySquare.className = 'calendar-day';
-    daySquare.innerText = day;
+        const daySquare = document.createElement('div');
+        daySquare.className = 'calendar-day';
+        daySquare.innerText = day;
 
-    const holidayKey = `${month}-${day}`;
-    if (holidays[holidayKey]) {
-        daySquare.classList.add('holiday'); // This triggers the Red Border
+        // Holiday Check (Red Border)
+        const holidayKey = `${month}-${day}`;
+        if (holidays[holidayKey]) {
+            daySquare.classList.add('holiday');
+        }
+
+        // Today Check (Gold Background)
+        const isToday = day === today.getDate() && 
+                        month === today.getMonth() && 
+                        year === today.getFullYear();
+        if (isToday) {
+            daySquare.classList.add('today-highlight');
+        }
+
+        // Selected Check
+        const isSelected = selectedDate && 
+                           day === selectedDate.getDate() && 
+                           month === selectedDate.getMonth() && 
+                           year === selectedDate.getFullYear();
+        if (isSelected) daySquare.classList.add('selected');
+
+        daySquare.onclick = () => {
+            const newSelected = new Date(year, month, day);
+            onDateClick(newSelected);
+        };
+
+        grid.appendChild(daySquare);
     }
-
-    const isToday = day === today.getDate() && 
-                    month === today.getMonth() && 
-                    year === today.getFullYear();
-    
-    if (isToday) {
-        daySquare.classList.add('today-highlight'); // This triggers Gold Background
-    }
-
-    const isSelected = selectedDate && 
-                       day === selectedDate.getDate() && 
-                       month === selectedDate.getMonth() && 
-                       year === selectedDate.getFullYear();
-    
-    if (isSelected) daySquare.classList.add('selected');
-
-    daySquare.onclick = () => {
-        state.selectedDate = new Date(year, month, day);
-        render(); 
-    };
-
-    grid.appendChild(daySquare);
-}
 }
 
 // 4. Initialize
 window.onload = () => {
     setupListeners(state, render);
+    // Check voices, then render once
     checkVoices(() => render());
-    render();
 };
 
 window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => render());
