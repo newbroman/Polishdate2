@@ -169,3 +169,111 @@ body {
     font-weight: 700;
     cursor: pointer;
 }
+
+/* --- 1. Weekday Alignment Fix --- */
+.weekdays {
+    display: grid; !important;
+    grid-template-columns: repeat(7, 1fr); /* Exactly matches the calendar grid */
+    gap: 5px;                              /* Exactly matches the calendar gap */
+    text-align: center;
+    margin-bottom: 5px;
+    font-size: 0.75rem;
+    font-weight: 800;
+    color: var(--text-dim);
+}
+
+.weekdays span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* --- 2. Today's Highlight (Gold Background) --- */
+.calendar-day.today-highlight {
+    background-color: var(--gold) !important;
+    color: #000 !important;
+    border: none !important;
+    font-weight: 800;
+    box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+}
+
+/* --- 3. Holiday Styling (Red Border, No Dot) --- */
+.calendar-day.holiday {
+    border: 2px solid var(--accent-color) !important;
+    color: var(--accent-color) !important;
+    font-weight: 900;
+}
+
+/* Remove the dot if it exists from previous versions */
+.calendar-day.holiday::after {
+    display: none !important;
+}
+
+/* Ensure selected holidays still show the red border */
+.calendar-day.selected.holiday {
+    background-color: var(--accent-color) !important;
+    color: white !important;
+    border: 2px solid white !important;
+}
+
+/* --- 4. General Grid Refinement --- */
+#calendarGrid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 5px;
+}
+
+.calendar-day {
+    aspect-ratio: 1 / 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border-radius: 6px;
+    border: 1px solid var(--border-color);
+}
+/* --- Grammar & Cultural Page Styling --- */
+.content-page {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 30px;
+    background: var(--panel-bg);
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    line-height: 1.6;
+}
+
+.content-page h1 {
+    color: var(--accent-color);
+    border-bottom: 2px solid var(--accent-color);
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+.content-page h2 {
+    margin-top: 25px;
+    color: var(--text-main);
+    font-size: 1.2rem;
+}
+
+.content-page p {
+    margin-bottom: 15px;
+    color: var(--text-dim);
+}
+
+.content-page strong {
+    color: var(--gold);
+}
+
+.content-page em {
+    background: rgba(184, 134, 11, 0.1);
+    padding: 2px 5px;
+    border-radius: 4px;
+    font-style: normal;
+    color: var(--tan);
+}
+
+#backBtn {
+    margin-top: 30px;
+    display: inline-block;
+}
