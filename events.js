@@ -140,11 +140,15 @@ export function renderCulturalHub(state) {
     const holidays = holidayData.getHolidaysForYear(year);
 
     let html = `
-        <div class="content-body">
-            <header class="content-header">
-                <h1>${state.isPolish ? monthInfo.pl : culturalData.months[monthIndex].en} ${year}</h1>
-                <p class="season-label"><strong>${state.isPolish ? 'Pora roku' : 'Season'}:</strong> ${monthInfo.season}</p>
-            </header>
+    <div class="content-body">
+        <header class="content-header">
+            <h1>${state.isPolish ? monthInfo.pl : (culturalData.months[monthIndex].en || "Month")} ${year}</h1>
+            <div class="season-box">
+                <span class="season-icon">${getSeasonIcon(monthInfo.season)}</span>
+                <strong>${state.isPolish ? 'Pora roku' : 'Season'}:</strong> 
+                <span class="season-text">${monthInfo.season}</span>
+            </div>
+        </header>
 
             <section class="info-block">
                 <h3>📜 ${state.isPolish ? 'Etymologia' : 'Etymology'}</h3>
@@ -206,4 +210,11 @@ export function renderRulesPage(state) {
         </div>`;
 
     page.querySelector('.back-to-cal').onclick = () => document.getElementById('navCalendar').click();
+}
+function getSeasonIcon(season) {
+    if (season.includes("Wiosna")) return "🌱";
+    if (season.includes("Lato")) return "☀️";
+    if (season.includes("Jesień")) return "🍂";
+    if (season.includes("Zima")) return "❄️";
+    return "📅";
 }
