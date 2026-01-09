@@ -27,11 +27,11 @@ const grammarRules = {
         rule: "Vocabulary tip: Look for root words like 'flower', 'leaf', or 'ice'.",
         example: "Kwiecień (April) comes from 'kwiat' (flower)."
     },
-    formalVsInformal: { // Renamed from meetingMode
-        title: "5. Formal vs. Informal (Cases)",
-        explanation: "By default, this app uses the Formal (Genitive) case, which is standard for scheduling meetings. The Informal (Nominative) case is used for simple statements like 'Today is...'.",
-        rule: "Formal endings use -ego (the 'Time Case'), while Informal endings use -y/-i.",
-        example: "Formal: pierwszego (1-go) vs. Informal: pierwszy (1.)"
+    spokenVsWritten: { 
+        title: "5. Spoken vs. Written Cases",
+        explanation: "Written (Genitive) is the standard for events. Spoken (Nominative) is for simple naming.",
+        rule: "Written uses -ego (Time Case), while Spoken uses -y/-i.",
+        example: "Written: drugiego vs. Spoken: drugi"
     }
 };
 
