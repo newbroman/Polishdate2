@@ -25,28 +25,23 @@ const ASSETS = [
   './icon-512.png'
 ];
 
-// 1. Install Event: Cache all assets
+// Install: Cache all assets
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
-      console.log('PWA: Caching all assets');
       return cache.addAll(ASSETS);
     })
   );
-  // Force the waiting service worker to become the active service worker
   self.skipWaiting();
 });
 
-// 2. Activate Event: Clean up old versions of the cache
+// Activate: Clean old caches
 self.addEventListener('activate', (event) => {
   event.waitUntil(
     caches.keys().then((keys) => {
       return Promise.all(
         keys.map((key) => {
-          if (key !== CACHE_NAME) {
-            console.log('PWA: Clearing old cache', key);
-            return caches.delete(key);
-          }
+          if (key !== CACHE_NAME) return caches.delete(key);
         })
       );
     })
@@ -54,12 +49,38 @@ self.addEventListener('activate', (event) => {
   return self.clients.claim();
 });
 
-// 3. Fetch Event: Serve from cache, fallback to network
+// Fetch: Cache-first strategy for speed
 self.addEventListener('fetch', (event) => {
   event.respondWith(
     caches.match(event.request).then((cachedResponse) => {
-      // Return the cached version if we have it, otherwise hit the network
       return cachedResponse || fetch(event.request);
     })
   );
 });
+
+📄 2. manifest.json
+
+Create a file named manifest.json in your root folder. This tells the phone that this is a "Standalone App" so it hides the browser's address bar and back buttons.
+JSON
+
+{
+  "name": "Polish Date Master",
+  "short_name": "PL Dates",
+  "description": "Master Polish dates in Formal and Informal modes.",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#f8f9fa",
+  "theme_color": "#e6192e",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
