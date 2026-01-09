@@ -39,6 +39,7 @@ export function setupListeners(state, render) {
     // --- 2. Navigation Logic (Overriding CSS !important) ---
     const showSection = (id) => {
         const sections = {
+           window.scrollTo(0, 0); // Add this to reset scroll position
             'calendar': document.getElementById('calendarSection'),
             'culture': document.getElementById('culturalHub'),
             'rules': document.getElementById('rulesPage')
