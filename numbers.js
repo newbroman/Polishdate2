@@ -103,25 +103,40 @@ export function getYearPhonetic(year) {
     const lastTwo = year % 100;
     let pParts = [];
 
+    // Thousands
     if (thousands > 0) {
         pParts.push(thousands === 1 ? "ti-syonts" : (thousands === 2 ? "dva ti-syont-se" : "t-she ti-syont-se"));
     }
 
+    // Hundreds
     const pHundreds = { 1: "sto", 2: "dvyeh-sh-tsyeh", 3: "t-sheh-stah", 4: "chter-is-ta", 5: "pyent-set", 6: "shes-set", 7: "shye-dem-set", 8: "oh-syem-set", 9: "jyev-yen-set" };
     if (hundreds > 0) pParts.push(pHundreds[hundreds]);
 
+    // Last Two Digits (The Fix)
     if (lastTwo > 0) {
-      let pYear = phonetics.ordinals[lastTwo]; 
+        let pYear = "";
+        if (lastTwo <= 20 || lastTwo === 30 || lastTwo === 40 || lastTwo === 50 || lastTwo === 60 || lastTwo === 70 || lastTwo === 80 || lastTwo === 90) {
+            // Direct lookup for simple numbers
+            pYear = phonetics.ordinals[lastTwo];
+        } else {
+            // Combined lookup for numbers like 26 (20 + 6)
+            const tens = Math.floor(lastTwo / 10) * 10;
+            const units = lastTwo % 10;
+            pYear = `${phonetics.ordinals[tens]} ${phonetics.ordinals[units]}`;
+        }
 
         if (pYear) {
-            // Transform the ending to Genitive (-eh-go)
-            // This turns "shesh-tih" into "shesh-teh-go"
-            pYear = pYear.replace(/-y$/, "-eh-go").replace(/-ee$/, "-eh-go").replace(/-ih$/, "-eh-go");
+            // Apply the Genitive ending (-eh-go) to the WHOLE year string
+            // We replace endings of both words if it's a compound number
+            pYear = pYear.replace(/-y/g, "-eh-go")
+                         .replace(/-i/g, "-eh-go")
+                         .replace(/-ee/g, "-eh-go")
+                         .replace(/-ih/g, "-eh-go")
+                         .replace(/-shi/g, "-sheh-go"); // Specific fix for "vshi"
             pParts.push(pYear);
-        } else {
-            // Fallback just in case the phonetic is missing
-            pParts.push(lastTwo.toString()); 
         }
     }
+
+    pParts.push("ro-koo"); // Always add "roku" for spoken dates
     return pParts.join(" ");
 }
