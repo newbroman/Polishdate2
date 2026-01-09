@@ -12,7 +12,7 @@ const state = {
     selectedDate: new Date(), 
     includeYear: true,
     isPolish: false,
-    isFormal: true // Now starts as Formal (Genitive)
+    isFormal: true // Starts as Formal (Genitive)
 };
 
 // 2. Main Render Function
@@ -21,53 +21,40 @@ function render() {
     const mRoller = document.getElementById('monthRoller');
     const yInput = document.getElementById('yearInput');
     const weekdayContainer = document.querySelector('.weekdays');
+    const meetingBtn = document.getElementById('meetingToggle');
+    const playBtn = document.getElementById('playBtn');
+    const repeatYearBtn = document.getElementById('repeatYearBtn');
     
     if (!grid) return;
 
     const monthIndex = state.viewDate.getMonth();
     const year = state.viewDate.getFullYear();
 
-    // 1. Update Mode Button (Corrected Logic)
-    // Update Formal/Informal Toggle Button
-const meetingBtn = document.getElementById('meetingToggle');
-if (meetingBtn) {
-    const label = state.isPolish ? "Tryb" : "Mode";
-    // FIX: If isFormal is true, the status should be "Formal"
-    const status = state.isFormal ? 
-        (state.isPolish ? "Formalny" : "Formal") : 
-        (state.isPolish ? "Informalny" : "Informal");
+    // 1. Update Formal/Informal Toggle Button Logic
+    if (meetingBtn) {
+        const label = state.isPolish ? "Tryb" : "Mode";
+        // FIX: Formal state displays "Formal", Informal state displays "Informal"
+        const status = state.isFormal ? 
+            (state.isPolish ? "Formalny" : "Formal") : 
+            (state.isPolish ? "Informalny" : "Informal");
 
-    meetingBtn.innerText = `${label}: ${status}`;
-    meetingBtn.className = `pill-btn ${state.isFormal ? 'mode-btn-formal' : 'mode-btn-informal'}`;
-}
-
-// FIX: Passing ALL 4 arguments to the panel
-try {
-     updateInfoPanel(state.selectedDate, state.includeYear, state.isFormal, state.isPolish);
-} catch (e) { 
-    console.error("Info Panel Error:", e); 
-}
-    
-    // ... (rest of your season/roller logic remains the same) ...
-
-    // 3. Update Year Button (Simplified text)
-    if (repeatYearBtn) {
-        const yearLabel = state.isPolish ? "Rok" : "Year";
-        const status = state.includeYear ? "ON" : "OFF";
-        repeatYearBtn.innerText = `${yearLabel}: ${status}`;
+        meetingBtn.innerText = `${label}: ${status}`;
+        meetingBtn.className = `pill-btn ${state.isFormal ? 'mode-btn-formal' : 'mode-btn-informal'}`;
     }
 
-    renderCalendarGrid(state.viewDate, state.selectedDate, (newDate) => {
-        state.selectedDate = newDate;
-        render(); 
-    });
-}
-    // Seasonal Themes
+    // 2. Update Info Panel (Passing all 4 arguments now)
+    try {
+         updateInfoPanel(state.selectedDate, state.includeYear, state.isFormal, state.isPolish);
+    } catch (e) { 
+        console.error("Info Panel Error:", e); 
+    }
+    
+    // 3. Seasonal Themes
     document.body.className = ''; 
     const seasons = ['winter', 'winter', 'spring', 'spring', 'spring', 'summer', 'summer', 'summer', 'autumn', 'autumn', 'autumn', 'winter'];
     document.body.classList.add(seasons[monthIndex]);
 
-    // Update Month Dropdown
+    // 4. Update Month Dropdown
     if (mRoller) {
         const monthNamesEn = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
         const monthNamesPl = ["Styczeń", "Luty", "Marzec", "Kwiecień", "Maj", "Czerwiec", "Lipiec", "Sierpień", "Wrzesień", "Październik", "Listopad", "Grudzień"];
@@ -80,29 +67,24 @@ try {
     
     if (yInput) yInput.value = year;
 
-    // Weekday Labels
+    // 5. Weekday Labels
     if (weekdayContainer) {
         const days = state.isPolish ? ["Nie", "Pon", "Wt", "Śr", "Czw", "Pią", "Sob"] : ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
         weekdayContainer.innerHTML = days.map(d => `<span>${d}</span>`).join('');
     }
 
-    // Button Translations
-    const playBtn = document.getElementById('playBtn');
-    const repeatYearBtn = document.getElementById('repeatYearBtn');
-
-    if (playBtn) {
-        if (!playBtn.innerText.includes("⌛")) {
-            playBtn.innerText = state.isPolish ? "🔊 Słuchaj" : "🔊 Listen";
-        }
+    // 6. Button Translations
+    if (playBtn && !playBtn.innerText.includes("⌛")) {
+        playBtn.innerText = state.isPolish ? "🔊 Słuchaj" : "🔊 Listen";
     }
 
     if (repeatYearBtn) {
-        const yearLabel = state.isPolish ? "Dodaj rok" : "Include Year";
+        const yearLabel = state.isPolish ? "Rok" : "Year";
         const status = state.includeYear ? "ON" : "OFF";
         repeatYearBtn.innerText = `${yearLabel}: ${status}`;
     }
 
-    // Render the grid
+    // 7. Render the Grid
     renderCalendarGrid(state.viewDate, state.selectedDate, (newDate) => {
         state.selectedDate = newDate;
         render(); 
@@ -168,9 +150,7 @@ function renderCalendarGrid(viewDate, selectedDate, onDateClick) {
 // 4. Initialize
 window.onload = () => {
     setupListeners(state, render);
-    checkVoices((ready) => {
-        render(); 
-    });
+    checkVoices(() => render());
     render();
 };
 
