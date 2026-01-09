@@ -41,14 +41,16 @@ export function getWrittenDay(day, isNominative = false) {
  */
 export function getPhoneticDay(day, isNominative = false) {
     if (!isNominative) {
-        // Fix: Strip existing vowel sounds (-ee or -y) before adding -eh-go
-        // This prevents sounds like "droo-ghee-eh-go"
+        if (phonetics.ordinalDaysGenitive && phonetics.ordinalDaysGenitive[day]) {
+            return phonetics.ordinalDaysGenitive[day];
+        }
+        // Fallback: Strip the 'y' or 'ee' and add 'eh-go'
         let base = phonetics.ordinalDays[day] || "";
-        return phonetics.ordinalDaysGenitive[day] || (base.replace(/-ee$/, "").replace(/-y$/, "") + "-eh-go");
+        return base.replace(/-ee$/, "").replace(/-y$/, "") + "-eh-go";
     }
-    return phonetics.ordinalDays[day];
+    // If it's 'Spoken' mode (Nominative), return the standard ordinal sound
+    return phonetics.ordinalDays[day] || day.toString();
 }
-
 /**
  * Written Year Logic (Always Genitive for dates).
  */
