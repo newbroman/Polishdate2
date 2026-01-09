@@ -273,3 +273,51 @@ body {
     justify-content: space-between !important;
     padding: 0 10px !important;
 }
+/* --- Holiday Fact Cards --- */
+.holiday-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 10px;
+}
+
+.holiday-entry {
+    background: rgba(0, 0, 0, 0.03);
+    padding: 12px 16px;
+    border-radius: 8px;
+    border-left: 4px solid var(--accent-color);
+    transition: transform 0.2s ease;
+}
+
+@media (prefers-color-scheme: dark) {
+    .holiday-entry {
+        background: rgba(255, 255, 255, 0.05);
+    }
+}
+
+.holiday-title {
+    font-size: 1.05rem;
+    color: var(--text-main);
+    margin-bottom: 4px;
+}
+
+.holiday-desc {
+    font-size: 0.9rem;
+    color: var(--text-dim);
+    line-height: 1.4;
+    font-style: italic;
+}
+
+/* Season and Etymology Styling */
+.season-label {
+    margin-top: 5px;
+    font-size: 0.95rem;
+    color: var(--tan);
+}
+
+.derivation-text {
+    background: var(--seasonal-bg);
+    padding: 15px;
+    border-radius: 10px;
+    border: 1px dashed var(--border-color);
+}
