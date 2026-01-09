@@ -12,7 +12,7 @@ const state = {
     selectedDate: new Date(), 
     includeYear: true,
     isPolish: false,
-    isFormal: true // Correctly starts as Formal/Genitive by default
+    isFormal: false // Correctly starts as Formal/Genitive by default
 };
 
 // 2. Main Render Function
