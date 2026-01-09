@@ -37,9 +37,9 @@ export function updateInfoPanel(selectedDate, includeYear, isFormal) {
     const dayPhonetic = getPhoneticDay(day, isFormal);     
 
     // 3. Intros
-    const plIntro = isFormal ? "Spotkanie:" : "Dzisiaj jest:";
-    const enIntro = isFormal ? "Meeting:" : "Today is:";
-    const phoneticIntro = isFormal ? "Spot-ka-nyeh:" : "Djee-shigh yest:";
+    const plIntro = isFormal ? "Dzisiaj jest:" : "Spotkanie:";
+    const enIntro = isFormal ? "Today is:" : "Meeting:";
+    const phoneticIntro = isFormal ? "Djee-shigh yest:" : "Spot-ka-nyeh:";
 
     const capitalizedPhoneticIntro = phoneticIntro.charAt(0).toUpperCase() + phoneticIntro.slice(1);
     
