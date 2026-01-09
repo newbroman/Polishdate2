@@ -132,36 +132,58 @@ export function renderCulturalHub(state) {
     const hub = document.getElementById('culturalHub');
     const monthIndex = state.viewDate.getMonth();
     const year = state.viewDate.getFullYear();
+    
+    // Get month etymology from culturalData
     const monthInfo = culturalData.months[monthIndex] || { pl: "Miesiąc", derivation: "N/A", season: "N/A" };
+    
+    // Get holidays and their full descriptions
     const holidays = holidayData.getHolidaysForYear(year);
 
     let html = `
         <div class="content-body">
             <header class="content-header">
-                <h1>${state.isPolish ? monthInfo.pl : (culturalData.months[monthIndex].en || "Month")} ${year}</h1>
-                <p><strong>Season:</strong> ${monthInfo.season}</p>
+                <h1>${state.isPolish ? monthInfo.pl : culturalData.months[monthIndex].en} ${year}</h1>
+                <p class="season-label"><strong>${state.isPolish ? 'Pora roku' : 'Season'}:</strong> ${monthInfo.season}</p>
             </header>
+
             <section class="info-block">
-                <h3>📜 ${state.isPolish ? 'Historia nazwy' : 'Etymology'}</h3>
-                <p>${monthInfo.derivation}</p>
+                <h3>📜 ${state.isPolish ? 'Etymologia' : 'Etymology'}</h3>
+                <p class="derivation-text">${monthInfo.derivation}</p>
             </section>
+
             <section class="info-block">
-                <h3>🎈 ${state.isPolish ? 'Święta' : 'Holidays'}</h3>
+                <h3>🎈 ${state.isPolish ? 'Wydarzenia i Święta' : 'Holidays & Traditions'}</h3>
                 <div class="holiday-list">`;
 
     let foundHoliday = false;
-    Object.entries(holidays).forEach(([key, name]) => {
+    
+    // Loop through holidays and find matches for current month
+    Object.entries(holidays).forEach(([key, holidayName]) => {
         if (key.startsWith(`${monthIndex}-`)) {
-            const dayNum = key.split('-')[1]; 
-            html += `<div class="holiday-entry"><strong>${dayNum} ${monthInfo.pl}:</strong> ${name}</div>`;
+            const dayNum = key.split('-')[1];
+            // Get description from holidayData if it exists
+            const description = holidayData.descriptions ? holidayData.descriptions[holidayName] : null;
+
+            html += `
+                <div class="holiday-entry">
+                    <div class="holiday-title"><strong>${dayNum} ${monthInfo.pl}:</strong> ${holidayName}</div>
+                    ${description ? `<p class="holiday-desc">${description}</p>` : ''}
+                </div>`;
             foundHoliday = true;
         }
     });
 
-    if (!foundHoliday) html += `<p>${state.isPolish ? 'Brak świąt.' : 'No major holidays.'}</p>`;
+    if (!foundHoliday) {
+        html += `<p class="no-data">${state.isPolish ? 'Brak głównych świąt w tym miesiącu.' : 'No major holidays this month.'}</p>`;
+    }
 
-    html += `</div></section>
-            <button class="pill-btn back-to-cal" style="margin-top:20px">← Back</button>
+    html += `
+                </div>
+            </section>
+            
+            <div class="nav-actions">
+                <button class="pill-btn back-to-cal">← ${state.isPolish ? 'Powrót' : 'Back to Calendar'}</button>
+            </div>
         </div>`;
 
     hub.innerHTML = html;
