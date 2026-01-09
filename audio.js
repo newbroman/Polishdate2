@@ -17,19 +17,28 @@ export function checkVoices(callback) {
             callback(true);
         }
     };
-
+// Chrome/Android fix
     if (window.speechSynthesis.onvoiceschanged !== undefined) {
         window.speechSynthesis.onvoiceschanged = findVoice;
     }
+    
+    // Initial check
     findVoice();
+
+    // iOS Fix: If voices still aren't loaded after 1 second, force a re-check
+    setTimeout(findVoice, 1000);
 }
 
-// Add this to audio.js
+/**
+ * ESSENTIAL FOR MOBILE: This "un-mutes" the synthesis engine.
+ * Must be called from a user-initiated touch event.
+ */
 export function unlockAudio() {
-    const talk = new SpeechSynthesisUtterance("");
-    talk.volume = 0; // Silent
+    // We speak a tiny, silent string to initialize the engine
+    const talk = new SpeechSynthesisUtterance(" ");
+    talk.volume = 0; 
     window.speechSynthesis.speak(talk);
-    console.log("Audio Unlocked");
+    console.log("Audio engine primed.");
 }
 
 /**
