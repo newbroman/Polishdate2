@@ -53,11 +53,9 @@ export function setupListeners(state, render) {
         // Show the specific section
         const activeSection = sections[id];
         if (activeSection) {
-            // Calendar uses flex for centering; Culture/Rules use block
             const displayType = (id === 'calendar') ? 'flex' : 'block';
             activeSection.style.setProperty('display', displayType, 'important');
             
-            // Apply formatting class for text-heavy pages
             if (id !== 'calendar') {
                 activeSection.classList.add('content-page');
             }
@@ -140,5 +138,50 @@ export function renderCulturalHub(state) {
     let html = `
         <div class="content-body">
             <header class="content-header">
-                <h1>${state.isPolish ? monthInfo.pl : culturalData.months[monthIndex].en} ${year}</h1>
-                <p><strong>Season:</strong> ${monthInfo.season}</
+                <h1>${state.isPolish ? monthInfo.pl : (culturalData.months[monthIndex].en || "Month")} ${year}</h1>
+                <p><strong>Season:</strong> ${monthInfo.season}</p>
+            </header>
+            <section class="info-block">
+                <h3>📜 ${state.isPolish ? 'Historia nazwy' : 'Etymology'}</h3>
+                <p>${monthInfo.derivation}</p>
+            </section>
+            <section class="info-block">
+                <h3>🎈 ${state.isPolish ? 'Święta' : 'Holidays'}</h3>
+                <div class="holiday-list">`;
+
+    let foundHoliday = false;
+    Object.entries(holidays).forEach(([key, name]) => {
+        if (key.startsWith(`${monthIndex}-`)) {
+            const dayNum = key.split('-')[1]; 
+            html += `<div class="holiday-entry"><strong>${dayNum} ${monthInfo.pl}:</strong> ${name}</div>`;
+            foundHoliday = true;
+        }
+    });
+
+    if (!foundHoliday) html += `<p>${state.isPolish ? 'Brak świąt.' : 'No major holidays.'}</p>`;
+
+    html += `</div></section>
+            <button class="pill-btn back-to-cal" style="margin-top:20px">← Back</button>
+        </div>`;
+
+    hub.innerHTML = html;
+    hub.querySelector('.back-to-cal').onclick = () => document.getElementById('navCalendar').click();
+}
+
+/**
+ * Renders the Grammar Rules page
+ */
+export function renderRulesPage(state) {
+    const page = document.getElementById('rulesPage');
+    if (!page) return;
+    
+    page.innerHTML = `
+        <div class="content-body">
+            ${getRulesHTML()}
+            <div style="text-align:center;">
+                <button class="pill-btn back-to-cal" style="margin-top:20px">← Back to Calendar</button>
+            </div>
+        </div>`;
+
+    page.querySelector('.back-to-cal').onclick = () => document.getElementById('navCalendar').click();
+}
