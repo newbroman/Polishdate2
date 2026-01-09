@@ -51,7 +51,7 @@ export function setupListeners(state, render) {
 
         // Show selected
         if (id === 'calendar') {
-            if (sections['calendar']) sections['calendar'].style.display = 'block'; 
+            if (sections['calendar']) sections['calendar'].style.display = 'flex'; 
             if (infoPanel) infoPanel.style.display = 'flex';
         } else {
             if (sections[id]) {
