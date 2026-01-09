@@ -111,11 +111,17 @@ export function getYearPhonetic(year) {
     if (hundreds > 0) pParts.push(pHundreds[hundreds]);
 
     if (lastTwo > 0) {
-        let pYear = phonetics.ordinals[lastTwo] || lastTwo.toString();
-        // Fix phonetic endings to -eh-go
-        pYear = pYear.replace(/-y$/, "-eh-go").replace(/-ee$/, "-eh-go");
-        pParts.push(pYear);
-    }
+      let pYear = phonetics.ordinals[lastTwo]; 
 
+        if (pYear) {
+            // Transform the ending to Genitive (-eh-go)
+            // This turns "shesh-tih" into "shesh-teh-go"
+            pYear = pYear.replace(/-y$/, "-eh-go").replace(/-ee$/, "-eh-go").replace(/-ih$/, "-eh-go");
+            pParts.push(pYear);
+        } else {
+            // Fallback just in case the phonetic is missing
+            pParts.push(lastTwo.toString()); 
+        }
+    }
     return pParts.join(" ");
 }
