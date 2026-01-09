@@ -47,11 +47,12 @@ export function updateInfoPanel(selectedDate, includeYear, isFormal) {
     let fullEn = `${monthEn} ${day}${getEnglishSuffix(day)}`;
     let fullPhonetic = `${capitalizedDayPhonetic} ${monthPhonetic}`;
 
-    // 4. Year Logic (Dates always use Genitive/Formal year endings)
+   // 4. Year Logic (Dates always use Genitive/Formal year endings)
     if (includeYear) {
-        fullPl += ` ${getYearPolish(year, true)} roku`;
+        // Updated: Removed the second argument (true) to match new numbers.js logic
+        fullPl += ` ${getYearPolish(year)} roku`;
         fullEn += `, ${year}`;
-        fullPhonetic += ` ${getYearPhonetic(year, true)} ro-koo`;
+        fullPhonetic += ` ${getYearPhonetic(year)} ro-koo`;
     }
 
     // 5. Holiday Display
