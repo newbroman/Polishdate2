@@ -12,7 +12,7 @@ const state = {
     selectedDate: new Date(), 
     includeYear: true,
     isPolish: false,
-    isFormal: true // Starts as Formal (Genitive)
+    isFormal: true // Correctly starts as Formal/Genitive
 };
 
 // 2. Main Render Function
@@ -30,10 +30,10 @@ function render() {
     const monthIndex = state.viewDate.getMonth();
     const year = state.viewDate.getFullYear();
 
-    // 1. Update Formal/Informal Toggle Button Logic
+    // 1. Update Formal/Informal Mode Button
     if (meetingBtn) {
         const label = state.isPolish ? "Tryb" : "Mode";
-        // FIX: Formal state displays "Formal", Informal state displays "Informal"
+        // Fixed Logic: state.isFormal true -> "Formal"
         const status = state.isFormal ? 
             (state.isPolish ? "Formalny" : "Formal") : 
             (state.isPolish ? "Informalny" : "Informal");
@@ -42,7 +42,7 @@ function render() {
         meetingBtn.className = `pill-btn ${state.isFormal ? 'mode-btn-formal' : 'mode-btn-informal'}`;
     }
 
-    // 2. Update Info Panel (Passing all 4 arguments now)
+    // 2. Update Info Panel (Crucial: Passing 4 arguments for Language Toggle)
     try {
          updateInfoPanel(state.selectedDate, state.includeYear, state.isFormal, state.isPolish);
     } catch (e) { 
@@ -79,12 +79,12 @@ function render() {
     }
 
     if (repeatYearBtn) {
-        const yearLabel = state.isPolish ? "Rok" : "Year";
+        const yearLabel = state.isPolish ? "Dodaj rok" : "Include Year";
         const status = state.includeYear ? "ON" : "OFF";
         repeatYearBtn.innerText = `${yearLabel}: ${status}`;
     }
 
-    // 7. Render the Grid
+    // 7. Render Grid
     renderCalendarGrid(state.viewDate, state.selectedDate, (newDate) => {
         state.selectedDate = newDate;
         render(); 
@@ -108,12 +108,14 @@ function renderCalendarGrid(viewDate, selectedDate, onDateClick) {
     const firstDayIndex = new Date(year, month, 1).getDay();
     const lastDay = new Date(year, month + 1, 0).getDate();
 
+    // Spacers
     for (let x = 0; x < firstDayIndex; x++) {
         const spacer = document.createElement('div');
         spacer.className = 'calendar-day spacer';
         grid.appendChild(spacer);
     }
 
+    // Days
     for (let day = 1; day <= lastDay; day++) {
         const daySquare = document.createElement('div');
         daySquare.className = 'calendar-day';
@@ -154,5 +156,4 @@ window.onload = () => {
     render();
 };
 
-// 5. Watch for System Theme Changes
 window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => render());
