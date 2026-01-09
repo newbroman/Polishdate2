@@ -32,15 +32,15 @@ function render() {
 
     // 1. Update Formal/Informal Mode Button
     if (meetingBtn) {
-    // If isFormal is true, we are in "Ordinal/Naming" mode
-    // If isFormal is false, we are in "Genitive/Event" mode
-    const label = state.isPolish ? "Przypadek" : "Case";
+    const label = state.isPolish ? "Tryb" : "Mode";
+    // isFormal = false -> Written (Genitive)
+    // isFormal = true  -> Spoken (Nominative)
     const status = state.isFormal ? 
-        (state.isPolish ? "Mianownik (Ordinal)" : "Nominative (Ordinal)") : 
-        (state.isPolish ? "Dopełniacz (Genitive)" : "Genitive (Event)");
+        (state.isPolish ? "Mówiony (Nominative)" : "Spoken (Nominative)") : 
+        (state.isPolish ? "Pisany (Genitive)" : "Written (Genitive)");
 
     meetingBtn.innerText = `${label}: ${status}`;
-    meetingBtn.className = `pill-btn ${state.isFormal ? 'mode-btn-formal' : 'mode-btn-informal'}`;
+    meetingBtn.className = `pill-btn ${state.isFormal ? 'mode-btn-spoken' : 'mode-btn-written'}`;
 }
 
     // 2. Update Info Panel
