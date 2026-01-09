@@ -42,34 +42,34 @@ export function getRulesHTML() {
         <article class="rules-container">
             <header class="rules-header">
                 <h2>🇵🇱 Polish Grammar Rules</h2>
-                <p>Polish dates change their endings based on how they are used in a sentence.</p>
+                <p>Polish dates change their endings based on whether you are simply naming the day or describing an event.</p>
             </header>
 
-            <section class="rule-block">
+            <section class="rule-block written-mode">
                 <h3>✍️ Written (Genitive Case)</h3>
-                <p><strong>Default Mode:</strong> This is the most common way to express a date in Poland.</p>
+                <p><strong>Default Mode:</strong> This is the standard way to express a date in a sentence.</p>
                 <ul>
-                    <li><strong>When to use:</strong> For events, meetings, birthdays, or anytime you would say "on the [date]."</li>
-                    <li><strong>Logic:</strong> It implies the word <em>dnia</em> (on the day of...).</li>
-                    <li><strong>Ending:</strong> Usually ends in <strong>-ego</strong>.</li>
+                    <li><strong>Usage:</strong> Use this for appointments, history, or when saying "on the [date]."</li>
+                    <li><strong>Logic:</strong> It implies the phrase "on the day of..." (dnia...).</li>
+                    <li><strong>Ending:</strong> Most numbers change their ending to <strong>-ego</strong>.</li>
                     <li><strong>Example:</strong> <em>Drugiego maja</em> (On the second of May).</li>
                 </ul>
             </section>
 
-            <section class="rule-block">
+            <section class="rule-block spoken-mode">
                 <h3>🗣️ Spoken (Nominative Case)</h3>
-                <p><strong>Identity Mode:</strong> This is used when simply naming the date.</p>
+                <p><strong>Identity Mode:</strong> This is used when the date is the subject of the sentence.</p>
                 <ul>
-                    <li><strong>When to use:</strong> Answering the question "What is today's date?" or reading a calendar header.</li>
-                    <li><strong>Logic:</strong> It is the "dictionary" form of the number.</li>
+                    <li><strong>Usage:</strong> Use this to answer "What is today's date?" or when reading a calendar header.</li>
+                    <li><strong>Logic:</strong> This is the "dictionary" or "naming" form of the number.</li>
                     <li><strong>Ending:</strong> Usually ends in <strong>-y</strong> or <strong>-i</strong>.</li>
                     <li><strong>Example:</strong> <em>Drugi maja</em> (The second of May).</li>
                 </ul>
             </section>
 
             <section class="rule-block tips">
-                <h3>💡 Quick Tip</h3>
-                <p>If you aren't sure which to use, stick with <strong>Written (Genitive)</strong>. In 90% of real-life Polish conversations, this is the version you will need!</p>
+                <h3>💡 Learner's Tip</h3>
+                <p>When in doubt, use <strong>Written (Genitive)</strong>. It is the form you will hear and use most often in daily Polish life!</p>
             </section>
         </article>
     `;
