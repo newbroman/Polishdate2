@@ -24,6 +24,14 @@ export function checkVoices(callback) {
     findVoice();
 }
 
+// Add this to audio.js
+export function unlockAudio() {
+    const talk = new SpeechSynthesisUtterance("");
+    talk.volume = 0; // Silent
+    window.speechSynthesis.speak(talk);
+    console.log("Audio Unlocked");
+}
+
 /**
  * Speaks the provided text using the Polish voice.
  */
