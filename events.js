@@ -9,6 +9,14 @@ import { getRulesHTML } from './rules.js';
 export function setupListeners(state, render) {
     
     // --- 1. Audio and Logic Toggles ---
+    const triggerAudioUnlock = () => {
+        import('./audio.js').then(m => m.unlockAudio());
+        document.removeEventListener('touchstart', triggerAudioUnlock);
+        document.removeEventListener('click', triggerAudioUnlock);
+    };
+    document.addEventListener('touchstart', triggerAudioUnlock);
+    document.addEventListener('click', triggerAudioUnlock);
+    
     const playBtn = document.getElementById('playBtn');
     if (playBtn) {
         checkVoices((ready) => {
