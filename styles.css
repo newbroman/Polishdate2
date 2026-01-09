@@ -342,3 +342,27 @@ body {
     font-weight: 700;
     color: var(--accent-color);
 }
+
+/* Mode Button Styling */
+.mode-btn-formal {
+    background-color: var(--accent-color); /* Matches seasonal accent */
+    color: white;
+    border: 1px solid rgba(255,255,255,0.2);
+}
+
+.mode-btn-informal {
+    background-color: #5d6d7e; /* A neutral steel-blue for informal mode */
+    color: #fcfcfc;
+    font-style: italic;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
+}
+
+/* Info Panel Theme Toggles */
+.info-panel.formal-theme {
+    border-top: 3px solid var(--accent-color);
+}
+
+.info-panel.informal-theme {
+    border-top: 3px dashed #5d6d7e;
+    background: rgba(0, 0, 0, 0.02);
+}
