@@ -1,5 +1,5 @@
 /**
- * events.js - Final Polish
+ * events.js - Final Integration with Alignment Fix
  */
 import { speakText, checkVoices } from './audio.js';
 import holidayData from './holiday.js';
@@ -27,17 +27,16 @@ export function setupListeners(state, render) {
         };
     }
 
-    // --- Formal/Informal Toggle (Fixed Logic) ---
+    // --- Formal/Informal Toggle ---
     const meetingBtn = document.getElementById('meetingToggle');
     if (meetingBtn) {
         meetingBtn.onclick = () => {
             state.isFormal = !state.isFormal;
-            // Force re-render handles text and class names via app.js logic
             render(); 
         };
     }
 
-    // --- 2. Navigation Logic ---
+    // --- 2. Navigation Logic (Overriding CSS !important) ---
     const showSection = (id) => {
         const sections = {
             'calendar': document.getElementById('calendarSection'),
@@ -46,23 +45,34 @@ export function setupListeners(state, render) {
         };
         const infoPanel = document.querySelector('.info-panel');
 
-        // Hide all
-        Object.values(sections).forEach(s => { if (s) s.style.display = 'none'; });
+        // Hide all sections using !important override
+        Object.values(sections).forEach(s => { 
+            if (s) s.style.setProperty('display', 'none', 'important'); 
+        });
 
-        // Show selected
-        if (id === 'calendar') {
-            if (sections['calendar']) sections['calendar'].style.display = 'flex'; 
-            if (infoPanel) infoPanel.style.display = 'flex';
-        } else {
-            if (sections[id]) {
-                sections[id].style.display = 'block';
-                // Add the content-page class if missing to fix formatting
-                sections[id].classList.add('content-page');
+        // Show the specific section
+        const activeSection = sections[id];
+        if (activeSection) {
+            // Calendar uses flex for centering; Culture/Rules use block
+            const displayType = (id === 'calendar') ? 'flex' : 'block';
+            activeSection.style.setProperty('display', displayType, 'important');
+            
+            // Apply formatting class for text-heavy pages
+            if (id !== 'calendar') {
+                activeSection.classList.add('content-page');
             }
-            if (infoPanel) infoPanel.style.display = 'none';
         }
 
-        // Active state for icons
+        // Toggle the Info Panel (Footer)
+        if (infoPanel) {
+            if (id === 'calendar') {
+                infoPanel.style.setProperty('display', 'flex', 'important');
+            } else {
+                infoPanel.style.setProperty('display', 'none', 'important');
+            }
+        }
+
+        // Update Nav Icon visual state
         document.querySelectorAll('.nav-icon-btn').forEach(b => {
             b.classList.toggle('active', b.id === `nav${id.charAt(0).toUpperCase() + id.slice(1)}`);
         });
@@ -71,7 +81,7 @@ export function setupListeners(state, render) {
     // --- 3. Click Listeners ---
     document.getElementById('navCalendar').onclick = () => {
         showSection('calendar');
-        render(); // Re-render to ensure grid alignment and gold/red highlights
+        render(); 
     };
 
     document.getElementById('navCulture').onclick = () => {
@@ -118,72 +128,17 @@ export function setupListeners(state, render) {
 } 
 
 /**
- * Renders the Cultural Hub with proper formatting
+ * Renders the Cultural Hub
  */
 export function renderCulturalHub(state) {
     const hub = document.getElementById('culturalHub');
     const monthIndex = state.viewDate.getMonth();
     const year = state.viewDate.getFullYear();
-    const selectedDay = state.selectedDate.getDate();
-    const dayOfWeekIndex = state.selectedDate.getDay(); 
-
-    const monthNamesEn = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-    const monthNamesPl = ["Styczeń", "Luty", "Marzec", "Kwiecień", "Maj", "Czerwiec", "Lipiec", "Sierpień", "Wrzesień", "Październik", "Listopad", "Grudzień"];
-
-    const displayMonthName = state.isPolish ? monthNamesPl[monthIndex] : monthNamesEn[monthIndex];
-    const monthInfo = culturalData.months[monthIndex] || { pl: "Month", derivation: "N/A", season: "N/A" };
-    const dayInfo = culturalData.days[dayOfWeekIndex] || { pl: "Day", meaning: "N/A" };
+    const monthInfo = culturalData.months[monthIndex] || { pl: "Miesiąc", derivation: "N/A", season: "N/A" };
     const holidays = holidayData.getHolidaysForYear(year);
 
     let html = `
         <div class="content-body">
-            <header class="culture-header">
-                <h1>${displayMonthName} ${year}</h1>
-                <p><strong>Season:</strong> ${monthInfo.season}</p>
-            </header>
-            <section class="info-block">
-                <h3>📅 ${state.isPolish ? 'Dzień tygodnia' : 'Day of the Week'}</h3>
-                <p><strong>${dayInfo.pl}:</strong> ${dayInfo.meaning}</p>
-            </section>
-            <section class="info-block">
-                <h3>📜 ${state.isPolish ? 'Znaczenie nazwy' : 'History'}</h3>
-                <p>${monthInfo.derivation}</p>
-            </section>
-            <section class="info-block">
-                <h3>🎈 ${state.isPolish ? 'Święta' : 'Holidays'}</h3>
-                <div class="holiday-list">`;
-
-    let foundHoliday = false;
-    Object.entries(holidays).forEach(([key, name]) => {
-        if (key.startsWith(`${monthIndex}-`)) {
-            const dayNum = key.split('-')[1]; 
-            html += `<div class="holiday-entry"><strong>${dayNum} ${monthInfo.pl}:</strong> ${name}</div>`;
-            foundHoliday = true;
-        }
-    });
-
-    if (!foundHoliday) html += `<p>${state.isPolish ? 'Brak świąt.' : 'No holidays.'}</p>`;
-
-    html += `</div></section>
-            <button class="pill-btn back-to-cal" style="margin-top:20px">← Back</button>
-        </div>`;
-
-    hub.innerHTML = html;
-    hub.querySelector('.back-to-cal').onclick = () => document.getElementById('navCalendar').click();
-}
-
-/**
- * Renders the Grammar Rules page with clean formatting
- */
-export function renderRulesPage(state) {
-    const page = document.getElementById('rulesPage');
-    if (!page) return;
-    
-    page.innerHTML = `
-        <div class="content-body">
-            ${getRulesHTML()}
-            <button class="pill-btn back-to-cal" style="margin-top:20px">← Back</button>
-        </div>`;
-
-    page.querySelector('.back-to-cal').onclick = () => document.getElementById('navCalendar').click();
-}
+            <header class="content-header">
+                <h1>${state.isPolish ? monthInfo.pl : culturalData.months[monthIndex].en} ${year}</h1>
+                <p><strong>Season:</strong> ${monthInfo.season}</
