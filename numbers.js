@@ -1,14 +1,12 @@
 /**
- * numbers.js - Logic for converting numbers to Polish words and phonetics.
- * Handles the distinction between Formal (Nominative) and Informal (Genitive) days.
+ * numbers.js - Logic for Polish number-to-word conversion.
+ * Default set to Genitive (Event Case) as requested.
  */
 import phonetics from './phonetics.js';
 
 /**
  * Returns the written Polish ordinal day.
- * @param {number} day - Day of the month.
- * @param {boolean} isFormal - True (Default) returns Nominative (e.g., Drugi).
- * False (Meeting) returns Genitive (e.g., Drugiego).
+ * @param {boolean} isNominative - Default is false (loads Genitive: "drugiego").
  */
 export function getWrittenDay(day, isNominative = false) {
     const nominativeDays = {
@@ -35,7 +33,7 @@ export function getWrittenDay(day, isNominative = false) {
         31: "trzydziestego pierwszego"
     };
 
- return isNominative ? nominativeDays[day] : genitiveDays[day];
+    return isNominative ? nominativeDays[day] : genitiveDays[day];
 }
 
 /**
@@ -43,17 +41,16 @@ export function getWrittenDay(day, isNominative = false) {
  */
 export function getPhoneticDay(day, isNominative = false) {
     if (!isNominative) {
-        return phonetics.ordinalDaysGenitive[day] || (phonetics.ordinalDays[day] + "-eh-go");
+        // Fix: Strip existing vowel sounds (-ee or -y) before adding -eh-go
+        // This prevents sounds like "droo-ghee-eh-go"
+        let base = phonetics.ordinalDays[day] || "";
+        return phonetics.ordinalDaysGenitive[day] || (base.replace(/-ee$/, "").replace(/-y$/, "") + "-eh-go");
     }
     return phonetics.ordinalDays[day];
 }
 
-// Year remains Genitive because it's always "of the year..."
-export function getYearPolish(year) {
-
 /**
- * Logic for Written Ordinal Years.
- * Years in Polish dates are ALWAYS Genitive (ending in -ego) because of the word 'roku'.
+ * Written Year Logic (Always Genitive for dates).
  */
 export function getYearPolish(year) {
     if (year === 0) return "zerowego";
@@ -63,20 +60,17 @@ export function getYearPolish(year) {
     const lastTwo = year % 100;
     let parts = [];
 
-    // Thousands (Cardinal)
     if (thousands > 0) {
         const thousandsMap = { 1: "tysiąc", 2: "dwa tysiące", 3: "trzy tysiące" };
         parts.push(thousandsMap[thousands] || `${thousands} tysięcy`);
     }
 
-    // Hundreds (Cardinal)
     const hundredsMap = { 
         1: "sto", 2: "dwieście", 3: "trzysta", 4: "czterysta", 5: "pięćset", 
         6: "sześćset", 7: "siedemset", 8: "osiemset", 9: "dziewięćset" 
     };
     if (hundreds > 0) parts.push(hundredsMap[hundreds]);
 
-    // Tens and Units (Ordinal)
     if (lastTwo > 0 || (thousands === 0 && hundreds === 0)) {
         const units = ["", "pierwszy", "drugi", "trzeci", "czwarty", "piąty", "szósty", "siódmy", "ósmy", "dziewiąty"];
         const teens = ["dziesiąty", "jedenasty", "dwunasty", "trzynasty", "czternasty", "piętnasty", "szesnasty", "siedemnasty", "osiemnasty", "dziewiętnasty"];
@@ -90,7 +84,7 @@ export function getYearPolish(year) {
             if (lastTwo % 10 !== 0) yearWord += " " + units[lastTwo % 10];
         }
 
-        // Years in dates ALWAYS take the Genitive case (transforming -y/-i to -ego/-iego)
+        // Convert year to Genitive: -y/-i becomes -ego/-iego
         yearWord = yearWord.replace(/y /g, "ego ").replace(/y$/, "ego").replace(/i$/, "iego");
         parts.push(yearWord);
     }
@@ -99,7 +93,7 @@ export function getYearPolish(year) {
 }
 
 /**
- * Builds the Phonetic Year using phonetics.js.
+ * Phonetic Year Logic (Always Genitive).
  */
 export function getYearPhonetic(year) {
     const thousands = Math.floor(year / 1000);
@@ -116,7 +110,7 @@ export function getYearPhonetic(year) {
 
     if (lastTwo > 0) {
         let pYear = phonetics.ordinals[lastTwo] || lastTwo.toString();
-        // Convert year ending sound to -eh-go (Genitive)
+        // Fix phonetic endings to -eh-go
         pYear = pYear.replace(/-y$/, "-eh-go").replace(/-ee$/, "-eh-go");
         pParts.push(pYear);
     }
