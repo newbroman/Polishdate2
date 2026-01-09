@@ -116,37 +116,39 @@ function renderCalendarGrid(viewDate, selectedDate, onDateClick) {
     }
 
     // Days
+
     for (let day = 1; day <= lastDay; day++) {
-        const daySquare = document.createElement('div');
-        daySquare.className = 'calendar-day';
-        daySquare.innerText = day;
+    const daySquare = document.createElement('div');
+    daySquare.className = 'calendar-day';
+    daySquare.innerText = day;
 
-        const holidayKey = `${month}-${day}`;
-        if (holidays[holidayKey]) {
-            daySquare.classList.add('holiday');
-            daySquare.title = holidays[holidayKey];
-        }
-
-        const isSelected = selectedDate && 
-                           day === selectedDate.getDate() && 
-                           month === selectedDate.getMonth() && 
-                           year === selectedDate.getFullYear();
-        
-        if (isSelected) daySquare.classList.add('selected');
-
-        const isToday = day === today.getDate() && 
-                        month === today.getMonth() && 
-                        year === today.getFullYear();
-        
-        if (isToday) daySquare.classList.add('today-highlight');
-
-        daySquare.onclick = () => {
-            const newSelected = new Date(year, month, day);
-            onDateClick(newSelected);
-        };
-
-        grid.appendChild(daySquare);
+    const holidayKey = `${month}-${day}`;
+    if (holidays[holidayKey]) {
+        daySquare.classList.add('holiday'); // This triggers the Red Border
     }
+
+    const isToday = day === today.getDate() && 
+                    month === today.getMonth() && 
+                    year === today.getFullYear();
+    
+    if (isToday) {
+        daySquare.classList.add('today-highlight'); // This triggers Gold Background
+    }
+
+    const isSelected = selectedDate && 
+                       day === selectedDate.getDate() && 
+                       month === selectedDate.getMonth() && 
+                       year === selectedDate.getFullYear();
+    
+    if (isSelected) daySquare.classList.add('selected');
+
+    daySquare.onclick = () => {
+        state.selectedDate = new Date(year, month, day);
+        render(); 
+    };
+
+    grid.appendChild(daySquare);
+}
 }
 
 // 4. Initialize
