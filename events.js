@@ -1,17 +1,16 @@
 /**
- * events.js - Fixed Syntax & Integration
+ * events.js - Final Polish
  */
 import { speakText, checkVoices } from './audio.js';
 import holidayData from './holiday.js';
 import culturalData from './cultural.js';
-import grammarRules, { getRulesHTML } from './rules.js';
+import { getRulesHTML } from './rules.js';
 
 export function setupListeners(state, render) {
     
     // --- 1. Audio and Logic Toggles ---
     const playBtn = document.getElementById('playBtn');
     if (playBtn) {
-        // Corrected block: Wait for voices, then enable button
         checkVoices((ready) => {
             if (ready) {
                 playBtn.disabled = false;
@@ -22,32 +21,20 @@ export function setupListeners(state, render) {
 
         playBtn.onclick = () => {
             const textToSpeak = document.getElementById('plPhrase').innerText;
-            if (textToSpeak && textToSpeak !== "Wybierz datę" && textToSpeak !== "Select a date") {
+            if (textToSpeak && !textToSpeak.includes("Wybierz") && !textToSpeak.includes("Select")) {
                 speakText(textToSpeak);
             }
         };
     }
 
-    // --- Formal/Informal Toggle (Consolidated) ---
+    // --- Formal/Informal Toggle (Fixed Logic) ---
     const meetingBtn = document.getElementById('meetingToggle');
     if (meetingBtn) {
-        // Set initial class based on default Formal state
-        meetingBtn.className = state.isFormal ? 'pill-btn mode-btn-formal' : 'pill-btn mode-btn-informal';
-
         meetingBtn.onclick = () => {
-    state.isFormal = !state.isFormal;
-    
-    // Updated text: removed 📅 icon
-    const label = state.isPolish ? "Tryb" : "Mode";
-    const status = state.isFormal ? 
-        (state.isPolish ? "Formalny" : "Informalny") : 
-        (state.isPolish ? "Informal" : "Formal");
-
-    meetingBtn.innerText = `${label}: ${status}`;
-    
-    meetingBtn.className = `pill-btn ${state.isFormal ? 'mode-btn-formal' : 'mode-btn-informal'}`;
-    render(); 
-       };
+            state.isFormal = !state.isFormal;
+            // Force re-render handles text and class names via app.js logic
+            render(); 
+        };
     }
 
     // --- 2. Navigation Logic ---
@@ -59,16 +46,23 @@ export function setupListeners(state, render) {
         };
         const infoPanel = document.querySelector('.info-panel');
 
+        // Hide all
         Object.values(sections).forEach(s => { if (s) s.style.display = 'none'; });
 
+        // Show selected
         if (id === 'calendar') {
-            if (sections['calendar']) sections['calendar'].style.display = 'flex'; 
+            if (sections['calendar']) sections['calendar'].style.display = 'block'; 
             if (infoPanel) infoPanel.style.display = 'flex';
         } else {
-            if (sections[id]) sections[id].style.display = 'block';
+            if (sections[id]) {
+                sections[id].style.display = 'block';
+                // Add the content-page class if missing to fix formatting
+                sections[id].classList.add('content-page');
+            }
             if (infoPanel) infoPanel.style.display = 'none';
         }
 
+        // Active state for icons
         document.querySelectorAll('.nav-icon-btn').forEach(b => {
             b.classList.toggle('active', b.id === `nav${id.charAt(0).toUpperCase() + id.slice(1)}`);
         });
@@ -77,7 +71,7 @@ export function setupListeners(state, render) {
     // --- 3. Click Listeners ---
     document.getElementById('navCalendar').onclick = () => {
         showSection('calendar');
-        render();
+        render(); // Re-render to ensure grid alignment and gold/red highlights
     };
 
     document.getElementById('navCulture').onclick = () => {
@@ -87,7 +81,7 @@ export function setupListeners(state, render) {
 
     document.getElementById('navRules').onclick = () => {
         showSection('rules');
-        renderRulesPage();
+        renderRulesPage(state);
     };
 
     // Calendar Controls
@@ -124,7 +118,7 @@ export function setupListeners(state, render) {
 } 
 
 /**
- * Renders the Cultural Hub
+ * Renders the Cultural Hub with proper formatting
  */
 export function renderCulturalHub(state) {
     const hub = document.getElementById('culturalHub');
@@ -142,69 +136,54 @@ export function renderCulturalHub(state) {
     const holidays = holidayData.getHolidaysForYear(year);
 
     let html = `
-        <div class="culture-page">
+        <div class="content-body">
             <header class="culture-header">
                 <h1>${displayMonthName} ${year}</h1>
-                <span class="season-label">Season: ${monthInfo.season}</span>
+                <p><strong>Season:</strong> ${monthInfo.season}</p>
             </header>
-            <section class="info-block day-meaning-highlight">
+            <section class="info-block">
                 <h3>📅 ${state.isPolish ? 'Dzień tygodnia' : 'Day of the Week'}</h3>
                 <p><strong>${dayInfo.pl}:</strong> ${dayInfo.meaning}</p>
-                <small><em>${state.isPolish ? 'Wybrany dzień' : 'Currently selected'}: ${selectedDay} ${monthInfo.pl}</em></small>
             </section>
             <section class="info-block">
-                <h3>📜 ${state.isPolish ? 'Znaczenie nazwy miesiąca' : 'Month Name History'}</h3>
+                <h3>📜 ${state.isPolish ? 'Znaczenie nazwy' : 'History'}</h3>
                 <p>${monthInfo.derivation}</p>
             </section>
             <section class="info-block">
-                <h3>🎈 ${state.isPolish ? 'Święta i tradycje' : 'Holidays & Traditions'}</h3>
+                <h3>🎈 ${state.isPolish ? 'Święta' : 'Holidays'}</h3>
                 <div class="holiday-list">`;
 
     let foundHoliday = false;
     Object.entries(holidays).forEach(([key, name]) => {
         if (key.startsWith(`${monthIndex}-`)) {
             const dayNum = key.split('-')[1]; 
-            const explanation = culturalData.holidayExplanations[key] || 
-                               culturalData.holidayExplanations[name] || 
-                               "No description available yet.";
-            
-            html += `
-                <div class="holiday-entry">
-                    <div class="holiday-date">${dayNum} ${monthInfo.pl}</div>
-                    <strong>${name}</strong>
-                    <p>${explanation}</p>
-                </div>`;
+            html += `<div class="holiday-entry"><strong>${dayNum} ${monthInfo.pl}:</strong> ${name}</div>`;
             foundHoliday = true;
         }
     });
 
-    if (!foundHoliday) {
-        html += `<p class="no-data">${state.isPolish ? 'Brak świąt w tym miesiącu.' : 'No major holidays listed for this month.'}</p>`;
-    }
+    if (!foundHoliday) html += `<p>${state.isPolish ? 'Brak świąt.' : 'No holidays.'}</p>`;
 
     html += `</div></section>
-            <button id="backToCalCulture" class="close-culture-btn">
-                ← ${state.isPolish ? 'Powrót' : 'Back to Calendar'}
-            </button>
+            <button class="pill-btn back-to-cal" style="margin-top:20px">← Back</button>
         </div>`;
 
     hub.innerHTML = html;
-    document.getElementById('backToCalCulture').onclick = () => {
-        document.getElementById('navCalendar').click();
-    };
+    hub.querySelector('.back-to-cal').onclick = () => document.getElementById('navCalendar').click();
 }
 
 /**
- * Renders the Grammar Rules page
+ * Renders the Grammar Rules page with clean formatting
  */
-export function renderRulesPage() {
+export function renderRulesPage(state) {
     const page = document.getElementById('rulesPage');
     if (!page) return;
     
-    page.innerHTML = `<div class="culture-page">${getRulesHTML()}</div>`;
+    page.innerHTML = `
+        <div class="content-body">
+            ${getRulesHTML()}
+            <button class="pill-btn back-to-cal" style="margin-top:20px">← Back</button>
+        </div>`;
 
-    const backBtn = page.querySelector('.close-culture-btn');
-    if (backBtn) {
-        backBtn.onclick = () => document.getElementById('navCalendar').click();
-    }
+    page.querySelector('.back-to-cal').onclick = () => document.getElementById('navCalendar').click();
 }
