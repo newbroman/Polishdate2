@@ -28,24 +28,25 @@ function render() {
     const year = state.viewDate.getFullYear();
 
     // 1. Update Mode Button (Corrected Logic)
-    const meetingBtn = document.getElementById('meetingToggle');
-    if (meetingBtn) {
-        const label = state.isPolish ? "Tryb" : "Mode";
-        // Logic fix: If isFormal is true, show "Formal", not "Informal"
-        const status = state.isFormal ? 
-            (state.isPolish ? "Formalny" : "Formal") : 
-            (state.isPolish ? "Informalny" : "Informal");
+    // Update Formal/Informal Toggle Button
+const meetingBtn = document.getElementById('meetingToggle');
+if (meetingBtn) {
+    const label = state.isPolish ? "Tryb" : "Mode";
+    // FIX: If isFormal is true, the status should be "Formal"
+    const status = state.isFormal ? 
+        (state.isPolish ? "Formalny" : "Formal") : 
+        (state.isPolish ? "Informalny" : "Informal");
 
-        meetingBtn.innerText = `${label}: ${status}`;
-        meetingBtn.className = `pill-btn ${state.isFormal ? 'mode-btn-formal' : 'mode-btn-informal'}`;
-    }
+    meetingBtn.innerText = `${label}: ${status}`;
+    meetingBtn.className = `pill-btn ${state.isFormal ? 'mode-btn-formal' : 'mode-btn-informal'}`;
+}
 
-    // 2. Passing FOUR arguments to the panel (Added state.isPolish)
-    try {
-         updateInfoPanel(state.selectedDate, state.includeYear, state.isFormal, state.isPolish);
-    } catch (e) { 
-        console.error("Info Panel Error:", e); 
-    }
+// FIX: Passing ALL 4 arguments to the panel
+try {
+     updateInfoPanel(state.selectedDate, state.includeYear, state.isFormal, state.isPolish);
+} catch (e) { 
+    console.error("Info Panel Error:", e); 
+}
     
     // ... (rest of your season/roller logic remains the same) ...
 
