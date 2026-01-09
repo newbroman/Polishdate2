@@ -27,26 +27,40 @@ function render() {
     const monthIndex = state.viewDate.getMonth();
     const year = state.viewDate.getFullYear();
 
- // Update Formal/Informal Toggle Button
-const meetingBtn = document.getElementById('meetingToggle');
-if (meetingBtn) {
-    const label = state.isPolish ? "Tryb" : "Mode";
-    const status = state.isFormal ? 
-        (state.isPolish ? "Formalny" : "Informalny") : 
-        (state.isPolish ? "Informal" : "Formal");
+    // 1. Update Mode Button (Corrected Logic)
+    const meetingBtn = document.getElementById('meetingToggle');
+    if (meetingBtn) {
+        const label = state.isPolish ? "Tryb" : "Mode";
+        // Logic fix: If isFormal is true, show "Formal", not "Informal"
+        const status = state.isFormal ? 
+            (state.isPolish ? "Formalny" : "Formal") : 
+            (state.isPolish ? "Informalny" : "Informal");
 
-    // Icon removed here as well
-    meetingBtn.innerText = `${label}: ${status}`;
-    meetingBtn.className = `pill-btn ${state.isFormal ? 'mode-btn-formal' : 'mode-btn-informal'}`;
-}
+        meetingBtn.innerText = `${label}: ${status}`;
+        meetingBtn.className = `pill-btn ${state.isFormal ? 'mode-btn-formal' : 'mode-btn-informal'}`;
+    }
 
-    // --- UPDATED: Passing all 3 arguments to the panel ---
+    // 2. Passing FOUR arguments to the panel (Added state.isPolish)
     try {
-         updateInfoPanel(state.selectedDate, state.includeYear, state.isFormal);
+         updateInfoPanel(state.selectedDate, state.includeYear, state.isFormal, state.isPolish);
     } catch (e) { 
         console.error("Info Panel Error:", e); 
     }
     
+    // ... (rest of your season/roller logic remains the same) ...
+
+    // 3. Update Year Button (Simplified text)
+    if (repeatYearBtn) {
+        const yearLabel = state.isPolish ? "Rok" : "Year";
+        const status = state.includeYear ? "ON" : "OFF";
+        repeatYearBtn.innerText = `${yearLabel}: ${status}`;
+    }
+
+    renderCalendarGrid(state.viewDate, state.selectedDate, (newDate) => {
+        state.selectedDate = newDate;
+        render(); 
+    });
+}
     // Seasonal Themes
     document.body.className = ''; 
     const seasons = ['winter', 'winter', 'spring', 'spring', 'spring', 'summer', 'summer', 'summer', 'autumn', 'autumn', 'autumn', 'winter'];
