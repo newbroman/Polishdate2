@@ -137,6 +137,6 @@ export function getYearPhonetic(year) {
         }
     }
 
-    pParts.push("ro-koo"); // Always add "roku" for spoken dates
+
     return pParts.join(" ");
 }
