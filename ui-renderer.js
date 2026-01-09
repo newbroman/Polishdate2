@@ -36,16 +36,14 @@ export function updateInfoPanel(selectedDate, includeYear, isFormal) {
     const daySpelling = getWrittenDay(day, isFormal);      
     const dayPhonetic = getPhoneticDay(day, isFormal);     
 
-    // 3. Intros
-    const plIntro = isFormal ? "Dzisiaj jest:" : "Spotkanie:";
-    const enIntro = isFormal ? "Today is:" : "Meeting:";
-    const phoneticIntro = isFormal ? "Djee-shigh yest:" : "Spot-ka-nyeh:";
-
-    const capitalizedPhoneticIntro = phoneticIntro.charAt(0).toUpperCase() + phoneticIntro.slice(1);
+    // 3. Intros - Removed for a cleaner look
+    // Capitalize the day spelling since it's now the start of the line
+    const capitalizedDaySpelling = daySpelling.charAt(0).toUpperCase() + daySpelling.slice(1);
+    const capitalizedDayPhonetic = dayPhonetic.charAt(0).toUpperCase() + dayPhonetic.slice(1);
     
-    let fullPl = `${plIntro} ${daySpelling} ${currentMonthKey}`;
-    let fullEn = `${enIntro} ${monthEn} ${day}${getEnglishSuffix(day)}`;
-    let fullPhonetic = `${capitalizedPhoneticIntro} ${dayPhonetic} ${monthPhonetic}`; 
+    let fullPl = `${capitalizedDaySpelling} ${currentMonthKey}`;
+    let fullEn = `${monthEn} ${day}${getEnglishSuffix(day)}`;
+    let fullPhonetic = `${capitalizedDayPhonetic} ${monthPhonetic}`;
 
     // 4. Year Logic (Dates always use Genitive/Formal year endings)
     if (includeYear) {
@@ -67,10 +65,10 @@ export function updateInfoPanel(selectedDate, includeYear, isFormal) {
         }
     }
 
-    // 6. Update UI
-    plDisplay.innerText = fullPl;
-    enDisplay.innerText = fullEn;
-    phoneticDisplay.innerText = fullPhonetic;
+   // 6. Update UI - Trimmed to remove potential leading spaces
+    plDisplay.innerText = fullPl.trim();
+    enDisplay.innerText = fullEn.trim();
+    phoneticDisplay.innerText = fullPhonetic.trim();
 }
 
 function getEnglishSuffix(i) {
