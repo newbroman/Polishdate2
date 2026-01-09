@@ -39,19 +39,38 @@ const grammarRules = {
 
 export function getRulesHTML() {
     return `
-        <div class="rules-header">
-            <h2>Polish Grammar Rules</h2>
-        </div>
-        ${Object.values(grammarRules).map(section => `
-            <div class="info-block">
-                <h3>${section.title}</h3>
-                <p>${section.explanation}</p>
-                <div class="rule-tip"><strong>Rule:</strong> ${section.rule}</div>
-                <div class="rule-example"><em>Example:</em> ${section.example}</div>
-            </div>
-        `).join('')}
-        <button class="close-culture-btn" onclick="document.getElementById('navCalendar').click()">Back to Calendar</button>
+        <article class="rules-container">
+            <header class="rules-header">
+                <h2>🇵🇱 Polish Grammar Rules</h2>
+                <p>Polish dates change their endings based on how they are used in a sentence.</p>
+            </header>
+
+            <section class="rule-block">
+                <h3>✍️ Written (Genitive Case)</h3>
+                <p><strong>Default Mode:</strong> This is the most common way to express a date in Poland.</p>
+                <ul>
+                    <li><strong>When to use:</strong> For events, meetings, birthdays, or anytime you would say "on the [date]."</li>
+                    <li><strong>Logic:</strong> It implies the word <em>dnia</em> (on the day of...).</li>
+                    <li><strong>Ending:</strong> Usually ends in <strong>-ego</strong>.</li>
+                    <li><strong>Example:</strong> <em>Drugiego maja</em> (On the second of May).</li>
+                </ul>
+            </section>
+
+            <section class="rule-block">
+                <h3>🗣️ Spoken (Nominative Case)</h3>
+                <p><strong>Identity Mode:</strong> This is used when simply naming the date.</p>
+                <ul>
+                    <li><strong>When to use:</strong> Answering the question "What is today's date?" or reading a calendar header.</li>
+                    <li><strong>Logic:</strong> It is the "dictionary" form of the number.</li>
+                    <li><strong>Ending:</strong> Usually ends in <strong>-y</strong> or <strong>-i</strong>.</li>
+                    <li><strong>Example:</strong> <em>Drugi maja</em> (The second of May).</li>
+                </ul>
+            </section>
+
+            <section class="rule-block tips">
+                <h3>💡 Quick Tip</h3>
+                <p>If you aren't sure which to use, stick with <strong>Written (Genitive)</strong>. In 90% of real-life Polish conversations, this is the version you will need!</p>
+            </section>
+        </article>
     `;
 }
-
-export default grammarRules;
