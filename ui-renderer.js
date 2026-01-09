@@ -34,7 +34,9 @@ export function updateInfoPanel(selectedDate, includeYear, isFormal) {
     const monthEn = monthNamesEn[monthIndex];
 
     const daySpelling = getWrittenDay(day, isFormal);      
-    const dayPhonetic = getPhoneticDay(day, isFormal);     
+    const dayPhonetic = getPhoneticDay(day, isFormal);
+    const yearSpelling = getYearPolish(year); // No toggle needed
+    const yearPhonetic = getYearPhonetic(year); // No toggle needed
 
     // 3. Intros - Removed for a cleaner look
     // Capitalize the day spelling since it's now the start of the line
