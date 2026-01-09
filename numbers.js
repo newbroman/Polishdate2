@@ -10,7 +10,7 @@ import phonetics from './phonetics.js';
  * @param {boolean} isFormal - True (Default) returns Nominative (e.g., Drugi).
  * False (Meeting) returns Genitive (e.g., Drugiego).
  */
-export function getWrittenDay(day, isFormal = true) {
+export function getWrittenDay(day, isNominative = false) {
     const nominativeDays = {
         1: "pierwszy", 2: "drugi", 3: "trzeci", 4: "czwarty", 5: "piąty",
         6: "szósty", 7: "siódmy", 8: "ósmy", 9: "dziewiąty", 10: "dziesiąty",
@@ -35,19 +35,21 @@ export function getWrittenDay(day, isFormal = true) {
         31: "trzydziestego pierwszego"
     };
 
-    return isFormal ? nominativeDays[day] : genitiveDays[day];
+ return isNominative ? nominativeDays[day] : genitiveDays[day];
 }
 
 /**
  * Returns the Phonetic Day.
  */
-export function getPhoneticDay(day, isFormal = true) {
-    if (!isFormal) {
-        // Returns the -eh-go sound for informal meetings
+export function getPhoneticDay(day, isNominative = false) {
+    if (!isNominative) {
         return phonetics.ordinalDaysGenitive[day] || (phonetics.ordinalDays[day] + "-eh-go");
     }
-    return phonetics.ordinalDays[day] || day.toString();
+    return phonetics.ordinalDays[day];
 }
+
+// Year remains Genitive because it's always "of the year..."
+export function getYearPolish(year) {
 
 /**
  * Logic for Written Ordinal Years.
