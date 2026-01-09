@@ -33,7 +33,7 @@ body.summer { --accent-color: #ffc107; }
 body.autumn { --accent-color: #ff5722; }
 body.winter { --accent-color: #e6192e; }
 
-/* --- 2. Global Reset --- */
+/* --- 2. Global Reset & Layout --- */
 * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 
 body {
@@ -46,7 +46,7 @@ body {
     flex-direction: column;
 }
 
-/* --- 3. Navigation & Header (Fixed Layout) --- */
+/* --- 3. Navigation & Header --- */
 .brand-header {
     text-align: center;
     padding: 0.8rem 0.5rem; 
@@ -66,7 +66,8 @@ body {
     gap: 12px;
 }
 
-.nav-icon-btn { background: none; border: none; font-size: 1.3rem; cursor: pointer; }
+.nav-icon-btn { background: none; border: none; font-size: 1.3rem; cursor: pointer; transition: transform 0.2s; }
+.nav-icon-btn:active { transform: scale(0.9); }
 .divider { width: 1px; height: 18px; background: var(--border-color); }
 
 /* Mode & Year Buttons (Small & Professional) */
@@ -84,29 +85,26 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+    cursor: pointer;
 }
 
 #meetingToggle.mode-btn-formal { background: var(--gold) !important; color: white !important; border-color: var(--gold); }
 #meetingToggle.mode-btn-informal { background: var(--formal-blue) !important; color: white !important; border-color: var(--formal-blue); }
 
-/* --- 4. Calendar Grid & Navigation --- */
+/* --- 4. Calendar Components --- */
 .calendar-navigation { margin: 10px 0 15px; display: flex; justify-content: center; }
 
-.nav-controls-row { 
-    display: flex; 
-    flex-direction: row; 
-    align-items: center; 
-    gap: 15px; 
-}
+.nav-controls-row { display: flex; flex-direction: row; align-items: center; gap: 15px; }
 
 .rollers-container { 
     display: flex; 
     background: var(--panel-bg); 
     border: 1px solid var(--border-color); 
     border-radius: 25px; 
+    overflow: hidden;
 }
 
-.roller-select, #yearInput { background: transparent; border: none; padding: 8px; font-weight: 600; color: var(--text-main); }
+.roller-select, #yearInput { background: transparent; border: none; padding: 8px; font-weight: 600; color: var(--text-main); font-size: 0.9rem; }
 
 .calendar-container {
     width: 95%;
@@ -116,6 +114,19 @@ body {
     border-radius: 12px;
     padding: 12px;
     border: 1px solid var(--border-color);
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+}
+
+.weekdays {
+    display: grid !important;
+    grid-template-columns: repeat(7, 1fr) !important;
+    gap: 5px;
+    margin-bottom: 10px;
+    padding: 0 5px;
+    text-align: center;
+    font-size: 0.8rem;
+    font-weight: 800;
+    color: var(--text-dim);
 }
 
 #calendarGrid { display: grid !important; grid-template-columns: repeat(7, 1fr); gap: 5px; }
@@ -129,16 +140,28 @@ body {
     justify-content: center;
     font-weight: 600;
     cursor: pointer;
+    transition: background 0.2s;
 }
 
-/* Holiday & Selected Logic */
-.calendar-day.holiday { color: var(--accent-color) !important; font-weight: 900 !important; position: relative; }
-.calendar-day.holiday::after { content: '•'; position: absolute; bottom: 2px; color: var(--accent-color); font-size: 14px; }
+/* Day States */
+.calendar-day.holiday { 
+    border: 2px solid var(--accent-color) !important; 
+    color: var(--accent-color) !important; 
+    font-weight: 900 !important; 
+}
+.calendar-day.holiday::after { display: none !important; } /* Removed the old dot */
 
-.calendar-day.selected { background: var(--accent-color) !important; color: white !important; }
-.calendar-day.today-highlight { border: 2px solid var(--gold); }
+.calendar-day.today-highlight {
+    background-color: var(--gold) !important;
+    color: #000 !important;
+    border: none !important;
+    font-weight: 800;
+    box-shadow: 0 0 8px rgba(184, 134, 11, 0.5);
+}
 
-/* --- 5. Info Panel (Footer Themes) --- */
+.calendar-day.selected { background: var(--accent-color) !important; color: white !important; border-color: var(--accent-color) !important; }
+
+/* --- 5. Info Panel (Footer) --- */
 .info-panel {
     position: fixed;
     bottom: 0;
@@ -146,7 +169,6 @@ body {
     background: var(--panel-bg);
     padding: 15px 15px 25px;
     border-top: 4px solid var(--border-color);
-    transition: all 0.4s ease;
     z-index: 1000;
 }
 
@@ -170,44 +192,10 @@ body {
     cursor: pointer;
 }
 
-/* --- 1. Weekday Alignment Fix --- */
-.weekdays {
-    display: grid !important;
-    grid-template-columns: repeat(7, 1fr) !important;
-    gap: 5px;
-    margin-bottom: 10px;
-    padding: 0 5px;
-    text-align: center;
-    font-size: 0.8rem;
-    font-weight: 800;
-    color: var(--text-dim);
-}
-
-/* --- 2. Today: Gold Highlight --- */
-.calendar-day.today-highlight {
-    background-color: var(--gold) !important;
-    color: #000 !important;
-    border: none !important;
-    font-weight: 800;
-    box-shadow: 0 0 8px rgba(184, 134, 11, 0.5);
-}
-
-/* --- 3. Holiday: Red Border (No Dot) --- */
-.calendar-day.holiday {
-    border: 2px solid var(--accent-color) !important;
-    color: var(--accent-color) !important;
-    font-weight: 900;
-}
-
-/* Remove old dots from screenshots */
-.calendar-day.holiday::after {
-    display: none !important;
-}
-
-/* --- 4. Content Page Styling (Grammar/Culture) --- */
+/* --- 6. Content Page Styling (Grammar/Culture) --- */
 .content-page {
     max-width: 700px;
-    margin: 40px auto;
+    margin: 20px auto 100px; /* Space for footer */
     padding: 30px;
     background: var(--panel-bg);
     border-radius: 15px;
@@ -215,33 +203,17 @@ body {
     line-height: 1.8;
 }
 
-.content-page h1 { color: var(--accent-color); margin-bottom: 20px; border-bottom: 3px solid var(--gold); display: inline-block; }
-.content-page h2 { color: var(--text-main); margin-top: 25px; font-size: 1.3rem; }
-.content-page p { margin: 10px 0; color: var(--text-dim); }
-.content-page strong { color: var(--tan); }
-
-.content-page h1 {
-    color: var(--accent-color);
-    border-bottom: 2px solid var(--accent-color);
-    padding-bottom: 10px;
-    margin-bottom: 20px;
+.content-page h1 { 
+    color: var(--accent-color); 
+    margin-bottom: 20px; 
+    border-bottom: 3px solid var(--gold); 
+    display: inline-block;
+    padding-bottom: 5px;
 }
 
-.content-page h2 {
-    margin-top: 25px;
-    color: var(--text-main);
-    font-size: 1.2rem;
-}
-
-.content-page p {
-    margin-bottom: 15px;
-    color: var(--text-dim);
-}
-
-.content-page strong {
-    color: var(--gold);
-}
-
+.content-page h2 { margin-top: 25px; color: var(--text-main); font-size: 1.2rem; }
+.content-page p { margin-bottom: 15px; color: var(--text-dim); }
+.content-page strong { color: var(--gold); }
 .content-page em {
     background: rgba(184, 134, 11, 0.1);
     padding: 2px 5px;
@@ -250,7 +222,4 @@ body {
     color: var(--tan);
 }
 
-#backBtn {
-    margin-top: 30px;
-    display: inline-block;
-}
+#backBtn { margin-top: 30px; }
