@@ -1,9 +1,4 @@
-/**
- * sw.js - Service Worker for Polish Date Master
- * Handles offline caching for standalone app performance.
- */
-
-const CACHE_NAME = 'pl-date-v790';
+const CACHE_NAME = 'pl-date-v792';
 
 // All files required for the app to function offline
 const ASSETS = [
