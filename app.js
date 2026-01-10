@@ -156,3 +156,7 @@ window.onload = () => {
             });
     }
 };
+
+window.render = render;
+window.state = state;
+window.renderCalendarGrid = renderCalendarGrid;
