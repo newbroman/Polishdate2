@@ -25,7 +25,7 @@ export function updateInfoPanel(selectedDate, includeYear, isFormal) {
         footer.classList.toggle('informal-theme', !isFormal);
     }
 
-    // 2. Data Mapping
+ // 2. Data Mapping
     const monthNamesEn = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     const monthKeysPl = ["stycznia", "lutego", "marca", "kwietnia", "maja", "czerwca", "lipca", "sierpnia", "września", "października", "listopada", "grudnia"];
     
@@ -35,11 +35,11 @@ export function updateInfoPanel(selectedDate, includeYear, isFormal) {
 
     const daySpelling = getWrittenDay(day, isFormal);      
     const dayPhonetic = getPhoneticDay(day, isFormal);
-    const yearSpelling = getYearPolish(year); // No toggle needed
-    const yearPhonetic = getYearPhonetic(year); // No toggle needed
 
-    // 3. Intros - Removed for a cleaner look
-    // Capitalize the day spelling since it's now the start of the line
+    // REMOVED: yearSpelling and yearPhonetic were defined here incorrectly.
+    // They are now handled correctly inside the "if (includeYear)" block below.
+
+    // 3. Intros
     const capitalizedDaySpelling = daySpelling.charAt(0).toUpperCase() + daySpelling.slice(1);
     const capitalizedDayPhonetic = dayPhonetic.charAt(0).toUpperCase() + dayPhonetic.slice(1);
     
@@ -49,11 +49,12 @@ export function updateInfoPanel(selectedDate, includeYear, isFormal) {
 
    // 4. Year Logic
    if (includeYear) {
-       // We pass isFormal so the function knows whether to return Genitive (-ego) or Nominative (-y)
+       // Now passing isFormal to your fixed numbers.js functions
        const yearSpelling = getYearPolish(year, isFormal);
        const yearPhonetic = getYearPhonetic(year, isFormal);
        
-       // Suffix changes based on the toggle
+       // isFormal (True) = "It is..." -> rok
+       // !isFormal (False) = "On the..." -> roku
        const suffixPl = isFormal ? "rok" : "roku";
        const suffixPhonetic = isFormal ? "rok" : "ro-koo";
 
