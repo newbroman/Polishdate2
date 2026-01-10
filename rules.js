@@ -63,25 +63,30 @@ export function getRulesHTML() {
         `;
     });
 
-    // ADDING THE ROOM ANALOGY SECTION
+    // INTEGRATED 2026 SUMMARY ANALOGY
     html += `
             <hr class="rule-divider">
-            <h3 class="section-divider">🏠 Part 3: The "Room" Analogy</h3>
+            <h3 class="section-divider">🏠 Part 3: The "Room" Analogy for 2026</h3>
             <section class="rule-block analogy-section">
-                <p>Think of Polish grammar like <strong>arranging furniture in a room:</strong></p>
+                <p>Think of Polish grammar like <strong>arranging furniture in a room.</strong> Here is how the analogy works with the two modes in this app:</p>
                 
                 <div class="analogy-box">
-                    <h4>🪑 The "It is..." Mode (Nominative)</h4>
-                    <p>This is the furniture in the <strong>Showroom</strong>. It’s just sitting there. You are calling it by its name: <em>"That is a Chair."</em></p>
+                    <h4>🪑 Mode: (It is...) — The Catalog</h4>
+                    <p>You are looking at a blueprint or a catalog. You are simply naming the item: <em>"This is the <strong>Table</strong> (10th) of <strong>the Kitchen</strong> (January)."</em></p>
+                    <p><strong>Result:</strong> Words stay in their "naming" form. <br><em>Dziesiąty stycznia... rok.</em></p>
                 </div>
 
                 <div class="analogy-box">
-                    <h4>☕ The "On the..." Mode (Genitive)</h4>
-                    <p>This is when you <strong>use</strong> the furniture. You are placing your coffee <em>on the Chair</em>. Because the chair is now part of an action, its "shape" (the ending) changes to show its purpose.</p>
+                    <h4>☕ Mode: (On the...) — The Placement</h4>
+                    <p>You are actually <strong>using</strong> the furniture. You are placing a coffee <em>on the Table</em> for an appointment. Because the table is now part of an action, its "shape" (ending) changes to show its purpose.</p>
+                    <p><strong>Result:</strong> The day and the year shift to Genitive. <br><em>Dziesiątego stycznia... roku.</em></p>
                 </div>
                 
-                <p style="margin-top: 15px; font-style: italic; opacity: 0.9;">
-                    This is why our app defaults to <strong>(On the...)</strong> — because in real life, we are usually doing something on that date!
+                <p style="margin-top: 20px; font-weight: bold; border-top: 1px solid rgba(255,255,255,0.1); pt-2;">
+                    💡 Why we default to (On the...):
+                </p>
+                <p style="font-style: italic; opacity: 0.9;">
+                    In real life, we are usually doing something on a date! By defaulting to this mode, the app prepares you for actual conversation.
                 </p>
             </section>
         </article>
