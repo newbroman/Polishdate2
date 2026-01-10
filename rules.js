@@ -23,52 +23,65 @@ const grammarRules = {
     },
     namingOrigins: {
         title: "4. Natural Origins",
-        explanation: "Polish month names aren't based on Latin gods (like March/Mars). They are based on what happens in nature in Poland.",
-        rule: "Vocabulary tip: Look for root words like 'flower', 'leaf', or 'ice'.",
-        example: "Kwiecień (April) comes from 'kwiat' (flower)."
-    },
-    contextCases: { 
-        title: "5. 'On the...' vs. 'It is...'", 
-        explanation: "The date's ending changes depending on whether you are describing an event or just naming the day.",
-        rule: "'On the...' uses Genitive (-ego), while 'It is...' uses Nominative (-y/-i).",
-        example: "On the...: drugiego vs. It is...: drugi"
+        explanation: "Polish month names are based on nature (flowers, leaves, ice) rather than Latin gods.",
+        rule: "Vocabulary tip: Kwiecień (April) comes from 'kwiat' (flower).",
+        example: "Listopad (November) means 'leaf-fall'."
     }
 };
 
 export function getRulesHTML() {
-    return `
+    let html = `
         <article class="rules-container">
             <header class="rules-header">
-                <h2>🇵🇱 Polish Grammar Rules</h2>
-                <p>Polish dates change their endings based on whether you are describing an <strong>event</strong> or simply <strong>naming</strong> the day.</p>
+                <h2>🇵🇱 Polish Date Mastery</h2>
+                <p>Follow these steps to master how Polish dates are built and used.</p>
             </header>
+            
+            <h3 class="section-divider">📖 Part 1: Core Principles</h3>
+    `;
+
+    // 1. Core Grammar Rules first
+    Object.values(grammarRules).forEach(item => {
+        html += `
+            <section class="rule-block core-rule">
+                <h4>${item.title}</h4>
+                <p>${item.explanation}</p>
+                <p><strong>Rule:</strong> ${item.rule}</p>
+                <p><em>Example: ${item.example}</em></p>
+            </section>
+        `;
+    });
+
+    // 2. Dynamic Context Comparison second
+    html += `
+            <hr class="rule-divider">
+            <h3 class="section-divider">🔄 Part 2: Contextual Ending Changes</h3>
+            <p>Endings change based on whether you are describing an <strong>event</strong> or <strong>naming</strong> the day.</p>
 
             <section class="rule-block written-mode">
-                <h3>🤝 Date: (On the...) [Genitive]</h3>
-                <p><strong>Default Startup Mode:</strong> This is the standard way to express a date for appointments or sentences.</p>
-                <ul>
-                    <li><strong>Usage:</strong> Use this when saying "I am meeting you on the..."</li>
-                    <li><strong>Logic:</strong> It implies "on the day of..." (dnia...).</li>
-                    <li><strong>Ending:</strong> Most numbers end in <strong>-ego</strong> and the year ends in <strong>roku</strong> (ro-koo).</li>
-                    <li><strong>Example:</strong> <span class="highlight">Drugiego maja... roku</span></li>
-                </ul>
+                <h3>🤝 Mode: (On the...) — Genitive</h3>
+                <p>Used for <strong>appointments and events.</strong> (Answers: <em>When?</em>)</p>
+                <div class="full-example">
+                    <strong>2026 Example:</strong><br>
+                    <span class="highlight">Dziesiątego stycznia dwa tysiące dwudziestego szóstego roku</span>
+                </div>
             </section>
 
             <section class="rule-block spoken-mode">
-                <h3>🗓️ Date: (It is...) [Nominative]</h3>
-                <p><strong>Identity Mode:</strong> Used when the date itself is the subject of your thought.</p>
-                <ul>
-                    <li><strong>Usage:</strong> Use this to answer "What is today's date?"</li>
-                    <li><strong>Logic:</strong> This is the "dictionary" or "naming" form.</li>
-                    <li><strong>Ending:</strong> Usually ends in <strong>-y</strong> or <strong>-i</strong> and the year ends in <strong>rok</strong> (rok).</li>
-                    <li><strong>Example:</strong> <span class="highlight">Drugi maja... rok</span></li>
-                </ul>
+                <h3>🗓️ Mode: (It is...) — Nominative</h3>
+                <p>Used for <strong>naming the day.</strong> (Answers: <em>What day is it?</em>)</p>
+                <div class="full-example">
+                    <strong>2026 Example:</strong><br>
+                    <span class="highlight">Dziesiąty stycznia dwa tysiące dwudziesty szósty rok</span>
+                </div>
             </section>
 
             <section class="rule-block tips">
-                <h3>💡 Learner's Tip</h3>
-                <p>When in doubt, use <strong>(On the...)</strong>. It is the form you will hear and use most often in daily Polish life!</p>
+                <h3>💡 Pro-Tip</h3>
+                <p>If you are unsure, always use <strong>(On the...)</strong>. It is much more common in conversation!</p>
             </section>
         </article>
     `;
+
+    return html;
 }
