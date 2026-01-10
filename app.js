@@ -152,12 +152,23 @@ window.onload = () => {
     checkVoices(() => render());
 
     if ('serviceWorker' in navigator) {
+        // --- ADD THIS PART HERE ---
+        let refreshing = false;
+        navigator.serviceWorker.addEventListener('controllerchange', () => {
+            if (!refreshing) {
+                window.location.reload();
+                refreshing = true;
+            }
+        });
+        // ---------------------------
+
         navigator.serviceWorker.register('sw.js')
             .then(reg => console.log('✅ Registered at:', reg.scope))
             .catch(err => console.log('❌ Failed:', err));
     }
 };
 
+// Keep these at the very bottom for debugging
 window.render = render;
 window.state = state;
 window.renderCalendarGrid = renderCalendarGrid;
