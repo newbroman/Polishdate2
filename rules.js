@@ -42,34 +42,34 @@ export function getRulesHTML() {
         <article class="rules-container">
             <header class="rules-header">
                 <h2>🇵🇱 Polish Grammar Rules</h2>
-                <p>Polish dates change their endings based on whether you are simply naming the day or describing an event.</p>
+                <p>Polish dates change their endings based on whether you are describing an <strong>event</strong> or simply <strong>naming</strong> the day.</p>
             </header>
 
             <section class="rule-block written-mode">
-                <h3>✍️ Written (Genitive Case)</h3>
-                <p><strong>Default Mode:</strong> This is the standard way to express a date in a sentence.</p>
+                <h3>🤝 Date: (On the...) [Genitive]</h3>
+                <p><strong>Default Startup Mode:</strong> This is the standard way to express a date for appointments or sentences.</p>
                 <ul>
-                    <li><strong>Usage:</strong> Use this for appointments, history, or when saying "on the [date]."</li>
-                    <li><strong>Logic:</strong> It implies the phrase "on the day of..." (dnia...).</li>
-                    <li><strong>Ending:</strong> Most numbers change their ending to <strong>-ego</strong>.</li>
-                    <li><strong>Example:</strong> <em>Drugiego maja</em> (On the second of May).</li>
+                    <li><strong>Usage:</strong> Use this when saying "I am meeting you on the..."</li>
+                    <li><strong>Logic:</strong> It implies "on the day of..." (dnia...).</li>
+                    <li><strong>Ending:</strong> Most numbers end in <strong>-ego</strong> and the year ends in <strong>roku</strong> (ro-koo).</li>
+                    <li><strong>Example:</strong> <span class="highlight">Drugiego maja</span> (On the second of May).</li>
                 </ul>
             </section>
 
             <section class="rule-block spoken-mode">
-                <h3>🗣️ Spoken (Nominative Case)</h3>
-                <p><strong>Identity Mode:</strong> This is used when the date is the subject of the sentence.</p>
+                <h3>🗓️ Date: (It is...) [Nominative]</h3>
+                <p><strong>Identity Mode:</strong> Used when the date itself is the subject of your thought.</p>
                 <ul>
-                    <li><strong>Usage:</strong> Use this to answer "What is today's date?" or when reading a calendar header.</li>
-                    <li><strong>Logic:</strong> This is the "dictionary" or "naming" form of the number.</li>
-                    <li><strong>Ending:</strong> Usually ends in <strong>-y</strong> or <strong>-i</strong>.</li>
-                    <li><strong>Example:</strong> <em>Drugi maja</em> (The second of May).</li>
+                    <li><strong>Usage:</strong> Use this to answer "What is today's date?"</li>
+                    <li><strong>Logic:</strong> This is the "dictionary" or "naming" form.</li>
+                    <li><strong>Ending:</strong> Usually ends in <strong>-y</strong> or <strong>-i</strong> and the year ends in <strong>rok</strong> (rok).</li>
+                    <li><strong>Example:</strong> <span class="highlight">Drugi maja</span> (The second of May).</li>
                 </ul>
             </section>
 
             <section class="rule-block tips">
                 <h3>💡 Learner's Tip</h3>
-                <p>When in doubt, use <strong>Written (Genitive)</strong>. It is the form you will hear and use most often in daily Polish life!</p>
+                <p>When in doubt, use <strong>(On the...)</strong>. It is the form you will hear and use most often in daily Polish life!</p>
             </section>
         </article>
     `;
