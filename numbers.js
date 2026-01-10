@@ -54,8 +54,8 @@ export function getPhoneticDay(day, isNominative = false) {
 /**
  * Written Year Logic (Always Genitive for dates).
  */
-export function getYearPolish(year) {
-    if (year === 0) return "zerowego";
+export function getYearPolish(year, isNominative = false) {
+    if (year === 0) return isNominative ? "zerowy" : "zerowego";
     
     const thousands = Math.floor(year / 1000);
     const hundreds = Math.floor((year % 1000) / 100);
@@ -86,8 +86,10 @@ export function getYearPolish(year) {
             if (lastTwo % 10 !== 0) yearWord += " " + units[lastTwo % 10];
         }
 
-        // Convert year to Genitive: -y/-i becomes -ego/-iego
-        yearWord = yearWord.replace(/y /g, "ego ").replace(/y$/, "ego").replace(/i$/, "iego");
+        // Only convert to Genitive if NOT Nominative
+        if (!isNominative) {
+            yearWord = yearWord.replace(/y /g, "ego ").replace(/y$/, "ego").replace(/i$/, "iego");
+        }
         parts.push(yearWord);
     }
     
@@ -97,46 +99,33 @@ export function getYearPolish(year) {
 /**
  * Phonetic Year Logic (Always Genitive).
  */
-export function getYearPhonetic(year) {
+export function getYearPhonetic(year, isNominative = false) {
     const thousands = Math.floor(year / 1000);
     const hundreds = Math.floor((year % 1000) / 100);
     const lastTwo = year % 100;
     let pParts = [];
 
-    // Thousands
     if (thousands > 0) {
         pParts.push(thousands === 1 ? "ti-syonts" : (thousands === 2 ? "dva ti-syont-se" : "t-she ti-syont-se"));
     }
 
-    // Hundreds
     const pHundreds = { 1: "sto", 2: "dvyeh-sh-tsyeh", 3: "t-sheh-stah", 4: "chter-is-ta", 5: "pyent-set", 6: "shes-set", 7: "shye-dem-set", 8: "oh-syem-set", 9: "jyev-yen-set" };
     if (hundreds > 0) pParts.push(pHundreds[hundreds]);
 
-    // Last Two Digits (The Fix)
     if (lastTwo > 0) {
+        // SELECT THE LIST BASED ON THE TOGGLE
+        const yearList = isNominative ? phonetics.ordinals : phonetics.ordinalsGenitive;
+        
         let pYear = "";
-        if (lastTwo <= 20 || lastTwo === 30 || lastTwo === 40 || lastTwo === 50 || lastTwo === 60 || lastTwo === 70 || lastTwo === 80 || lastTwo === 90) {
-            // Direct lookup for simple numbers
-            pYear = phonetics.ordinals[lastTwo];
+        if (yearList[lastTwo]) {
+            pYear = yearList[lastTwo];
         } else {
-            // Combined lookup for numbers like 26 (20 + 6)
             const tens = Math.floor(lastTwo / 10) * 10;
             const units = lastTwo % 10;
-            pYear = `${phonetics.ordinals[tens]} ${phonetics.ordinals[units]}`;
+            pYear = `${yearList[tens]} ${yearList[units]}`;
         }
-
-        if (pYear) {
-            // Apply the Genitive ending (-eh-go) to the WHOLE year string
-            // We replace endings of both words if it's a compound number
-            pYear = pYear.replace(/-y/g, "-eh-go")
-                         .replace(/-i/g, "-eh-go")
-                         .replace(/-ee/g, "-eh-go")
-                         .replace(/-ih/g, "-eh-go")
-                         .replace(/-shi/g, "-sheh-go"); // Specific fix for "vshi"
-            pParts.push(pYear);
-        }
+        pParts.push(pYear);
     }
-
 
     return pParts.join(" ");
 }
