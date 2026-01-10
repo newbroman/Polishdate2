@@ -147,8 +147,12 @@ window.onload = () => {
     checkVoices(() => render());
 
     if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('./sw.js')
-            .then(reg => console.log('✅ SW Registered!', reg.scope))
-            .catch(err => console.error('❌ SW Failed:', err));
+        navigator.serviceWorker.register('sw.js')
+            .then(function(reg) {
+                console.log('✅ Registered at:', reg.scope);
+            })
+            .catch(function(err) {
+                console.log('❌ Failed:', err);
+            });
     }
 };
