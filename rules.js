@@ -27,11 +27,11 @@ const grammarRules = {
         rule: "Vocabulary tip: Look for root words like 'flower', 'leaf', or 'ice'.",
         example: "Kwiecień (April) comes from 'kwiat' (flower)."
     },
-    spokenVsWritten: { 
-        title: "5. Spoken vs. Written Cases",
-        explanation: "Written (Genitive) is the standard for events. Spoken (Nominative) is for simple naming.",
-        rule: "Written uses -ego (Time Case), while Spoken uses -y/-i.",
-        example: "Written: drugiego vs. Spoken: drugi"
+    contextCases: { 
+        title: "6. 'On the...' vs. 'It is...'", 
+        explanation: "The date's ending changes depending on whether you are describing an event or just naming the day.",
+        rule: "'On the...' uses Genitive (-ego), while 'It is...' uses Nominative (-y/-i).",
+        example: "On the...: drugiego vs. It is...: drugi"
     }
 };
 
