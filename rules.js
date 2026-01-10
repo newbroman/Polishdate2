@@ -20,12 +20,6 @@ const grammarRules = {
         explanation: "When saying the year, Poles add the word 'roku' (of the year) at the end. The year itself is also spoken as an ordinal number.",
         rule: "[Number] + roku",
         example: "2026 = dwa tysiące dwudziestego szóstego roku"
-    },
-    namingOrigins: {
-        title: "4. Natural Origins",
-        explanation: "Polish month names are based on nature (flowers, leaves, ice) rather than Latin gods.",
-        rule: "Vocabulary tip: Kwiecień (April) comes from 'kwiat' (flower).",
-        example: "Listopad (November) means 'leaf-fall'."
     }
 };
 
@@ -34,18 +28,15 @@ export function getRulesHTML() {
         <article class="rules-container">
             <header class="rules-header">
                 <h2>🇵🇱 Polish Date Mastery</h2>
-                <p>Understand the two ways to express dates in Polish conversation.</p>
+                <p>Understand the logic behind the endings.</p>
             </header>
             
             <h3 class="section-divider">🔄 Part 1: Contextual Ending Changes</h3>
-            <p>The endings change depending on whether you are describing an <strong>event</strong> or <strong>naming</strong> the day.</p>
-
             <section class="rule-block written-mode">
                 <h3>🤝 Mode: (On the...) — Genitive</h3>
                 <p>Used for <strong>appointments and events.</strong> (Answers: <em>When?</em>)</p>
                 <div class="full-example">
-                    <strong>2026 Example:</strong><br>
-                    <span class="highlight">Dziesiątego stycznia dwa tysiące dwudziestego szóstego roku</span>
+                    <span class="highlight">Dziesiątego stycznia ... roku</span>
                 </div>
             </section>
 
@@ -53,21 +44,14 @@ export function getRulesHTML() {
                 <h3>🗓️ Mode: (It is...) — Nominative</h3>
                 <p>Used for <strong>naming the day.</strong> (Answers: <em>What day is it?</em>)</p>
                 <div class="full-example">
-                    <strong>2026 Example:</strong><br>
-                    <span class="highlight">Dziesiąty stycznia dwa tysiące dwudziesty szósty rok</span>
+                    <span class="highlight">Dziesiąty stycznia ... rok</span>
                 </div>
-            </section>
-
-            <section class="rule-block tips">
-                <h3>💡 Pro-Tip</h3>
-                <p>If you are unsure, always use <strong>(On the...)</strong>. It is much more common in daily conversation!</p>
             </section>
 
             <hr class="rule-divider">
             <h3 class="section-divider">📖 Part 2: Core Principles</h3>
     `;
 
-    // Now the Core Grammar Rules follow at the bottom
     Object.values(grammarRules).forEach(item => {
         html += `
             <section class="rule-block core-rule">
@@ -79,6 +63,29 @@ export function getRulesHTML() {
         `;
     });
 
-    html += `</article>`;
+    // ADDING THE ROOM ANALOGY SECTION
+    html += `
+            <hr class="rule-divider">
+            <h3 class="section-divider">🏠 Part 3: The "Room" Analogy</h3>
+            <section class="rule-block analogy-section">
+                <p>Think of Polish grammar like <strong>arranging furniture in a room:</strong></p>
+                
+                <div class="analogy-box">
+                    <h4>🪑 The "It is..." Mode (Nominative)</h4>
+                    <p>This is the furniture in the <strong>Showroom</strong>. It’s just sitting there. You are calling it by its name: <em>"That is a Chair."</em></p>
+                </div>
+
+                <div class="analogy-box">
+                    <h4>☕ The "On the..." Mode (Genitive)</h4>
+                    <p>This is when you <strong>use</strong> the furniture. You are placing your coffee <em>on the Chair</em>. Because the chair is now part of an action, its "shape" (the ending) changes to show its purpose.</p>
+                </div>
+                
+                <p style="margin-top: 15px; font-style: italic; opacity: 0.9;">
+                    This is why our app defaults to <strong>(On the...)</strong> — because in real life, we are usually doing something on that date!
+                </p>
+            </section>
+        </article>
+    `;
+
     return html;
 }
