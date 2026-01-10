@@ -144,19 +144,17 @@ function renderCalendarGrid(viewDate, selectedDate, onDateClick) {
 // 4. Initialize
 window.onload = () => {
     setupListeners(state, render);
+    
+    // 1. Render immediately so the user sees the calendar!
+    render(); 
+
+    // 2. Then check voices in the background
     checkVoices(() => render());
 
     if ('serviceWorker' in navigator) {
         navigator.serviceWorker.register('sw.js')
-            .then(function(reg) {
-                console.log('✅ Registered at:', reg.scope);
-            })
-            .catch(function(err) {
-                console.log('❌ Failed:', err);
-            });
+            .then(reg => console.log('✅ Registered at:', reg.scope))
+            .catch(err => console.log('❌ Failed:', err));
     }
 };
 
-window.render = render;
-window.state = state;
-window.renderCalendarGrid = renderCalendarGrid;
