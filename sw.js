@@ -1,6 +1,4 @@
-const CACHE_NAME = 'pl-date-v830';
-
-// All files required for the app to function offline
+const CACHE_NAME = 'pl-date-v801';
 const ASSETS = [
   './',
   './index.html',
@@ -15,65 +13,35 @@ const ASSETS = [
   './cultural.js',
   './rules.js',
   './manifest.json',
+  './icon-192.png',
   './icon-512.png'
 ];
 
-// Install: Cache all assets
-self.addEventListener('install', (event) => {
+// Install Event
+self.addEventListener('install', event => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => {
-      return cache.addAll(ASSETS);
-    })
+    caches.open(CACHE_NAME)
+      .then(cache => cache.addAll(ASSETS))
+      .then(() => self.skipWaiting())
   );
-  self.skipWaiting();
 });
 
-// Activate: Clean old caches
-self.addEventListener('activate', (event) => {
+// Activate Event
+self.addEventListener('activate', event => {
   event.waitUntil(
-    caches.keys().then((keys) => {
+    caches.keys().then(keys => {
       return Promise.all(
-        keys.map((key) => {
-          if (key !== CACHE_NAME) return caches.delete(key);
-        })
+        keys.filter(key => key !== CACHE_NAME)
+            .map(key => caches.delete(key))
       );
     })
   );
-  return self.clients.claim();
 });
 
-// Fetch: Cache-first strategy for speed
-self.addEventListener('fetch', (event) => {
+// Fetch Event
+self.addEventListener('fetch', event => {
   event.respondWith(
-    caches.match(event.request).then((cachedResponse) => {
-      return cachedResponse || fetch(event.request);
-    })
+    caches.match(event.request)
+      .then(response => response || fetch(event.request))
   );
 });
-
-📄 2. manifest.json
-
-Create a file named manifest.json in your root folder. This tells the phone that this is a "Standalone App" so it hides the browser's address bar and back buttons.
-JSON
-
-{
-  "name": "Polish Date Master",
-  "short_name": "PL Dates",
-  "description": "Master Polish dates in Formal and Informal modes.",
-  "start_url": "./index.html",
-  "display": "standalone",
-  "background_color": "#f8f9fa",
-  "theme_color": "#e6192e",
-  "icons": [
-    {
-      "src": "icon-192.png",
-      "sizes": "192x192",
-      "type": "image/png"
-    },
-    {
-      "src": "icon-512.png",
-      "sizes": "512x512",
-      "type": "image/png"
-    }
-  ]
-}
