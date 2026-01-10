@@ -47,13 +47,20 @@ export function updateInfoPanel(selectedDate, includeYear, isFormal) {
     let fullEn = `${monthEn} ${day}${getEnglishSuffix(day)}`;
     let fullPhonetic = `${capitalizedDayPhonetic} ${monthPhonetic}`;
 
-   // 4. Year Logic (Dates always use Genitive/Formal year endings)
-    if (includeYear) {
-        // Updated: Removed the second argument (true) to match new numbers.js logic
-        fullPl += ` ${getYearPolish(year)} roku`;
-        fullEn += `, ${year}`;
-        fullPhonetic += ` ${getYearPhonetic(year)} ro-koo`;
-    }
+   // 4. Year Logic
+   if (includeYear) {
+       // We pass isFormal so the function knows whether to return Genitive (-ego) or Nominative (-y)
+       const yearSpelling = getYearPolish(year, isFormal);
+       const yearPhonetic = getYearPhonetic(year, isFormal);
+       
+       // Suffix changes based on the toggle
+       const suffixPl = isFormal ? "rok" : "roku";
+       const suffixPhonetic = isFormal ? "rok" : "ro-koo";
+
+       fullPl += ` ${yearSpelling} ${suffixPl}`;
+       fullEn += `, ${year}`;
+       fullPhonetic += ` ${yearPhonetic} ${suffixPhonetic}`;
+   }
 
     // 5. Holiday Display
     const holidays = holidayData.getHolidaysForYear(year);
