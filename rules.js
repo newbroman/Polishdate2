@@ -23,26 +23,29 @@ const grammarRules = {
     },
     namingOrigins: {
         title: "4. Natural Origins",
-        explanation: "Polish month names aren't based on Latin gods (like March/Mars). They are based on what happens in nature in Poland.",
-        rule: "Vocabulary tip: Look for root words like 'flower', 'leaf', or 'ice'.",
-        example: "Kwiecień (April) comes from 'kwiat' (flower)."
+        explanation: "Polish month names are based on nature (flowers, leaves, ice) rather than Latin gods.",
+        rule: "Vocabulary tip: Kwiecień (April) comes from 'kwiat' (flower).",
+        example: "Listopad (November) means 'leaf-fall'."
     }
 };
 
 export function getRulesHTML() {
-    // Start with the Dynamic Mode Comparison (The new stuff)
     let html = `
         <article class="rules-container">
             <header class="rules-header">
                 <h2>🇵🇱 Polish Date Mastery</h2>
-                <p>In Polish, dates are "chameleons"—they change their shape based on how you use them.</p>
+                <p>Understand the two ways to express dates in Polish conversation.</p>
             </header>
+            
+            <h3 class="section-divider">🔄 Part 1: Contextual Ending Changes</h3>
+            <p>The endings change depending on whether you are describing an <strong>event</strong> or <strong>naming</strong> the day.</p>
 
             <section class="rule-block written-mode">
                 <h3>🤝 Mode: (On the...) — Genitive</h3>
                 <p>Used for <strong>appointments and events.</strong> (Answers: <em>When?</em>)</p>
                 <div class="full-example">
-                    <span class="highlight">Dziesiątego stycznia ... roku</span>
+                    <strong>2026 Example:</strong><br>
+                    <span class="highlight">Dziesiątego stycznia dwa tysiące dwudziestego szóstego roku</span>
                 </div>
             </section>
 
@@ -50,18 +53,24 @@ export function getRulesHTML() {
                 <h3>🗓️ Mode: (It is...) — Nominative</h3>
                 <p>Used for <strong>naming the day.</strong> (Answers: <em>What day is it?</em>)</p>
                 <div class="full-example">
-                    <span class="highlight">Dziesiąty stycznia ... rok</span>
+                    <strong>2026 Example:</strong><br>
+                    <span class="highlight">Dziesiąty stycznia dwa tysiące dwudziesty szósty rok</span>
                 </div>
             </section>
 
+            <section class="rule-block tips">
+                <h3>💡 Pro-Tip</h3>
+                <p>If you are unsure, always use <strong>(On the...)</strong>. It is much more common in daily conversation!</p>
+            </section>
+
             <hr class="rule-divider">
-            <h3>📖 Core Grammar Principles</h3>
+            <h3 class="section-divider">📖 Part 2: Core Principles</h3>
     `;
 
-    // Restore the Original Grammar Rules loop
+    // Now the Core Grammar Rules follow at the bottom
     Object.values(grammarRules).forEach(item => {
         html += `
-            <section class="rule-block">
+            <section class="rule-block core-rule">
                 <h4>${item.title}</h4>
                 <p>${item.explanation}</p>
                 <p><strong>Rule:</strong> ${item.rule}</p>
