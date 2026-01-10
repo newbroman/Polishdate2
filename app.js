@@ -160,3 +160,11 @@ window.onload = () => {
 };
 
 window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => render());
+
+if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('./sw.js')
+            .then(reg => console.log('✅ SW Registered!', reg.scope))
+            .catch(err => console.error('❌ SW Failed:', err));
+    }
+    // ---------------------------
+};
