@@ -155,16 +155,14 @@ function renderCalendarGrid(viewDate, selectedDate, onDateClick) {
 // 4. Initialize
 window.onload = () => {
     setupListeners(state, render);
+    
     // Check voices, then render once
     checkVoices(() => render());
-};
 
-window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => render());
-
-if ('serviceWorker' in navigator) {
+    // --- ADD THIS TO REGISTER THE SERVICE WORKER ---
+    if ('serviceWorker' in navigator) {
         navigator.serviceWorker.register('./sw.js')
-            .then(reg => console.log('✅ SW Registered!', reg.scope))
-            .catch(err => console.error('❌ SW Failed:', err));
+            .then(reg => console.log('✅ Service Worker Registered!', reg.scope))
+            .catch(err => console.error('❌ Service Worker Failed:', err));
     }
-    // ---------------------------
 };
