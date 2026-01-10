@@ -31,15 +31,17 @@ function render() {
     const year = state.viewDate.getFullYear();
 
     // 1. Update Mode Button
-    if (meetingBtn) {
-        const label = state.isPolish ? "Tryb" : "Mode";
-        const status = state.isFormal ? 
-            (state.isPolish ? "Mówiony (Nominative)" : "Spoken (Nominative)") : 
-            (state.isPolish ? "Pisany (Genitive)" : "Written (Genitive)");
-
-        meetingBtn.innerText = `${label}: ${status}`;
-        meetingBtn.className = `pill-btn ${state.isFormal ? 'mode-btn-spoken' : 'mode-btn-written'}`;
-    }
+   // Update Mode Button (On the... vs It is...)
+if (meetingBtn) {
+    // state.isFormal = false -> Genitive ("On the...")
+    // state.isFormal = true  -> Nominative ("It is...")
+    const status = state.isFormal ? 
+        (state.isPolish ? "To jest..." : "Date: (It is...)") : 
+        (state.isPolish ? "Dnia..." : "Date: (On the...)");
+    
+    meetingBtn.innerText = status;
+    meetingBtn.className = `pill-btn ${state.isFormal ? 'mode-btn-spoken' : 'mode-btn-written'}`;
+}
 
     // 2. Update Info Panel
     try {
