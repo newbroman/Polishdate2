@@ -28,14 +28,12 @@ const grammarRules = {
         example: "Kwiecień (April) comes from 'kwiat' (flower)."
     },
     contextCases: { 
-        title: "6. 'On the...' vs. 'It is...'", 
+        title: "5. 'On the...' vs. 'It is...'", 
         explanation: "The date's ending changes depending on whether you are describing an event or just naming the day.",
         rule: "'On the...' uses Genitive (-ego), while 'It is...' uses Nominative (-y/-i).",
         example: "On the...: drugiego vs. It is...: drugi"
     }
 };
-
-
 
 export function getRulesHTML() {
     return `
@@ -52,7 +50,7 @@ export function getRulesHTML() {
                     <li><strong>Usage:</strong> Use this when saying "I am meeting you on the..."</li>
                     <li><strong>Logic:</strong> It implies "on the day of..." (dnia...).</li>
                     <li><strong>Ending:</strong> Most numbers end in <strong>-ego</strong> and the year ends in <strong>roku</strong> (ro-koo).</li>
-                    <li><strong>Example:</strong> <span class="highlight">Drugiego maja</span> (On the second of May).</li>
+                    <li><strong>Example:</strong> <span class="highlight">Drugiego maja... roku</span></li>
                 </ul>
             </section>
 
@@ -63,7 +61,7 @@ export function getRulesHTML() {
                     <li><strong>Usage:</strong> Use this to answer "What is today's date?"</li>
                     <li><strong>Logic:</strong> This is the "dictionary" or "naming" form.</li>
                     <li><strong>Ending:</strong> Usually ends in <strong>-y</strong> or <strong>-i</strong> and the year ends in <strong>rok</strong> (rok).</li>
-                    <li><strong>Example:</strong> <span class="highlight">Drugi maja</span> (The second of May).</li>
+                    <li><strong>Example:</strong> <span class="highlight">Drugi maja... rok</span></li>
                 </ul>
             </section>
 
