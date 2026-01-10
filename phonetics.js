@@ -65,6 +65,19 @@ const phonetics = {
         30: "ts-sheh-jyes-ti", 40: "chter-jyes-ti", 50: "pyent-jyeh-shon-ti",
         60: "shes-jyeh-shon-ti", 70: "shye-dem-jyeh-shon-ti", 
         80: "oh-syem-jyeh-shon-ti", 90: "jyev-yen-jyeh-shon-ti"
+    },
+  
+    // 6. Year Ordinals (Genitive / "On the..." mode)
+    ordinalsGenitive: {
+        1: "pyer-v-sheh-go", 2: "droo-gyeh-go", 3: "ts-sheh-tsyeh-go", 4: "chvahr-teh-go",
+        5: "pyon-teh-go", 6: "shooss-teh-go", 7: "shood-meh-go", 8: "ooss-meh-go",
+        9: "jyev-yon-teh-go", 10: "jyeh-shon-teh-go", 11: "yeh-deh-nahs-teh-go",
+        12: "dvoo-nahs-teh-go", 13: "t-sheh-nahs-teh-go", 14: "chver-nahs-teh-go",
+        15: "pyent-nahs-teh-go", 16: "shes-nahs-teh-go", 17: "shyeh-dem-nahs-teh-go",
+        18: "oh-syem-nahs-teh-go", 19: "jyev-yet-nahs-teh-go", 20: "dvoo-jyes-teh-go",
+        30: "ts-sheh-jyes-teh-go", 40: "chter-jyes-teh-go", 50: "pyent-jyeh-shon-teh-go",
+        60: "shes-jyeh-shon-teh-go", 70: "shye-dem-jyeh-shon-teh-go", 
+        80: "oh-syem-jyeh-shon-teh-go", 90: "jyev-yen-jyeh-shon-teh-go"
     }
 };
 
