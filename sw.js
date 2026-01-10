@@ -1,4 +1,4 @@
-const CACHE_NAME = 'pl-date-v820';
+const CACHE_NAME = 'pl-date-v825';
 
 // All files required for the app to function offline
 const ASSETS = [
