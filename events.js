@@ -27,37 +27,36 @@ export function setupListeners(state, render) {
             }
         });
 
-       playBtn.onclick = () => {
-    const plPhraseElement = document.getElementById('plPhrase');
-    if (plPhraseElement) {
-        const textToSpeak = plPhraseElement.innerText;
-        if (textToSpeak && !textToSpeak.includes("Wybierz")) {
-            unlockAudio(); 
-            speakText(textToSpeak);
-        }
-    }
-};
+        playBtn.onclick = () => {
+            const plPhraseElement = document.getElementById('plPhrase');
+            if (plPhraseElement) {
+                const textToSpeak = plPhraseElement.innerText;
+                if (textToSpeak && !textToSpeak.includes("Wybierz")) {
+                    unlockAudio(); 
+                    speakText(textToSpeak);
+                }
+            }
+        };
     }
 
     // --- Formal/Informal Toggle ---
-const meetingBtn = document.getElementById('meetingToggle');
+    const meetingBtn = document.getElementById('meetingToggle');
+    if (meetingBtn) {
+        // Initial state: starts formal, so offer switch to Naming
+        meetingBtn.innerHTML = '📅 Switch to Naming';
 
-if (meetingBtn) {
-    // 1. Set initial state: App starts in Event mode (🎉), 
-    // so button offers the switch TO Naming (📅)
-    meetingBtn.innerHTML = '📅 Switch to Naming';
-
-    meetingBtn.onclick = () => {
-        state.isFormal = !state.isFormal;
-        
-        // Update button text based on the new state
-        meetingBtn.innerHTML = state.isFormal 
-            ? '📅 Switch to Naming' 
-            : '🎉 Switch to Event';
+        meetingBtn.onclick = () => {
+            state.isFormal = !state.isFormal;
             
-        render(); 
-    };
-}
+            // Toggle text logic
+            meetingBtn.innerHTML = state.isFormal 
+                ? '📅 Switch to Naming' 
+                : '🎉 Switch to Event';
+                
+            render(); 
+        };
+    } // <--- CORRECTLY CLOSES meetingBtn block
+
     // --- 2. Navigation Logic ---
     const showSection = (id) => {
         window.scrollTo(0, 0); 
@@ -137,7 +136,7 @@ if (meetingBtn) {
         state.includeYear = !state.includeYear;
         render(); 
     };
-} // This brace correctly closes setupListeners
+} // <--- CORRECTLY CLOSES setupListeners
 
 /**
  * Renders the Cultural Hub
@@ -150,7 +149,7 @@ export function renderCulturalHub(state) {
     const holidays = holidayData.getHolidaysForYear(year);
 
     let html = `
-  <div class="content-body">
+    <div class="content-body">
         <header class="content-header">
             <h1>${monthInfo.pl} ${year}</h1> 
             <div class="season-box">
@@ -167,10 +166,8 @@ export function renderCulturalHub(state) {
             <h3>📅 ${state.isPolish ? 'Znaczenie dzisiejszego dnia' : 'Meaning of Today'}</h3>
             <div class="culture-grid-mini">
                 ${(() => {
-                    // Get today's day index (0 for Sunday, 1 for Monday, etc.)
                     const todayIndex = new Date().getDay();
                     const day = culturalData.days[todayIndex];
-                    
                     return `
                         <div class="day-meaning-card" style="padding: 15px; border: 2px solid var(--accent-color); border-radius: 8px; background: rgba(128,128,128,0.05);">
                             <strong style="font-size: 1.1rem; color: var(--accent-color);">${day.pl}:</strong> 
@@ -188,7 +185,6 @@ export function renderCulturalHub(state) {
     Object.entries(holidays).forEach(([key, holidayName]) => {
         if (key.startsWith(`${monthIndex}-`)) {
             const dayNum = key.split('-')[1];
-            // Access descriptions from culturalData descriptions if available
             const description = culturalData.holidayExplanations[key] || "";
             html += `
                 <div class="holiday-entry">
@@ -212,6 +208,7 @@ export function renderCulturalHub(state) {
     hub.innerHTML = html;
     hub.querySelector('.back-to-cal').onclick = () => document.getElementById('navCalendar').click();
 }
+
 /**
  * Renders the Grammar Rules page
  */
