@@ -33,15 +33,16 @@ function render() {
     // 1. Update Mode Button
    // Update Mode Button (On the... vs It is...)
 if (meetingBtn) {
-    // state.isFormal = false -> Genitive ("On the...")
-    // state.isFormal = true  -> Nominative ("It is...")
-    const status = state.isFormal ? 
-        (state.isPolish ? "To jest..." : "Date: (It is...)") : 
-        (state.isPolish ? "Dnia..." : "Date: (On the...)");
-    
-    meetingBtn.innerText = status;
-    meetingBtn.className = `pill-btn ${state.isFormal ? 'mode-btn-spoken' : 'mode-btn-written'}`;
-}
+        // state.isFormal = true  -> Genitive ("On the...") -> 🎉 Party/Event
+        // state.isFormal = false -> Nominative ("It is...") -> 📅 Calendar/Naming
+        const icon = state.isFormal ? "🎉" : "📅";
+        const label = state.isFormal ? 
+            (state.isPolish ? "Dnia..." : "On the...") : 
+            (state.isPolish ? "To jest..." : "It is...");
+        
+        meetingBtn.innerText = `${icon} ${label}`;
+        // Updating class names to be more descriptive of the purpose
+        meetingBtn.className = `pill-btn ${state.isFormal ? 'mode-btn-event' : 'mode-btn-naming'}`;
 
     // 2. Update Info Panel
     try {
