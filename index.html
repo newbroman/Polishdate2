@@ -36,16 +36,18 @@
     </header>
 
     <main id="calendarSection">
-        <div class="calendar-navigation">
-            <div class="nav-controls-row">
-                <button id="prevMonth" class="nav-btn-arrow" aria-label="Previous Month">←</button>
-                <div class="rollers-container">
-                    <select id="monthRoller" class="roller-select"></select>
-                    <input type="number" id="yearInput" value="2026" min="0" max="3000">
-                </div>
-                <button id="nextMonth" class="nav-btn-arrow" aria-label="Next Month">→</button>
+    <div class="calendar-navigation">
+        <div class="nav-controls-row">
+            <button id="prevMonth" class="nav-btn-arrow" aria-label="Previous Month">‹</button>
+            
+            <div class="rollers-container">
+                <select id="monthRoller" class="roller-select"></select>
+                <input type="number" id="yearInput" value="2026" min="0" max="3000">
             </div>
+            
+            <button id="nextMonth" class="nav-btn-arrow" aria-label="Next Month">›</button>
         </div>
+    </div>
 
         <div class="calendar-container">
             <div class="weekdays"></div>
