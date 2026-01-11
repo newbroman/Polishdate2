@@ -27,20 +27,19 @@ export function setupListeners(state, render) {
             }
         });
 
-        playBtn.onclick = () => {
-            // 1. Get text specifically from the Polish spelling element
-            const plPhraseElement = document.getElementById('plPhrase');
-            const textToSpeak = plPhraseElement ? plPhraseElement.innerText : "";
+       playBtn.onclick = () => {
+    const plPhraseElement = document.getElementById('plPhrase');
+    const textToSpeak = plPhraseElement ? plPhraseElement.innerText : "";
 
-            // 2. Validation
-            if (textToSpeak && !textToSpeak.includes("Wybierz") && !textToSpeak.includes("Select")) {
-                // 3. Import and use the stable audio engine
-                import('./audio.js').then(m => {
-                    if (m.unlockAudio) m.unlockAudio(); 
-                    m.speakText(textToSpeak); 
-                });
-            }
-        };
+    if (textToSpeak && !textToSpeak.includes("Wybierz")) {
+        // 1. Force an immediate "Resume" on the speech engine
+        // This acts as a secondary unlock for Opera/DDG
+        window.speechSynthesis.resume();
+
+        // 2. Direct call (Assuming speakText is imported at the top)
+        speakText(textToSpeak); 
+    }
+};
     }
 
     // --- Formal/Informal Toggle ---
