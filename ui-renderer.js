@@ -48,21 +48,21 @@ export function updateInfoPanel(selectedDate, includeYear, isFormal) {
     let fullPhonetic = `${capitalizedDayPhonetic} ${monthPhonetic}`;
 
    // 4. Year Logic
+   // 4. Year Logic
    if (includeYear) {
-       // Now passing isFormal to your fixed numbers.js functions
-       const yearSpelling = getYearPolish(year, isFormal);
-       const yearPhonetic = getYearPhonetic(year, isFormal);
+       // Dates ALWAYS use the Genitive form of the year.
+       // We force isFormal to false for the year text to get "dwudziestego szóstego"
+       const yearSpelling = getYearPolish(year, false); 
+       const yearPhonetic = getYearPhonetic(year, false);
        
-       // isFormal (True) = "It is..." -> rok
-       // !isFormal (False) = "On the..." -> roku
-       const suffixPl = isFormal ? "rok" : "roku";
-       const suffixPhonetic = isFormal ? "rok" : "ro-koo";
+       // Suffix for dates is ALWAYS "roku" (of the year)
+       const suffixPl = "roku";
+       const suffixPhonetic = "ro-koo";
 
        fullPl += ` ${yearSpelling} ${suffixPl}`;
        fullEn += `, ${year}`;
        fullPhonetic += ` ${yearPhonetic} ${suffixPhonetic}`;
    }
-
     // 5. Holiday Display
     const holidays = holidayData.getHolidaysForYear(year);
     const holidayKey = `${monthIndex}-${day}`;
