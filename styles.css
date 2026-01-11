@@ -207,10 +207,9 @@ body {
 
 /* New Logic: Event (🎉) and Naming (📅) classes */
 .mode-btn-event { background-color: #ffd700 !important; color: #333 !important; border: 2px solid #daa520 !important; }
-.mode-btn-event::before { content: '🎉'; }
 
 .mode-btn-naming { background-color: #4a90e2 !important; color: white !important; border: 2px solid #357abd !important; }
-.mode-btn-naming::before { content: '📅'; }
+
 
 /* --- 7. Content Page Styling --- */
 .content-page {
