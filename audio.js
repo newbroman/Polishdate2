@@ -1,74 +1,93 @@
 /**
- * audio.js - Multi-Browser Compatibility Fix
+ * audio.js - Cross-Browser Speech Engine
  */
 
 let polishVoice = null;
 let audioUnlocked = false;
-window.activeUtterance = null; // Essential for Firefox/Mobile memory management
 
-export function loadVoices() {
+// CRITICAL FOR MOBILE/FIREFOX/DDG: Prevents garbage collection
+window.activeUtterance = null; 
+
+/**
+ * Finds the best Polish voice available.
+ */
+function findVoice() {
     if (!('speechSynthesis' in window)) return;
     const voices = window.speechSynthesis.getVoices();
-    // Firefox fix: iterate and find the best match
     polishVoice = voices.find(v => v.lang === 'pl-PL' || v.lang === 'pl_PL' || v.lang.startsWith('pl'));
 }
 
-// Ensure Firefox hears the voice change event
+export function loadVoices() {
+    findVoice();
+}
+
+// Ensure voices are detected when they check in
 if ('speechSynthesis' in window) {
-    if (speechSynthesis.onvoiceschanged !== undefined) {
-        speechSynthesis.onvoiceschanged = loadVoices;
-    }
+    window.speechSynthesis.onvoiceschanged = loadVoices;
     loadVoices();
 }
 
+/**
+ * Initialization check used by app.js
+ */
 export function checkVoices(onReady) {
     if (!('speechSynthesis' in window)) return;
-    loadVoices();
     
-    // If voices aren't ready yet (common in Firefox/Opera), retry
-    if (!polishVoice) {
-        setTimeout(() => {
-            loadVoices();
-            if (onReady) onReady(!!polishVoice);
-        }, 500);
-    } else if (onReady) {
-        onReady(true);
+    const runCheck = () => {
+        findVoice();
+        if (onReady) onReady(!!polishVoice);
+    };
+
+    if (window.speechSynthesis.getVoices().length > 0) {
+        runCheck();
+    } else {
+        window.speechSynthesis.onvoiceschanged = runCheck;
     }
+
+    // Backup check for slower mobile browsers
+    setTimeout(runCheck, 1000);
 }
 
+/**
+ * ESSENTIAL FOR MOBILE: Un-mutes the engine.
+ * Must be called from a user click/touchstart.
+ */
 export function unlockAudio() {
-    if (audioUnlocked) return;
     try {
         const talk = new SpeechSynthesisUtterance("");
         talk.volume = 0; 
         window.speechSynthesis.speak(talk);
         audioUnlocked = true;
+        console.log("🔊 Audio engine primed.");
     } catch (e) {
         console.error("Audio unlock failed", e);
     }
 }
 
+/**
+ * The Main Speak Function - Exported for events.js
+ */
 export function speakText(text) {
     if (!text || !('speechSynthesis' in window)) return;
 
-    // Firefox/Opera fix: always cancel and resume to clear the buffer
-    window.speechSynthesis.cancel();
+    // 1. Force Resume & Clear Queue (Fixes Opera/Firefox hang)
     window.speechSynthesis.resume();
+    window.speechSynthesis.cancel();
 
-    // Attach to window to prevent Garbage Collection (The Firefox 'Silent' bug)
+    // 2. Attach to window to prevent sound cutting off mid-sentence
     window.activeUtterance = new SpeechSynthesisUtterance(text);
     
-    // CRITICAL: Set lang BEFORE setting voice
+    // 3. Set Language and Voice
     window.activeUtterance.lang = 'pl-PL';
-
     if (polishVoice) {
         window.activeUtterance.voice = polishVoice;
     }
 
+    // 4. Learner-friendly settings
     window.activeUtterance.rate = 0.8;
     window.activeUtterance.pitch = 1.0;
 
-    // Optional Firefox Fix: Some versions need a small delay after cancel
+    // 5. Speak (with a tiny delay to ensure cancel() finished)
     setTimeout(() => {
         window.speechSynthesis.speak(window.activeUtterance);
     }, 50);
