@@ -32,18 +32,20 @@ function render() {
 
    // 1. Update Mode Button
     if (meetingBtn) {
-        // Force the icons and labels to match the boolean state
-        const icon = state.isFormal ? "🎉" : "📅";
-        
-        const label = state.isFormal 
-            ? (state.isPolish ? "To jest dnia" : "It's on") 
-            : (state.isPolish ? "Dzisiaj jest" : "Today is");
+    // state.isFormal = false (Default) -> "Today is" (Naming Mode)
+    // state.isFormal = true            -> "It's on" (Event Mode)
+    
+    const icon = state.isFormal ? "🎉" : "📅";
+    
+    const label = state.isFormal 
+        ? (state.isPolish ? "To jest dnia" : "It's on") 
+        : (state.isPolish ? "Dzisiaj jest" : "Today is");
 
-        meetingBtn.innerText = `${icon} ${label}`;
-        
-        // CSS: mode-btn-naming (Blue) for "Today is", mode-btn-event (Gold) for "It's on"
-        meetingBtn.className = `pill-btn ${state.isFormal ? 'mode-btn-event' : 'mode-btn-naming'}`;
-    }
+    meetingBtn.innerText = `${icon} ${label}`;
+    
+    // Theme: Blue for Naming (Today is), Gold for Event (It's on)
+    meetingBtn.className = `pill-btn ${state.isFormal ? 'mode-btn-event' : 'mode-btn-naming'}`;
+}
     
     // 2. Update Info Panel
     try {
