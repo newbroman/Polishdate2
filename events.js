@@ -39,14 +39,13 @@ export function setupListeners(state, render) {
         };
     }
 
-    // --- Formal/Informal Toggle ---
+  
     // --- Formal/Informal Toggle Logic ---
     const meetingBtn = document.getElementById('meetingToggle');
     if (meetingBtn) {
         meetingBtn.onclick = () => {
-            // Simply flip the state and let render() do the work
             state.isFormal = !state.isFormal;
-            render(); 
+            render(); // Triggers the text and language update in app.js
         };
     }
 
