@@ -12,7 +12,7 @@ const state = {
     selectedDate: new Date(), 
     includeYear: true,
     isPolish: false,
-    isFormal: true
+    isFormal: false
 }
 
 // 2. Main Render Function
