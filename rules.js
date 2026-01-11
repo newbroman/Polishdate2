@@ -31,22 +31,22 @@ export function getRulesHTML() {
                 <p>Understand the logic behind the endings.</p>
             </header>
             
-            <h3 class="section-divider">🔄 Part 1: Contextual Ending Changes</h3>
+      <h3 class="section-divider">🔄 Part 1: Contextual Ending Changes</h3>
+            
             <section class="rule-block written-mode">
-                <h3>🤝 Mode: (On the...) — Full Genitive</h3>
-                <p>Used for <strong>appointments and events.</strong> (Answers: <em>When?</em>)</p>
+                <h3>🎉 Mode: (On the...) — Genitive</h3>
+                <p><strong>Primary Mode.</strong> Used for scheduling, parties, and appointments. (Answers: <em>When?</em>)</p>
                 <div class="full-example">
                     <span class="highlight">Dziesiątego stycznia ... roku</span>
                 </div>
             </section>
 
             <section class="rule-block spoken-mode">
-                <h3>🗓️ Mode: (It is...) — Mixed/Nominative</h3>
-                <p>Used for <strong>naming the day.</strong> (Answers: <em>What day is it?</em>)</p>
+                <h3>📅 Mode: (It is...) — Nominative</h3>
+                <p>Used for simply <strong>identifying</strong> a date on a calendar. (Answers: <em>What day is it?</em>)</p>
                 <div class="full-example">
                     <span class="highlight">Dziesiąty stycznia ... roku</span>
                 </div>
-                <p style="font-size: 0.8rem; margin-top: 5px; opacity: 0.8;">Note: Even when naming the day, we keep the year as 'roku' to show it belongs to that specific year.</p>
             </section>
 
             <hr class="rule-divider">
