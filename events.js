@@ -28,21 +28,22 @@ export function setupListeners(state, render) {
         });
 
         playBtn.onclick = () => {
-            const textToSpeak = document.getElementById('plPhrase').innerText;
-            if (textToSpeak && !textToSpeak.includes("Wybierz") && !textToSpeak.includes("Select")) {
-                speakText(textToSpeak);
-            }
-        };
-    }
+    // 1. Get text specifically from the Polish spelling element
+    const plPhraseElement = document.getElementById('plPhrase');
+    const textToSpeak = plPhraseElement ? plPhraseElement.innerText : "";
 
-    // --- Formal/Informal Toggle ---
-    const meetingBtn = document.getElementById('meetingToggle');
-    if (meetingBtn) {
-        meetingBtn.onclick = () => {
-            state.isFormal = !state.isFormal;
-            render(); 
-        };
+    // 2. Validation
+    if (textToSpeak && !textToSpeak.includes("Wybierz") && !textToSpeak.includes("Select")) {
+        // 3. Import and use the stable audio engine
+        import('./audio.js').then(m => {
+            // Force the unlock for iOS/Chrome
+            if (m.unlockAudio) m.unlockAudio(); 
+            
+            // This calls your speak function which MUST have utterance.lang = 'pl-PL'
+            m.speakText(textToSpeak); 
+        });
     }
+};
 
     // --- 2. Navigation Logic (Overriding CSS !important) ---
     const showSection = (id) => {
