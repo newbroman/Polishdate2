@@ -1,7 +1,7 @@
 /**
  * events.js - Fixed Integration
  */
-import { speakText, checkVoices } from './audio.js';
+import { speakText, unlockAudio, checkVoices } from './audio.js';
 import holidayData from './holiday.js';
 import culturalData from './cultural.js';
 import { getRulesHTML } from './rules.js';
@@ -29,15 +29,12 @@ export function setupListeners(state, render) {
 
        playBtn.onclick = () => {
     const plPhraseElement = document.getElementById('plPhrase');
-    const textToSpeak = plPhraseElement ? plPhraseElement.innerText : "";
-
-    if (textToSpeak && !textToSpeak.includes("Wybierz")) {
-        // 1. Force an immediate "Resume" on the speech engine
-        // This acts as a secondary unlock for Opera/DDG
-        window.speechSynthesis.resume();
-
-        // 2. Direct call (Assuming speakText is imported at the top)
-        speakText(textToSpeak); 
+    if (plPhraseElement) {
+        const textToSpeak = plPhraseElement.innerText;
+        if (textToSpeak && !textToSpeak.includes("Wybierz")) {
+            unlockAudio(); 
+            speakText(textToSpeak);
+        }
     }
 };
     }
