@@ -31,20 +31,22 @@ function render() {
     const year = state.viewDate.getFullYear();
 
     // 1. Update Mode Button (🎉 Party/Event vs 📅 Calendar/Naming)
-    if (meetingBtn) {
-        // state.isFormal = true  -> Genitive ("On the...") -> 🎉 Party/Event
-        // state.isFormal = false -> Nominative ("It is...") -> 📅 Calendar/Naming
-        const icon = state.isFormal ? "🎉" : "📅";
-        const label = state.isFormal ? 
-            (state.isPolish ? "Dnia..." : "On the...") : 
-            (state.isPolish ? "To jest..." : "It is...");
-        
-        meetingBtn.innerText = `${icon} ${label}`;
-        
-        // Apply the new CSS classes for Gold and Blue themes
-        meetingBtn.className = `pill-btn ${state.isFormal ? 'mode-btn-event' : 'mode-btn-naming'}`;
-    } // <--- THIS WAS THE MISSING CLOSING BRACE
-
+  if (meetingBtn) {
+    // Current State Icon (What the user SEES on the calendar)
+    const currentIcon = state.isFormal ? "🎉" : "📅";
+    
+    // Toggle Label (What the button does if CLICKED)
+    const toggleAction = state.isFormal ? 
+        (state.isPolish ? "Zmień na Nazwy" : "Switch to Naming") : 
+        (state.isPolish ? "Zmień na Wydarzenie" : "Switch to Event");
+    
+    // We show the icon of the CURRENT mode so the user knows what they are in, 
+    // but the text tells them what the button will do.
+    meetingBtn.innerHTML = `<span>${currentIcon}</span> ${toggleAction}`;
+    
+    // Update the color theme
+    meetingBtn.className = `pill-btn ${state.isFormal ? 'mode-btn-event' : 'mode-btn-naming'}`;
+}
     // 2. Update Info Panel
     try {
          updateInfoPanel(state.selectedDate, state.includeYear, state.isFormal, state.isPolish);
