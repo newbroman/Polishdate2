@@ -154,14 +154,20 @@ export function renderCulturalHub(state) {
             <p class="derivation-text">${monthInfo.derivation}</p>
         </section>
         <section class="info-block">
-            <h3>📅 ${state.isPolish ? 'Znaczenie dni tygodnia' : 'Weekday Etymology'}</h3>
-            <div class="culture-grid-mini" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px;">
-                ${culturalData.days.map(day => `
-                    <div class="day-meaning-card" style="padding: 10px; border: 1px solid var(--nav-border); border-radius: 8px; background: rgba(128,128,128,0.05);">
-                        <strong style="color: var(--accent-color);">${day.pl}:</strong> 
-                        <span style="font-size: 0.9rem;">${day.meaning}</span>
-                    </div>
-                `).join('')}
+            <h3>📅 ${state.isPolish ? 'Znaczenie dzisiejszego dnia' : 'Meaning of Today'}</h3>
+            <div class="culture-grid-mini">
+                ${(() => {
+                    // Get today's day index (0 for Sunday, 1 for Monday, etc.)
+                    const todayIndex = new Date().getDay();
+                    const day = culturalData.days[todayIndex];
+                    
+                    return `
+                        <div class="day-meaning-card" style="padding: 15px; border: 2px solid var(--accent-color); border-radius: 8px; background: rgba(128,128,128,0.05);">
+                            <strong style="font-size: 1.1rem; color: var(--accent-color);">${day.pl}:</strong> 
+                            <span style="font-size: 1rem;">${day.meaning}</span>
+                        </div>
+                    `;
+                })()}
             </div>
         </section>
         <section class="info-block">
