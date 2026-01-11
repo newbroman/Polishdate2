@@ -33,6 +33,15 @@ export function getRulesHTML() {
             
       <h3 class="section-divider">🔄 Part 1: Contextual Ending Changes</h3>
             
+           
+            <section class="rule-block spoken-mode">
+                <h3>📅 Mode: (It is...) — Nominative</h3>
+                <p>Used for simply <strong>identifying</strong> a date on a calendar. (Answers: <em>What day is it?</em>)</p>
+                <div class="full-example">
+                    <span class="highlight">Dziesiąty stycznia ... roku</span>
+                </div>
+            </section>
+
             <section class="rule-block written-mode">
                 <h3>🎉 Mode: (On the...) — Genitive</h3>
                 <p><strong>Primary Mode.</strong> Used for scheduling, parties, and appointments. (Answers: <em>When?</em>)</p>
@@ -41,13 +50,6 @@ export function getRulesHTML() {
                 </div>
             </section>
 
-            <section class="rule-block spoken-mode">
-                <h3>📅 Mode: (It is...) — Nominative</h3>
-                <p>Used for simply <strong>identifying</strong> a date on a calendar. (Answers: <em>What day is it?</em>)</p>
-                <div class="full-example">
-                    <span class="highlight">Dziesiąty stycznia ... roku</span>
-                </div>
-            </section>
 
             <hr class="rule-divider">
             <h3 class="section-divider">📖 Part 2: Core Principles</h3>
