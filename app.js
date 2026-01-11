@@ -30,9 +30,8 @@ function render() {
     const monthIndex = state.viewDate.getMonth();
     const year = state.viewDate.getFullYear();
 
-    // 1. Update Mode Button
-   // Update Mode Button (On the... vs It is...)
-if (meetingBtn) {
+    // 1. Update Mode Button (🎉 Party/Event vs 📅 Calendar/Naming)
+    if (meetingBtn) {
         // state.isFormal = true  -> Genitive ("On the...") -> 🎉 Party/Event
         // state.isFormal = false -> Nominative ("It is...") -> 📅 Calendar/Naming
         const icon = state.isFormal ? "🎉" : "📅";
@@ -41,8 +40,10 @@ if (meetingBtn) {
             (state.isPolish ? "To jest..." : "It is...");
         
         meetingBtn.innerText = `${icon} ${label}`;
-        // Updating class names to be more descriptive of the purpose
+        
+        // Apply the new CSS classes for Gold and Blue themes
         meetingBtn.className = `pill-btn ${state.isFormal ? 'mode-btn-event' : 'mode-btn-naming'}`;
+    } // <--- THIS WAS THE MISSING CLOSING BRACE
 
     // 2. Update Info Panel
     try {
