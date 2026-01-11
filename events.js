@@ -44,20 +44,21 @@ export function setupListeners(state, render) {
 if (meetingBtn) {
     // 1. Set the initial text based on the startup state (Formal)
     // We show "🏷️ Naming Mode" as the option to switch TO.
-    meetingBtn.innerHTML = '🏷️ Naming Mode'; 
+    if (meetingBtn) {
+    // Initial: App is in Event mode (🎉), button offers switch to Calendar (📅)
+    meetingBtn.innerHTML = '📅 Switch to Naming';
 
     meetingBtn.onclick = () => {
         state.isFormal = !state.isFormal;
         
-        // 2. Update button text based on what the user can switch to next
+        // Toggle logic
         meetingBtn.innerHTML = state.isFormal 
-            ? '🏷️ Naming Mode'   // If currently Formal, offer Naming
-            : '📅 Event Mode';    // If currently Naming, offer Event
+            ? '📅 Switch to Naming' 
+            : '🎉 Switch to Event';
             
         render(); 
     };
-    }
-
+}
     // --- 2. Navigation Logic ---
     const showSection = (id) => {
         window.scrollTo(0, 0); 
