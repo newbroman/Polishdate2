@@ -132,70 +132,8 @@ export function setupListeners(state, render) {
 /**
  * Renders the Cultural Hub
  */
-export function renderCulturalHub(state) {
-    const hub = document.getElementById('culturalHub');
-    const monthIndex = state.viewDate.getMonth();
-    const year = state.viewDate.getFullYear();
-    const monthInfo = culturalData.months[monthIndex] || { pl: "Miesiąc", derivation: "N/A", season: "N/A" };
-    const holidays = holidayData.getHolidaysForYear(year);
+✅ Registered at: https://newbroman.github.io/Polishdate2/ app.js:175:34
 
-    let html = `
-    <div class="content-body">
-        <header class="content-header">
-            <h1>${state.isPolish ? monthInfo.pl : (culturalData.months[monthIndex].en || "Month")} ${year}</h1>
-            <div class="season-box">
-                <span class="season-icon">${getSeasonIcon(monthInfo.season)}</span>
-                <strong>${state.isPolish ? 'Pora roku' : 'Season'}:</strong> 
-                <span class="season-text">${monthInfo.season}</span>
-            </div>
-        </header>
-        <section class="info-block">
-            <h3>📜 ${state.isPolish ? 'Etymologia' : 'Etymology'}</h3>
-            <p class="derivation-text">${monthInfo.derivation}</p>
-        </section>
-        <section class="info-block">
-    <h3>📅 ${state.isPolish ? 'Znaczenie dni tygodnia' : 'Weekday Etymology'}</h3>
-    <div class="culture-grid-mini" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px;">
-        ${culturalData.days.map(day => `
-            <div class="day-meaning-card" style="padding: 10px; border: 1px solid var(--nav-border); border-radius: 8px; background: rgba(128,128,128,0.05);">
-                <strong style="color: var(--accent-color);">${day.pl}:</strong> 
-                <span style="font-size: 0.9rem;">${day.meaning}</span>
-            </div>
-        `).join('')}
-    </div>
-</section>
-
-        <section class="info-block">
-            <h3>🎈 ${state.isPolish ? 'Wydarzenia i Święta' : 'Holidays & Traditions'}</h3>
-            <div class="holiday-list">`;
-
-    let foundHoliday = false;
-    Object.entries(holidays).forEach(([key, holidayName]) => {
-        if (key.startsWith(`${monthIndex}-`)) {
-            const dayNum = key.split('-')[1];
-            const description = holidayData.descriptions ? holidayData.descriptions[holidayName] : null;
-            html += `
-                <div class="holiday-entry">
-                    <div class="holiday-title"><strong>${dayNum} ${monthInfo.pl}:</strong> ${holidayName}</div>
-                    ${description ? `<p class="holiday-desc">${description}</p>` : ''}
-                </div>`;
-            foundHoliday = true;
-        }
-    });
-
-    if (!foundHoliday) {
-        html += `<p class="no-data">${state.isPolish ? 'Brak głównych świąt w tym miesiącu.' : 'No major holidays this month.'}</p>`;
-    }
-
-    html += `</div></section>
-            <div class="nav-actions">
-                <button class="pill-btn back-to-cal">← ${state.isPolish ? 'Powrót' : 'Back to Calendar'}</button>
-            </div>
-        </div>`;
-
-    hub.innerHTML = html;
-    hub.querySelector('.back-to-cal').onclick = () => document.getElementById('navCalendar').click();
-}
 
 /**
  * Renders the Grammar Rules page
