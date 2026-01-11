@@ -1,5 +1,5 @@
 /**
- * rules.js - Polish Grammar & Cultural Rules
+ * rules.js - Updated for Grammatical Precision
  */
 
 const grammarRules = {
@@ -17,12 +17,11 @@ const grammarRules = {
     },
     yearStructure: {
         title: "3. Including the Year",
-        explanation: "When saying the year, Poles add the word 'roku' (of the year) at the end. The year itself is also spoken as an ordinal number.",
-        rule: "[Number] + roku",
+        explanation: "When saying a full date, Poles use the Genitive form for the year (answering 'of which year?'). We add the word 'roku' (of the year) at the end.",
+        rule: "[Ordinal Number in -ego] + roku",
         example: "2026 = dwa tysiące dwudziestego szóstego roku"
     }
 };
-
 export function getRulesHTML() {
     let html = `
         <article class="rules-container">
