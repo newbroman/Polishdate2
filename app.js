@@ -12,7 +12,7 @@ const state = {
     selectedDate: new Date(), 
     includeYear: true,
     isPolish: false,
-    isFormal: true 
+    isFormal: true
 }
 
 // 2. Main Render Function
@@ -30,18 +30,25 @@ function render() {
     const monthIndex = state.viewDate.getMonth();
     const year = state.viewDate.getFullYear();
 
-    // 1. Update Mode Button (🎉 Party/Event vs 📅 Calendar/Naming)
+    // 1. Update Mode Button (📅 Today is vs 🎉 It's on)
     if (meetingBtn) {
-        // We show the icon and label of the CURRENT state.
-        // This makes the button act as a clear header for the mode.
+        // state.isFormal = true  -> "It's on..." (Event Mode)
+        // state.isFormal = false -> "Today is..." (Naming Mode)
+        
         const icon = state.isFormal ? "🎉" : "📅";
-        const label = state.isFormal ? 
-            (state.isPolish ? "Tryb: Wydarzenie" : "Event Mode") : 
-            (state.isPolish ? "Tryb: Nazewnictwo" : "Naming Mode");
+        
+        let label;
+        if (state.isFormal) {
+            // Event Mode Phrasing
+            label = state.isPolish ? "To jest dnia" : "It's on";
+        } else {
+            // Naming Mode Phrasing (Default)
+            label = state.isPolish ? "Dzisiaj jest" : "Today is";
+        }
         
         meetingBtn.innerText = `${icon} ${label}`;
         
-        // Colors: Gold for Event (🎉), Blue for Naming (📅)
+        // Apply themes: Blue for Naming (Default), Gold for Event
         meetingBtn.className = `pill-btn ${state.isFormal ? 'mode-btn-event' : 'mode-btn-naming'}`;
     }
     // 2. Update Info Panel
