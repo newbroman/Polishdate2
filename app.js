@@ -30,25 +30,18 @@ function render() {
     const monthIndex = state.viewDate.getMonth();
     const year = state.viewDate.getFullYear();
 
-    // 1. Update Mode Button (📅 Today is vs 🎉 It's on)
+   // 1. Update Mode Button
     if (meetingBtn) {
-        // state.isFormal = false -> Naming Mode (📅 Today is) - DEFAULT
-        // state.isFormal = true  -> Event Mode (🎉 It's on)
-        
+        // Force the icons and labels to match the boolean state
         const icon = state.isFormal ? "🎉" : "📅";
         
-        let label;
-        if (state.isFormal) {
-            // EVENT MODE
-            label = state.isPolish ? "To jest dnia..." : "It's on...";
-        } else {
-            // NAMING MODE (Default)
-            label = state.isPolish ? "Dzisiaj jest..." : "Today is...";
-        }
-        
+        const label = state.isFormal 
+            ? (state.isPolish ? "To jest dnia" : "It's on") 
+            : (state.isPolish ? "Dzisiaj jest" : "Today is");
+
         meetingBtn.innerText = `${icon} ${label}`;
         
-        // Colors: Blue for Naming (isFormal = false), Gold for Event (isFormal = true)
+        // CSS: mode-btn-naming (Blue) for "Today is", mode-btn-event (Gold) for "It's on"
         meetingBtn.className = `pill-btn ${state.isFormal ? 'mode-btn-event' : 'mode-btn-naming'}`;
     }
     
