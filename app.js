@@ -13,6 +13,7 @@ const state = {
     includeYear: true,
     isPolish: false,
     isFormal: true 
+}
 
 // 2. Main Render Function
 function render() {
