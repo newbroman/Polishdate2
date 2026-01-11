@@ -40,18 +40,17 @@ export function setupListeners(state, render) {
     }
 
     // --- Formal/Informal Toggle ---
-   const meetingBtn = document.getElementById('meetingToggle');
+const meetingBtn = document.getElementById('meetingToggle');
+
 if (meetingBtn) {
-    // 1. Set the initial text based on the startup state (Formal)
-    // We show "🏷️ Naming Mode" as the option to switch TO.
-    if (meetingBtn) {
-    // Initial: App is in Event mode (🎉), button offers switch to Calendar (📅)
+    // 1. Set initial state: App starts in Event mode (🎉), 
+    // so button offers the switch TO Naming (📅)
     meetingBtn.innerHTML = '📅 Switch to Naming';
 
     meetingBtn.onclick = () => {
         state.isFormal = !state.isFormal;
         
-        // Toggle logic
+        // Update button text based on the new state
         meetingBtn.innerHTML = state.isFormal 
             ? '📅 Switch to Naming' 
             : '🎉 Switch to Event';
