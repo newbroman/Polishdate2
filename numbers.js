@@ -113,16 +113,22 @@ export function getYearPhonetic(year, isNominative = false) {
     if (hundreds > 0) pParts.push(pHundreds[hundreds]);
 
     if (lastTwo > 0) {
-        // SELECT THE LIST BASED ON THE TOGGLE
         const yearList = isNominative ? phonetics.ordinals : phonetics.ordinalsGenitive;
         
         let pYear = "";
-        if (yearList[lastTwo]) {
-            pYear = yearList[lastTwo];
+        
+        // --- PUT THE FIX HERE ---
+        if (yearList[lastTwo] || yearList[lastTwo.toString()]) {
+            pYear = yearList[lastTwo] || yearList[lastTwo.toString()];
         } else {
+            // Logic for compound years (e.g., 2026 -> 20 + 6)
             const tens = Math.floor(lastTwo / 10) * 10;
             const units = lastTwo % 10;
-            pYear = `${yearList[tens]} ${yearList[units]}`;
+            
+            const pTens = yearList[tens] || yearList[tens.toString()];
+            const pUnits = yearList[units] || yearList[units.toString()];
+            
+            pYear = `${pTens} ${pUnits}`;
         }
         pParts.push(pYear);
     }
