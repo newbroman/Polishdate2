@@ -140,9 +140,9 @@ export function renderCulturalHub(state) {
     const holidays = holidayData.getHolidaysForYear(year);
 
     let html = `
-    <div class="content-body">
+  <div class="content-body">
         <header class="content-header">
-            <h1>${state.isPolish ? monthInfo.pl : (culturalData.months[monthIndex].en || "Month")} ${year}</h1>
+            <h1>${monthInfo.pl} ${year}</h1> 
             <div class="season-box">
                 <span class="season-icon">${getSeasonIcon(monthInfo.season)}</span>
                 <strong>${state.isPolish ? 'Pora roku' : 'Season'}:</strong> 
