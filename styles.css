@@ -914,3 +914,57 @@ body {
     padding-left: 15px;
     margin-bottom: 25px;
 }
+/* Container to keep everything centered and close */
+.nav-controls-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px; /* Brought closer but not touching */
+    margin-bottom: 15px;
+}
+
+/* The Black Block Buttons */
+.nav-btn-arrow {
+    background-color: #000000; /* Deep black */
+    color: #ffffff; /* White arrow */
+    border: 2px solid #ffffff; /* White border */
+    border-radius: 6px;
+    
+    /* Matching the height of your monthRoller/yearInput */
+    height: 42px; 
+    width: 42px;
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    font-size: 1.8rem; /* Large, bold arrow */
+    font-weight: bold;
+    cursor: pointer;
+    padding: 0;
+    line-height: 1;
+    transition: transform 0.1s ease;
+}
+
+/* Feedback for touch/click */
+.nav-btn-arrow:active {
+    transform: scale(0.9);
+    background-color: #333;
+}
+
+/* Styling the "January 2026" box container to look uniform */
+.rollers-container {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+}
+
+.roller-select, #yearInput {
+    height: 42px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-weight: bold;
+    font-size: 1.1rem;
+    padding: 0 8px;
+    background: white;
+}
