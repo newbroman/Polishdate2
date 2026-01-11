@@ -40,22 +40,15 @@ export function setupListeners(state, render) {
     }
 
     // --- Formal/Informal Toggle ---
+    // --- Formal/Informal Toggle Logic ---
     const meetingBtn = document.getElementById('meetingToggle');
     if (meetingBtn) {
-        // Initial state: starts formal, so offer switch to Naming
-        meetingBtn.innerHTML = '📅 Switch to Naming';
-
         meetingBtn.onclick = () => {
+            // Simply flip the state and let render() do the work
             state.isFormal = !state.isFormal;
-            
-            // Toggle text logic
-            meetingBtn.innerHTML = state.isFormal 
-                ? '📅 Switch to Naming' 
-                : '🎉 Switch to Event';
-                
             render(); 
         };
-    } // <--- CORRECTLY CLOSES meetingBtn block
+    }
 
     // --- 2. Navigation Logic ---
     const showSection = (id) => {
