@@ -44,6 +44,7 @@ export function setupListeners(state, render) {
         });
     }
 };
+)
 
     // --- 2. Navigation Logic (Overriding CSS !important) ---
     const showSection = (id) => {
