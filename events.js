@@ -1,5 +1,5 @@
 /**
- * events.js - Final Integration with Alignment Fix
+ * events.js - Fixed Integration
  */
 import { speakText, checkVoices } from './audio.js';
 import holidayData from './holiday.js';
@@ -28,27 +28,33 @@ export function setupListeners(state, render) {
         });
 
         playBtn.onclick = () => {
-    // 1. Get text specifically from the Polish spelling element
-    const plPhraseElement = document.getElementById('plPhrase');
-    const textToSpeak = plPhraseElement ? plPhraseElement.innerText : "";
+            // 1. Get text specifically from the Polish spelling element
+            const plPhraseElement = document.getElementById('plPhrase');
+            const textToSpeak = plPhraseElement ? plPhraseElement.innerText : "";
 
-    // 2. Validation
-    if (textToSpeak && !textToSpeak.includes("Wybierz") && !textToSpeak.includes("Select")) {
-        // 3. Import and use the stable audio engine
-        import('./audio.js').then(m => {
-            // Force the unlock for iOS/Chrome
-            if (m.unlockAudio) m.unlockAudio(); 
-            
-            // This calls your speak function which MUST have utterance.lang = 'pl-PL'
-            m.speakText(textToSpeak); 
-        });
+            // 2. Validation
+            if (textToSpeak && !textToSpeak.includes("Wybierz") && !textToSpeak.includes("Select")) {
+                // 3. Import and use the stable audio engine
+                import('./audio.js').then(m => {
+                    if (m.unlockAudio) m.unlockAudio(); 
+                    m.speakText(textToSpeak); 
+                });
+            }
+        };
     }
-};
-)
 
-    // --- 2. Navigation Logic (Overriding CSS !important) ---
+    // --- Formal/Informal Toggle ---
+    const meetingBtn = document.getElementById('meetingToggle');
+    if (meetingBtn) {
+        meetingBtn.onclick = () => {
+            state.isFormal = !state.isFormal;
+            render(); 
+        };
+    }
+
+    // --- 2. Navigation Logic ---
     const showSection = (id) => {
-           window.scrollTo(0, 0); 
+        window.scrollTo(0, 0); 
         const sections = {
             'calendar': document.getElementById('calendarSection'),
             'culture': document.getElementById('culturalHub'),
@@ -56,12 +62,10 @@ export function setupListeners(state, render) {
         };
         const infoPanel = document.querySelector('.info-panel');
 
-        // Hide all sections using !important override
         Object.values(sections).forEach(s => { 
             if (s) s.style.setProperty('display', 'none', 'important'); 
         });
 
-        // Show the specific section
         const activeSection = sections[id];
         if (activeSection) {
             const displayType = (id === 'calendar') ? 'flex' : 'block';
@@ -72,16 +76,10 @@ export function setupListeners(state, render) {
             }
         }
 
-        // Toggle the Info Panel (Footer)
         if (infoPanel) {
-            if (id === 'calendar') {
-                infoPanel.style.setProperty('display', 'flex', 'important');
-            } else {
-                infoPanel.style.setProperty('display', 'none', 'important');
-            }
+            infoPanel.style.setProperty('display', id === 'calendar' ? 'flex' : 'none', 'important');
         }
 
-        // Update Nav Icon visual state
         document.querySelectorAll('.nav-icon-btn').forEach(b => {
             b.classList.toggle('active', b.id === `nav${id.charAt(0).toUpperCase() + id.slice(1)}`);
         });
@@ -103,7 +101,6 @@ export function setupListeners(state, render) {
         renderRulesPage(state);
     };
 
-    // Calendar Controls
     document.getElementById('prevMonth').onclick = () => {
         state.viewDate.setMonth(state.viewDate.getMonth() - 1);
         render();
@@ -134,7 +131,7 @@ export function setupListeners(state, render) {
         state.includeYear = !state.includeYear;
         render(); 
     };
-} 
+} // This brace correctly closes setupListeners
 
 /**
  * Renders the Cultural Hub
@@ -143,11 +140,7 @@ export function renderCulturalHub(state) {
     const hub = document.getElementById('culturalHub');
     const monthIndex = state.viewDate.getMonth();
     const year = state.viewDate.getFullYear();
-    
-    // Get month etymology from culturalData
     const monthInfo = culturalData.months[monthIndex] || { pl: "Miesiąc", derivation: "N/A", season: "N/A" };
-    
-    // Get holidays and their full descriptions
     const holidays = holidayData.getHolidaysForYear(year);
 
     let html = `
@@ -160,25 +153,19 @@ export function renderCulturalHub(state) {
                 <span class="season-text">${monthInfo.season}</span>
             </div>
         </header>
-
-            <section class="info-block">
-                <h3>📜 ${state.isPolish ? 'Etymologia' : 'Etymology'}</h3>
-                <p class="derivation-text">${monthInfo.derivation}</p>
-            </section>
-
-            <section class="info-block">
-                <h3>🎈 ${state.isPolish ? 'Wydarzenia i Święta' : 'Holidays & Traditions'}</h3>
-                <div class="holiday-list">`;
+        <section class="info-block">
+            <h3>📜 ${state.isPolish ? 'Etymologia' : 'Etymology'}</h3>
+            <p class="derivation-text">${monthInfo.derivation}</p>
+        </section>
+        <section class="info-block">
+            <h3>🎈 ${state.isPolish ? 'Wydarzenia i Święta' : 'Holidays & Traditions'}</h3>
+            <div class="holiday-list">`;
 
     let foundHoliday = false;
-    
-    // Loop through holidays and find matches for current month
     Object.entries(holidays).forEach(([key, holidayName]) => {
         if (key.startsWith(`${monthIndex}-`)) {
             const dayNum = key.split('-')[1];
-            // Get description from holidayData if it exists
             const description = holidayData.descriptions ? holidayData.descriptions[holidayName] : null;
-
             html += `
                 <div class="holiday-entry">
                     <div class="holiday-title"><strong>${dayNum} ${monthInfo.pl}:</strong> ${holidayName}</div>
@@ -192,10 +179,7 @@ export function renderCulturalHub(state) {
         html += `<p class="no-data">${state.isPolish ? 'Brak głównych świąt w tym miesiącu.' : 'No major holidays this month.'}</p>`;
     }
 
-    html += `
-                </div>
-            </section>
-            
+    html += `</div></section>
             <div class="nav-actions">
                 <button class="pill-btn back-to-cal">← ${state.isPolish ? 'Powrót' : 'Back to Calendar'}</button>
             </div>
@@ -211,7 +195,6 @@ export function renderCulturalHub(state) {
 export function renderRulesPage(state) {
     const page = document.getElementById('rulesPage');
     if (!page) return;
-    
     page.innerHTML = `
         <div class="content-body">
             ${getRulesHTML()}
@@ -219,9 +202,9 @@ export function renderRulesPage(state) {
                 <button class="pill-btn back-to-cal" style="margin-top:20px">← Back to Calendar</button>
             </div>
         </div>`;
-
     page.querySelector('.back-to-cal').onclick = () => document.getElementById('navCalendar').click();
 }
+
 function getSeasonIcon(season) {
     if (season.includes("Wiosna")) return "🌱";
     if (season.includes("Lato")) return "☀️";
