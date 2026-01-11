@@ -70,42 +70,7 @@ body {
 .nav-icon-btn:active { transform: scale(0.9); }
 .divider { width: 1px; height: 18px; background: var(--border-color); }
 
-/* Mode & Year Buttons (Small & Professional) */
-#meetingToggle, #repeatYearBtn {
-    font-size: 0.65rem !important; 
-    padding: 4px 8px !important;
-    height: 26px;
-    min-width: 90px;
-    border-radius: 4px;
-    text-transform: uppercase;
-    font-weight: 700;
-    background: var(--panel-bg);
-    border: 1px solid var(--border-color);
-    color: var(--text-dim);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-}
-
-#meetingToggle.mode-btn-formal { background: var(--gold) !important; color: white !important; border-color: var(--gold); }
-#meetingToggle.mode-btn-informal { background: var(--formal-blue) !important; color: white !important; border-color: var(--formal-blue); }
-
 /* --- 4. Calendar Components --- */
-.calendar-navigation { margin: 10px 0 15px; display: flex; justify-content: center; }
-
-.nav-controls-row { display: flex; flex-direction: row; align-items: center; gap: 15px; }
-
-.rollers-container { 
-    display: flex; 
-    background: var(--panel-bg); 
-    border: 1px solid var(--border-color); 
-    border-radius: 25px; 
-    overflow: hidden;
-}
-
-.roller-select, #yearInput { background: transparent; border: none; padding: 8px; font-weight: 600; color: var(--text-main); font-size: 0.9rem; }
-
 .calendar-container {
     width: 95%;
     max-width: 400px;
@@ -143,801 +108,27 @@ body {
     transition: background 0.2s;
 }
 
-/* Day States */
-.calendar-day.holiday { 
-    border: 2px solid var(--accent-color) !important; 
-    color: var(--accent-color) !important; 
-    font-weight: 900 !important; 
-}
-.calendar-day.holiday::after { display: none !important; } /* Removed the old dot */
-
-.calendar-day.today-highlight {
-    background-color: var(--gold) !important;
-    color: #000 !important;
-    border: none !important;
-    font-weight: 800;
-    box-shadow: 0 0 8px rgba(184, 134, 11, 0.5);
-}
-
+.calendar-day.holiday { border: 2px solid var(--accent-color) !important; color: var(--accent-color) !important; font-weight: 900 !important; }
+.calendar-day.today-highlight { background-color: var(--gold) !important; color: #000 !important; border: none !important; font-weight: 800; box-shadow: 0 0 8px rgba(184, 134, 11, 0.5); }
 .calendar-day.selected { background: var(--accent-color) !important; color: white !important; border-color: var(--accent-color) !important; }
 
-/* --- 5. Info Panel (Footer) --- */
-.info-panel {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    background: var(--panel-bg);
-    padding: 15px 15px 25px; /* Extra bottom padding for mobile home bars */
-    border-top: 4px solid var(--border-color);
-    z-index: 1000;
+/* Navigation Row & Arrows */
+.nav-controls-row {
     display: flex !important;
-    flex-direction: column;
-    align-items: center;
-    box-shadow: 0 -5px 20px rgba(0,0,0,0.1);
-}
-
-/* Ensure phrases don't stretch the footer wide */
-.phrase-display {
-    text-align: center;
-    width: 100%;
-    max-width: 400px;
-}
-
-.info-panel.formal-theme { border-top-color: var(--gold); background: linear-gradient(to bottom, var(--panel-bg), rgba(184, 134, 11, 0.05)); }
-.info-panel.informal-theme { border-top-color: var(--formal-blue); background: linear-gradient(to bottom, var(--panel-bg), rgba(0, 212, 255, 0.05)); }
-
-.phrase-display { text-align: center; margin-bottom: 15px; }
-.phrase-pl { font-size: 1.3rem; font-weight: 800; margin-bottom: 4px; }
-.phrase-phonetic { font-size: 0.95rem; color: var(--tan); font-style: italic; display: block; margin-bottom: 4px; }
-.phrase-en { font-size: 0.85rem; color: var(--text-dim); }
-
-.footer-controls { display: flex; gap: 10px; justify-content: center; }
-
-.pill-btn {
-    background: var(--accent-color);
-    color: white;
-    border: none;
-    padding: 8px 24px;
-    border-radius: 30px;
-    font-weight: 700;
-    cursor: pointer;
-}
-
-/* --- 6. Content Page Styling (Grammar/Culture) --- */
-.content-page {
-    max-width: 700px;
-    margin: 20px auto 100px; /* Space for footer */
-    padding: 30px;
-    background: var(--panel-bg);
-    border-radius: 15px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-    line-height: 1.8;
-}
-
-.content-page h1 { 
-    color: var(--accent-color); 
-    margin-bottom: 20px; 
-    border-bottom: 3px solid var(--gold); 
-    display: inline-block;
-    padding-bottom: 5px;
-}
-
-.content-page h2 { margin-top: 25px; color: var(--text-main); font-size: 1.2rem; }
-.content-page p { margin-bottom: 15px; color: var(--text-dim); }
-.content-page strong { color: var(--gold); }
-.content-page em {
-    background: rgba(184, 134, 11, 0.1);
-    padding: 2px 5px;
-    border-radius: 4px;
-    font-style: normal;
-    color: var(--tan);
-}
-
-#backBtn { margin-top: 30px; }
-
-/* --- FINAL ALIGNMENT SHIELD --- */
-/* 1. Footer stays centered but won't block hidden pages */
-.info-panel {
-    position: fixed !important;
-    bottom: 0 !important;
-    left: 0 !important;
-    width: 100% !important;
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: center !important;
-    justify-content: center !important;
-    background: var(--panel-bg);
-    z-index: 9999 !important;
-}
-
-/* 2. Standardize section layout without forcing visibility */
-#calendarSection, #culturalHub, #rulesPage {
-    width: 100% !important;
-    padding-bottom: 220px !important;
-    flex-direction: column;
-    align-items: center;
-}
-
-/* 3. Keep Navigation and containers locked to mobile-friendly width */
-.calendar-navigation, .calendar-container, .content-body {
     width: 100% !important;
     max-width: 400px !important;
-    margin-left: auto !important;
-    margin-right: auto !important;
-}
-
-.nav-controls-row {
-    display: flex !important;
-    width: 100% !important;
-    justify-content: space-between !important;
-    padding: 0 10px !important;
-}
-/* --- Holiday Fact Cards --- */
-.holiday-list {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    margin-top: 10px;
-}
-
-.holiday-entry {
-    background: rgba(0, 0, 0, 0.03);
-    padding: 12px 16px;
-    border-radius: 8px;
-    border-left: 4px solid var(--accent-color);
-    transition: transform 0.2s ease;
-}
-
-@media (prefers-color-scheme: dark) {
-    .holiday-entry {
-        background: rgba(255, 255, 255, 0.05);
-    }
-}
-
-.holiday-title {
-    font-size: 1.05rem;
-    color: var(--text-main);
-    margin-bottom: 4px;
-}
-
-.holiday-desc {
-    font-size: 0.9rem;
-    color: var(--text-dim);
-    line-height: 1.4;
-    font-style: italic;
-}
-
-/* Season and Etymology Styling */
-.season-label {
-    margin-top: 5px;
-    font-size: 0.95rem;
-    color: var(--tan);
-}
-
-.derivation-text {
-    background: var(--seasonal-bg);
-    padding: 15px;
-    border-radius: 10px;
-    border: 1px dashed var(--border-color);
-}
-
-.season-box {
-    margin-top: 10px;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 6px 14px;
-    background: var(--seasonal-bg);
-    border-radius: 20px;
-    border: 1px solid var(--accent-color);
-    font-size: 0.95rem;
-}
-
-.season-icon {
-    font-size: 1.2rem;
-}
-
-.season-text {
-    font-weight: 700;
-    color: var(--accent-color);
-}
-
-/* Mode Button Styling */
-.mode-btn-formal {
-    background-color: var(--accent-color); /* Matches seasonal accent */
-    color: white;
-    border: 1px solid rgba(255,255,255,0.2);
-}
-
-.mode-btn-informal {
-    background-color: #5d6d7e; /* A neutral steel-blue for informal mode */
-    color: #fcfcfc;
-    font-style: italic;
-    box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
-}
-
-/* Info Panel Theme Toggles */
-.info-panel.formal-theme {
-    border-top: 3px solid var(--accent-color);
-}
-
-.info-panel.informal-theme {
-    border-top: 3px dashed #5d6d7e;
-    background: rgba(0, 0, 0, 0.02);
-}
-
-#meetingToggle {
-    transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 10px 20px;
-}
-
-/* Written Mode (Genitive/Default) - The "Paper/Ink" Look */
-.mode-btn-written {
-    background-color: #f4f4f4;
-    color: #2c3e50;
-    border: 2px solid #bdc3c7;
-    font-weight: 500;
-}
-
-.mode-btn-written::before {
-    content: '✍️'; /* Pen icon for writing */
-}
-
-/* Spoken Mode (Nominative) - The "Active/Voice" Look */
-.mode-btn-spoken {
-    background-color: #3498db;
-    color: white;
-    border: 2px solid #2980b9;
-    font-weight: 600;
-    box-shadow: 0 0 10px rgba(52, 152, 219, 0.3);
-}
-
-.mode-btn-spoken::before {
-    content: '🗣️'; /* Speaker icon for naming */
-}
-
-/* Optional: Dark Mode Overrides */
-@media (prefers-color-scheme: dark) {
-    .mode-btn-written {
-        background-color: #2c3e50;
-        color: #ecf0f1;
-        border-color: #34495e;
-    }
-}
-/* Rule Highlight Styling */
-.highlight {
-    font-weight: bold;
-    padding: 2px 6px;
-    border-radius: 4px;
-    background: rgba(255, 255, 255, 0.2);
-    border-bottom: 2px solid currentColor;
-}
-
-/* Specific Mode Styling for Rules */
-.rule-block.written-mode {
-    border-left: 5px solid #4a90e2; /* Formal/Genitive Blue */
-    background: rgba(74, 144, 226, 0.05);
-    padding: 15px;
-    margin-bottom: 20px;
-    border-radius: 0 8px 8px 0;
-}
-
-.rule-block.spoken-mode {
-    border-left: 5px solid #47cf73; /* Informal/Nominative Green */
-    background: rgba(71, 207, 115, 0.05);
-    padding: 15px;
-    margin-bottom: 20px;
-    border-radius: 0 8px 8px 0;
-}
-
-.rule-block h3 {
-    margin-top: 0;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.section-divider {
-    color: #ffd700;
-    border-bottom: 2px solid rgba(255, 215, 0, 0.3);
-    padding-bottom: 5px;
-    margin: 25px 0 15px 0;
-    text-transform: uppercase;
-    font-size: 1rem;
-    letter-spacing: 1px;
-}
-
-.core-rule {
-    border-left: 3px solid rgba(255, 255, 255, 0.2);
-    padding-left: 15px;
-    margin-bottom: 25px;
-}
-/* --- 1. Variables & Themes --- */
-:root {
-    --accent-color: #e6192e; 
-    --bg-dark: #f8f9fa;
-    --panel-bg: #ffffff;
-    --grid-item-bg: #ffffff;
-    --text-main: #1a1a1a;
-    --text-dim: #666666;
-    --gold: #b8860b;
-    --tan: #8b4513;
-    --seasonal-bg: rgba(230, 25, 46, 0.05);
-    --border-color: #dee2e6;
-    --formal-blue: #00d4ff;
-}
-
-@media (prefers-color-scheme: dark) {
-    :root {
-        --bg-dark: #121212;
-        --panel-bg: #1e1e1e;
-        --grid-item-bg: #252525;
-        --text-main: #ffffff;
-        --text-dim: #bbbbbb;
-        --gold: #ffd700;
-        --tan: #D2B48C;
-        --seasonal-bg: rgba(230, 25, 46, 0.15);
-        --border-color: #333333;
-    }
-}
-
-/* Seasonal Body Overrides */
-body.spring { --accent-color: #4caf50; }
-body.summer { --accent-color: #ffc107; }
-body.autumn { --accent-color: #ff5722; }
-body.winter { --accent-color: #e6192e; }
-
-/* --- 2. Global Reset & Layout --- */
-* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-
-body {
-    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-    background-color: var(--bg-dark);
-    background-image: linear-gradient(180deg, var(--seasonal-bg) 0%, var(--bg-dark) 600px);
-    color: var(--text-main);
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-}
-
-/* --- 3. Navigation & Header --- */
-.brand-header {
-    text-align: center;
-    padding: 0.8rem 0.5rem; 
-    background: linear-gradient(to bottom, #ffffff 50%, #dc143c 50%);
-    border-bottom: 2px solid #a0102b;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
-
-.brand-header h1 { font-size: 1.8rem; font-weight: 900; color: #000; text-transform: uppercase; line-height: 1.2; }
-
-.main-nav-container { padding: 8px 0; border-bottom: 1px solid var(--border-color); }
-
-.utility-controls {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
-}
-
-.nav-icon-btn { background: none; border: none; font-size: 1.3rem; cursor: pointer; transition: transform 0.2s; }
-.nav-icon-btn:active { transform: scale(0.9); }
-.divider { width: 1px; height: 18px; background: var(--border-color); }
-
-/* Mode & Year Buttons (Small & Professional) */
-#meetingToggle, #repeatYearBtn {
-    font-size: 0.65rem !important; 
-    padding: 4px 8px !important;
-    height: 26px;
-    min-width: 90px;
-    border-radius: 4px;
-    text-transform: uppercase;
-    font-weight: 700;
-    background: var(--panel-bg);
-    border: 1px solid var(--border-color);
-    color: var(--text-dim);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-}
-
-#meetingToggle.mode-btn-formal { background: var(--gold) !important; color: white !important; border-color: var(--gold); }
-#meetingToggle.mode-btn-informal { background: var(--formal-blue) !important; color: white !important; border-color: var(--formal-blue); }
-
-/* --- 4. Calendar Components --- */
-.calendar-navigation { margin: 10px 0 15px; display: flex; justify-content: center; }
-
-.nav-controls-row { display: flex; flex-direction: row; align-items: center; gap: 15px; }
-
-.rollers-container { 
-    display: flex; 
-    background: var(--panel-bg); 
-    border: 1px solid var(--border-color); 
-    border-radius: 25px; 
-    overflow: hidden;
-}
-
-.roller-select, #yearInput { background: transparent; border: none; padding: 8px; font-weight: 600; color: var(--text-main); font-size: 0.9rem; }
-
-.calendar-container {
-    width: 95%;
-    max-width: 400px;
-    margin: 0 auto;
-    background: var(--panel-bg);
-    border-radius: 12px;
-    padding: 12px;
-    border: 1px solid var(--border-color);
-    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-}
-
-.weekdays {
-    display: grid !important;
-    grid-template-columns: repeat(7, 1fr) !important;
-    gap: 5px;
-    margin-bottom: 10px;
-    padding: 0 5px;
-    text-align: center;
-    font-size: 0.8rem;
-    font-weight: 800;
-    color: var(--text-dim);
-}
-
-#calendarGrid { display: grid !important; grid-template-columns: repeat(7, 1fr); gap: 5px; }
-
-.calendar-day {
-    aspect-ratio: 1 / 1;
-    border: 1px solid var(--border-color);
-    border-radius: 6px;
-    display: flex !important;
-    align-items: center;
-    justify-content: center;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background 0.2s;
-}
-
-/* Day States */
-.calendar-day.holiday { 
-    border: 2px solid var(--accent-color) !important; 
-    color: var(--accent-color) !important; 
-    font-weight: 900 !important; 
-}
-.calendar-day.holiday::after { display: none !important; } /* Removed the old dot */
-
-.calendar-day.today-highlight {
-    background-color: var(--gold) !important;
-    color: #000 !important;
-    border: none !important;
-    font-weight: 800;
-    box-shadow: 0 0 8px rgba(184, 134, 11, 0.5);
-}
-
-.calendar-day.selected { background: var(--accent-color) !important; color: white !important; border-color: var(--accent-color) !important; }
-
-/* --- 5. Info Panel (Footer) --- */
-.info-panel {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    background: var(--panel-bg);
-    padding: 15px 15px 25px; /* Extra bottom padding for mobile home bars */
-    border-top: 4px solid var(--border-color);
-    z-index: 1000;
-    display: flex !important;
-    flex-direction: column;
-    align-items: center;
-    box-shadow: 0 -5px 20px rgba(0,0,0,0.1);
-}
-
-/* Ensure phrases don't stretch the footer wide */
-.phrase-display {
-    text-align: center;
-    width: 100%;
-    max-width: 400px;
-}
-
-.info-panel.formal-theme { border-top-color: var(--gold); background: linear-gradient(to bottom, var(--panel-bg), rgba(184, 134, 11, 0.05)); }
-.info-panel.informal-theme { border-top-color: var(--formal-blue); background: linear-gradient(to bottom, var(--panel-bg), rgba(0, 212, 255, 0.05)); }
-
-.phrase-display { text-align: center; margin-bottom: 15px; }
-.phrase-pl { font-size: 1.3rem; font-weight: 800; margin-bottom: 4px; }
-.phrase-phonetic { font-size: 0.95rem; color: var(--tan); font-style: italic; display: block; margin-bottom: 4px; }
-.phrase-en { font-size: 0.85rem; color: var(--text-dim); }
-
-.footer-controls { display: flex; gap: 10px; justify-content: center; }
-
-.pill-btn {
-    background: var(--accent-color);
-    color: white;
-    border: none;
-    padding: 8px 24px;
-    border-radius: 30px;
-    font-weight: 700;
-    cursor: pointer;
-}
-
-/* --- 6. Content Page Styling (Grammar/Culture) --- */
-.content-page {
-    max-width: 700px;
-    margin: 20px auto 100px; /* Space for footer */
-    padding: 30px;
-    background: var(--panel-bg);
-    border-radius: 15px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-    line-height: 1.8;
-}
-
-.content-page h1 { 
-    color: var(--accent-color); 
-    margin-bottom: 20px; 
-    border-bottom: 3px solid var(--gold); 
-    display: inline-block;
-    padding-bottom: 5px;
-}
-
-.content-page h2 { margin-top: 25px; color: var(--text-main); font-size: 1.2rem; }
-.content-page p { margin-bottom: 15px; color: var(--text-dim); }
-.content-page strong { color: var(--gold); }
-.content-page em {
-    background: rgba(184, 134, 11, 0.1);
-    padding: 2px 5px;
-    border-radius: 4px;
-    font-style: normal;
-    color: var(--tan);
-}
-
-#backBtn { margin-top: 30px; }
-
-/* --- FINAL ALIGNMENT SHIELD --- */
-/* 1. Footer stays centered but won't block hidden pages */
-.info-panel {
-    position: fixed !important;
-    bottom: 0 !important;
-    left: 0 !important;
-    width: 100% !important;
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: center !important;
+    margin: 0 auto 15px !important;
     justify-content: center !important;
-    background: var(--panel-bg);
-    z-index: 9999 !important;
-}
-
-/* 2. Standardize section layout without forcing visibility */
-#calendarSection, #culturalHub, #rulesPage {
-    width: 100% !important;
-    padding-bottom: 220px !important;
-    flex-direction: column;
-    align-items: center;
-}
-
-/* 3. Keep Navigation and containers locked to mobile-friendly width */
-.calendar-navigation, .calendar-container, .content-body {
-    width: 100% !important;
-    max-width: 400px !important;
-    margin-left: auto !important;
-    margin-right: auto !important;
-}
-
-.nav-controls-row {
-    display: flex !important;
-    width: 100% !important;
-    justify-content: space-between !important;
-    padding: 0 10px !important;
-}
-/* --- Holiday Fact Cards --- */
-.holiday-list {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    margin-top: 10px;
-}
-
-.holiday-entry {
-    background: rgba(0, 0, 0, 0.03);
-    padding: 12px 16px;
-    border-radius: 8px;
-    border-left: 4px solid var(--accent-color);
-    transition: transform 0.2s ease;
-}
-
-@media (prefers-color-scheme: dark) {
-    .holiday-entry {
-        background: rgba(255, 255, 255, 0.05);
-    }
-}
-
-.holiday-title {
-    font-size: 1.05rem;
-    color: var(--text-main);
-    margin-bottom: 4px;
-}
-
-.holiday-desc {
-    font-size: 0.9rem;
-    color: var(--text-dim);
-    line-height: 1.4;
-    font-style: italic;
-}
-
-/* Season and Etymology Styling */
-.season-label {
-    margin-top: 5px;
-    font-size: 0.95rem;
-    color: var(--tan);
-}
-
-.derivation-text {
-    background: var(--seasonal-bg);
-    padding: 15px;
-    border-radius: 10px;
-    border: 1px dashed var(--border-color);
-}
-
-.season-box {
-    margin-top: 10px;
-    display: inline-flex;
     align-items: center;
     gap: 8px;
-    padding: 6px 14px;
-    background: var(--seasonal-bg);
-    border-radius: 20px;
-    border: 1px solid var(--accent-color);
-    font-size: 0.95rem;
-}
-
-.season-icon {
-    font-size: 1.2rem;
-}
-
-.season-text {
-    font-weight: 700;
-    color: var(--accent-color);
-}
-
-/* Mode Button Styling */
-.mode-btn-formal {
-    background-color: var(--accent-color); /* Matches seasonal accent */
-    color: white;
-    border: 1px solid rgba(255,255,255,0.2);
-}
-
-.mode-btn-informal {
-    background-color: #5d6d7e; /* A neutral steel-blue for informal mode */
-    color: #fcfcfc;
-    font-style: italic;
-    box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
-}
-
-/* Info Panel Theme Toggles */
-.info-panel.formal-theme {
-    border-top: 3px solid var(--accent-color);
-}
-
-.info-panel.informal-theme {
-    border-top: 3px dashed #5d6d7e;
-    background: rgba(0, 0, 0, 0.02);
-}
-
-#meetingToggle {
-    transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 10px 20px;
-}
-
-/* Written Mode (Genitive/Default) - The "Paper/Ink" Look */
-.mode-btn-written {
-    background-color: #f4f4f4;
-    color: #2c3e50;
-    border: 2px solid #bdc3c7;
-    font-weight: 500;
-}
-
-.mode-btn-written::before {
-    content: '✍️'; /* Pen icon for writing */
-}
-
-/* Spoken Mode (Nominative) - The "Active/Voice" Look */
-.mode-btn-spoken {
-    background-color: #3498db;
-    color: white;
-    border: 2px solid #2980b9;
-    font-weight: 600;
-    box-shadow: 0 0 10px rgba(52, 152, 219, 0.3);
-}
-
-.mode-btn-spoken::before {
-    content: '🗣️'; /* Speaker icon for naming */
-}
-
-/* Optional: Dark Mode Overrides */
-@media (prefers-color-scheme: dark) {
-    .mode-btn-written {
-        background-color: #2c3e50;
-        color: #ecf0f1;
-        border-color: #34495e;
-    }
-}
-/* Rule Highlight Styling */
-.highlight {
-    font-weight: bold;
-    padding: 2px 6px;
-    border-radius: 4px;
-    background: rgba(255, 255, 255, 0.2);
-    border-bottom: 2px solid currentColor;
-}
-
-/* Specific Mode Styling for Rules */
-.rule-block.written-mode {
-    border-left: 5px solid #4a90e2; /* Formal/Genitive Blue */
-    background: rgba(74, 144, 226, 0.05);
-    padding: 15px;
-    margin-bottom: 20px;
-    border-radius: 0 8px 8px 0;
-}
-
-.rule-block.spoken-mode {
-    border-left: 5px solid #47cf73; /* Informal/Nominative Green */
-    background: rgba(71, 207, 115, 0.05);
-    padding: 15px;
-    margin-bottom: 20px;
-    border-radius: 0 8px 8px 0;
-}
-
-.rule-block h3 {
-    margin-top: 0;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.section-divider {
-    color: #ffd700;
-    border-bottom: 2px solid rgba(255, 215, 0, 0.3);
-    padding-bottom: 5px;
-    margin: 25px 0 15px 0;
-    text-transform: uppercase;
-    font-size: 1rem;
-    letter-spacing: 1px;
-}
-
-.core-rule {
-    border-left: 3px solid rgba(255, 255, 255, 0.2);
-    padding-left: 15px;
-    margin-bottom: 25px;
-}
-/* Container to keep everything centered and close */
-.nav-controls-row {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px; /* Brought closer but not touching */
-    margin-bottom: 15px;
 }
 
 .nav-btn-arrow {
-    /* Transparent so it takes the theme/calendar background */
     background-color: transparent; 
-    
-    /* Uses the existing border color from your calendar grid */
-    /* If you don't use variables, #ccc is usually the standard 'light' border */
     border: 1px solid var(--border-color, #ccc); 
-    
-    /* Matches the height of the month/year box */
     height: 42px; 
     width: 42px;
-    
-    /* Arrow color matches your text automatically */
     color: currentColor; 
-    
     border-radius: 6px;
     display: flex;
     align-items: center;
@@ -947,12 +138,6 @@ body {
     transition: background-color 0.2s;
 }
 
-/* Subtle feedback that doesn't break the 'clean' look */
-.nav-btn-arrow:active {
-    background-color: rgba(0, 0, 0, 0.05);
-}
-
-/* Ensure the Month/Year selectors use the exact same border */
 .roller-select, #yearInput {
     height: 42px;
     background-color: transparent;
@@ -962,3 +147,108 @@ body {
     padding: 0 10px;
     font-weight: bold;
 }
+
+/* --- 5. Info Panel (Footer) --- */
+.info-panel {
+    position: fixed !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    background: var(--panel-bg);
+    padding: 15px 15px 25px;
+    border-top: 4px solid var(--border-color);
+    z-index: 9999 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    box-shadow: 0 -5px 20px rgba(0,0,0,0.1);
+}
+
+.info-panel.formal-theme { border-top: 3px solid var(--accent-color); background: linear-gradient(to bottom, var(--panel-bg), rgba(184, 134, 11, 0.05)); }
+.info-panel.informal-theme { border-top: 3px dashed #5d6d7e; background: rgba(0, 0, 0, 0.02); }
+
+.phrase-display { text-align: center; width: 100%; max-width: 400px; margin-bottom: 15px; }
+.phrase-pl { font-size: 1.3rem; font-weight: 800; margin-bottom: 4px; }
+.phrase-phonetic { font-size: 0.95rem; color: var(--tan); font-style: italic; display: block; margin-bottom: 4px; }
+.phrase-en { font-size: 0.85rem; color: var(--text-dim); }
+
+.footer-controls { display: flex; gap: 10px; justify-content: center; }
+
+/* --- 6. Buttons & Toggles --- */
+.pill-btn {
+    background: var(--accent-color);
+    color: white;
+    border: none;
+    padding: 8px 24px;
+    border-radius: 30px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+#meetingToggle, #repeatYearBtn {
+    font-size: 0.65rem !important; 
+    padding: 4px 8px !important;
+    height: 26px;
+    min-width: 90px;
+    border-radius: 4px;
+    text-transform: uppercase;
+    font-weight: 700;
+    background: var(--panel-bg);
+    border: 1px solid var(--border-color);
+    color: var(--text-dim);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    gap: 8px;
+}
+
+/* New Logic: Event (🎉) and Naming (📅) classes */
+.mode-btn-event { background-color: #ffd700 !important; color: #333 !important; border: 2px solid #daa520 !important; }
+.mode-btn-event::before { content: '🎉'; }
+
+.mode-btn-naming { background-color: #4a90e2 !important; color: white !important; border: 2px solid #357abd !important; }
+.mode-btn-naming::before { content: '📅'; }
+
+/* --- 7. Content Page Styling --- */
+.content-page {
+    max-width: 700px;
+    margin: 20px auto 100px;
+    padding: 30px;
+    background: var(--panel-bg);
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    line-height: 1.8;
+}
+
+.content-page h1 { color: var(--accent-color); margin-bottom: 20px; border-bottom: 3px solid var(--gold); display: inline-block; padding-bottom: 5px; }
+.content-page h2 { margin-top: 25px; color: var(--text-main); font-size: 1.2rem; }
+.content-page p { margin-bottom: 15px; color: var(--text-dim); }
+.content-page strong { color: var(--gold); }
+.content-page em { background: rgba(184, 134, 11, 0.1); padding: 2px 5px; border-radius: 4px; font-style: normal; color: var(--tan); }
+
+/* Section visibility shield */
+#calendarSection, #culturalHub, #rulesPage {
+    width: 100% !important;
+    padding-bottom: 220px !important;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* --- 8. Holiday & Rule Details --- */
+.holiday-list { display: flex; flex-direction: column; gap: 15px; }
+.holiday-entry { background: rgba(0, 0, 0, 0.03); padding: 12px 16px; border-radius: 8px; border-left: 4px solid var(--accent-color); }
+.holiday-title { font-size: 1.05rem; color: var(--text-main); }
+.holiday-desc { font-size: 0.9rem; color: var(--text-dim); font-style: italic; }
+
+.season-box { margin-top: 10px; display: inline-flex; align-items: center; gap: 8px; padding: 6px 14px; background: var(--seasonal-bg); border-radius: 20px; border: 1px solid var(--accent-color); font-size: 0.95rem; }
+.season-text { font-weight: 700; color: var(--accent-color); }
+
+.highlight { font-weight: bold; padding: 2px 6px; border-radius: 4px; background: rgba(255, 255, 255, 0.2); border-bottom: 2px solid currentColor; }
+
+.rule-block.written-mode { border-left: 5px solid #4a90e2; background: rgba(74, 144, 226, 0.05); padding: 15px; margin-bottom: 20px; border-radius: 0 8px 8px 0; }
+.rule-block.spoken-mode { border-left: 5px solid #47cf73; background: rgba(71, 207, 115, 0.05); padding: 15px; margin-bottom: 20px; border-radius: 0 8px 8px 0; }
+
+.section-divider { color: #ffd700; border-bottom: 2px solid rgba(255, 215, 0, 0.3); padding-bottom: 5px; margin: 25px 0 15px 0; text-transform: uppercase; font-size: 1rem; }
