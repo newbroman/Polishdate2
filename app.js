@@ -79,12 +79,19 @@ if (meetingBtn) {
         playBtn.innerText = state.isPolish ? "🔊 Słuchaj" : "🔊 Listen";
     }
 
-    if (repeatYearBtn) {
-        const yearLabel = state.isPolish ? "Rok" : "Year";
-        const status = state.includeYear ? "ON" : "OFF";
-        repeatYearBtn.innerText = `${yearLabel}: ${status}`;
+   if (repeatYearBtn) {
+    const yearLabel = state.isPolish ? "Rok" : "Year";
+    
+    // Translate the status based on the language
+    let status;
+    if (state.isPolish) {
+        status = state.includeYear ? "WŁ" : "WYŁ"; // WŁ = Włączone (ON), WYŁ = Wyłączone (OFF)
+    } else {
+        status = state.includeYear ? "ON" : "OFF";
     }
 
+    repeatYearBtn.innerText = `${yearLabel}: ${status}`;
+}
     // 7. Render Calendar Grid
     renderCalendarGrid(state.viewDate, state.selectedDate, (newDate) => {
         state.selectedDate = newDate;
