@@ -5,8 +5,11 @@
 let polishVoice = null;
 let audioUnlocked = false;
 
+// CRITICAL FOR MOBILE: Prevents browser from cutting audio early
+window.activeUtterance = null; 
+
 /**
- * Finds and caches the best Polish voice available on the device.
+ * Finds and caches the best Polish voice available.
  */
 function findVoice() {
     if (!('speechSynthesis' in window)) return;
@@ -15,67 +18,75 @@ function findVoice() {
     polishVoice = voices.find(v => v.lang === 'pl-PL' || v.lang.startsWith('pl'));
 }
 
+export function loadVoices() {
+    findVoice();
+}
+
+// Mobile browsers need this event to know when voices are ready
+if ('speechSynthesis' in window) {
+    window.speechSynthesis.onvoiceschanged = loadVoices;
+    loadVoices();
+}
+
 export function checkVoices(onReady) {
     if (!('speechSynthesis' in window)) return;
 
-    const loadVoices = () => {
+    const runCheck = () => {
         findVoice();
         if (onReady) onReady(!!polishVoice);
     };
 
-    // Chrome/Android fix: voiceschanged is required to populate the list
     if (speechSynthesis.getVoices().length > 0) {
-        loadVoices();
+        runCheck();
     } else {
-        speechSynthesis.onvoiceschanged = loadVoices;
+        speechSynthesis.onvoiceschanged = runCheck;
     }
 
-    // iOS Fix: If voices still aren't loaded after 1 second, force a re-check
-    setTimeout(() => {
-        findVoice();
-        if (onReady) onReady(!!polishVoice);
-    }, 1000);
+    // iOS/Opera Fix: Force a re-check after 1 second
+    setTimeout(runCheck, 1000);
 }
 
 /**
- * ESSENTIAL FOR MOBILE: This "un-mutes" the synthesis engine.
- * Must be called from a user-initiated event (click/touchstart).
+ * ESSENTIAL FOR MOBILE: Un-mutes the engine.
+ * Must be called from a user click/touchstart.
  */
 export function unlockAudio() {
-    if (audioUnlocked) return;
-    
-    // We speak a tiny, silent string to initialize the engine context
+    // Note: We don't 'return' early here for Opera/DDG; 
+    // re-priming on interaction helps keep the engine 'awake'.
     const talk = new SpeechSynthesisUtterance(" ");
     talk.volume = 0; 
     window.speechSynthesis.speak(talk);
     
     audioUnlocked = true;
-    console.log("🔊 Audio engine primed and unlocked.");
+    console.log("🔊 Audio engine primed.");
 }
 
 /**
  * Speaks the provided text using the cached Polish voice.
+ * Optimized for Opera Mobile and DuckDuckGo.
  */
 export function speakText(text) {
-    if (!text) return;
+    if (!text || !('speechSynthesis' in window)) return;
 
-    // 1. Stop any current speech - critical for unmuting and preventing overlaps
+    // 1. Wake up the engine (Fixes Opera Mobile 'silent' bug)
+    window.speechSynthesis.resume();
+
+    // 2. Stop any current speech
     window.speechSynthesis.cancel();
 
-    // 2. Create the utterance
-    const utterance = new SpeechSynthesisUtterance(text);
+    // 3. Create the utterance and store it globally on 'window'
+    // This stops the Garbage Collector from killing the sound.
+    window.activeUtterance = new SpeechSynthesisUtterance(text);
     
-    // 3. Apply the Polish voice or fallback
     if (polishVoice) {
-        utterance.voice = polishVoice;
+        window.activeUtterance.voice = polishVoice;
     } else {
-        utterance.lang = 'pl-PL'; 
+        window.activeUtterance.lang = 'pl-PL'; 
     }
 
-    // 4. Set your preferred learner-friendly rate
-    utterance.rate = 0.8; 
-    utterance.pitch = 1.0;
+    window.activeUtterance.rate = 0.8; 
+    window.activeUtterance.pitch = 1.0;
 
-    // 5. Execute
-    window.speechSynthesis.speak(utterance);
+    // 4. Speak
+    window.speechSynthesis.speak(window.activeUtterance);
 }
