@@ -1,4 +1,4 @@
-const CACHE_NAME = 'pl-date-v1007';
+const CACHE_NAME = 'pl-date-v1009';
 const ASSETS = [
   './',
   './index.html',
