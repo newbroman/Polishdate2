@@ -71,15 +71,15 @@ export function getRulesHTML() {
                 <p>Think of Polish grammar like <strong>arranging furniture in a room.</strong> Here is how the analogy works with the two modes in this app:</p>
                 
                 <div class="analogy-box">
-                    <h4>🪑 Mode: (It is...) — The Catalog</h4>
-                    <p>You are simply naming the item: <em>"This is the <strong>Table</strong> (10th) of <strong>the Kitchen</strong> (January)."</em></p>
-                    <p><strong>Result:</strong> The day stays in its 'naming' form. <br><em>Dziesiąty stycznia... roku.</em></p>
+                    <h4>🎉 Mode: (On the...) — The Event</h4>
+                    <p>You are actually <strong>using</strong> the space for a party. Because an action is happening "on" the day, the endings shift to the Genitive.</p>
+                    <p><strong>Result:</strong> <em>Dziesiątego stycznia... roku.</em></p>
                 </div>
 
                 <div class="analogy-box">
-                    <h4>☕ Mode: (On the...) — The Placement</h4>
-                    <p>You are <strong>using</strong> the furniture. You are placing a coffee <em>on the Table</em>. Because the table is now part of an action, its 'shape' (ending) changes.</p>
-                    <p><strong>Result:</strong> The day shifts to Genitive. <br><em>Dziesiątego stycznia... roku.</em></p>
+                    <h4>📅 Mode: (It is...) — The Map</h4>
+                    <p>You are looking at the calendar like a map. You are just naming the coordinates: <em>"This square is the 10th of January."</em></p>
+                    <p><strong>Result:</strong> <em>Dziesiąty stycznia... roku.</em></p>
                 </div>
                 
                 <p style="margin-top: 20px; font-weight: bold; border-top: 1px solid rgba(255,255,255,0.1); pt-2;">
