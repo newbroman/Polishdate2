@@ -42,12 +42,13 @@ export function setupListeners(state, render) {
   
     // --- Formal/Informal Toggle Logic ---
     const meetingBtn = document.getElementById('meetingToggle');
-    if (meetingBtn) {
-        meetingBtn.onclick = () => {
-            state.isFormal = !state.isFormal;
-            render(); // Triggers the text and language update in app.js
-        };
-    }
+if (meetingBtn) {
+    meetingBtn.onclick = () => {
+        // Just flip the switch and let render() update the labels
+        state.isFormal = !state.isFormal;
+        render(); 
+    };
+}
 
     // --- 2. Navigation Logic ---
     const showSection = (id) => {
