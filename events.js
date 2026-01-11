@@ -164,7 +164,7 @@ export function renderCulturalHub(state) {
         `).join('')}
     </div>
 </section>
-`;
+
         <section class="info-block">
             <h3>🎈 ${state.isPolish ? 'Wydarzenia i Święta' : 'Holidays & Traditions'}</h3>
             <div class="holiday-list">`;
