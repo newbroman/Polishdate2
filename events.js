@@ -154,6 +154,18 @@ export function renderCulturalHub(state) {
             <p class="derivation-text">${monthInfo.derivation}</p>
         </section>
         <section class="info-block">
+    <h3>📅 ${state.isPolish ? 'Znaczenie dni tygodnia' : 'Weekday Etymology'}</h3>
+    <div class="culture-grid-mini" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px;">
+        ${culturalData.days.map(day => `
+            <div class="day-meaning-card" style="padding: 10px; border: 1px solid var(--nav-border); border-radius: 8px; background: rgba(128,128,128,0.05);">
+                <strong style="color: var(--accent-color);">${day.pl}:</strong> 
+                <span style="font-size: 0.9rem;">${day.meaning}</span>
+            </div>
+        `).join('')}
+    </div>
+</section>
+`;
+        <section class="info-block">
             <h3>🎈 ${state.isPolish ? 'Wydarzenia i Święta' : 'Holidays & Traditions'}</h3>
             <div class="holiday-list">`;
 
