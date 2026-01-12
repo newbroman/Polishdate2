@@ -47,15 +47,15 @@ export function updateInfoPanel(selectedDate, includeYear, isFormal) {
     let fullEn = `${monthEn} ${day}${getEnglishSuffix(day)}`;
     let fullPhonetic = `${capitalizedDayPhonetic} ${monthPhonetic}`;
 
-   // 4. Year Logic
+
+  
    // 4. Year Logic
    if (includeYear) {
-       // Dates ALWAYS use the Genitive form of the year.
-       // We force isFormal to false for the year text to get "dwudziestego szóstego"
-       const yearSpelling = getYearPolish(year, false); 
-       const yearPhonetic = getYearPhonetic(year, false);
+       // Even in Naming Mode (Today is...), the year stays Genitive (e.g., ...szóstego roku)
+       // We pass 'true' to ensure we get the Genitive form: "dwudziestego szóstego"
+       const yearSpelling = getYearPolish(year, true); 
+       const yearPhonetic = getYearPhonetic(year, true);
        
-       // Suffix for dates is ALWAYS "roku" (of the year)
        const suffixPl = "roku";
        const suffixPhonetic = "ro-koo";
 
@@ -63,6 +63,7 @@ export function updateInfoPanel(selectedDate, includeYear, isFormal) {
        fullEn += `, ${year}`;
        fullPhonetic += ` ${yearPhonetic} ${suffixPhonetic}`;
    }
+    
     // 5. Holiday Display
     const holidays = holidayData.getHolidaysForYear(year);
     const holidayKey = `${monthIndex}-${day}`;
