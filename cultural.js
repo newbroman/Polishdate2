@@ -3,77 +3,77 @@
  */
 
 const culturalData = {
-   months: [
+    months: [
         {
-            pl: "Styczeń",
+            pl: "stycznia",
             en: "January",
-            season: "Zima (Winter)",
+            season: "winter",
             derivation: "From 'stykać' (to connect), as the month connects the old and the new year. Historically also related to 'tyki' (poles) used by farmers."
         },
         {
-            pl: "Luty",
+            pl: "lutego",
             en: "February",
-            season: "Zima (Winter)",
+            season: "winter",
             derivation: "Named after the archaic word 'luty', meaning 'harsh', 'fierce', or 'frosty', referring to the severe Polish winter freezes."
         },
         {
-            pl: "Marzec",
+            pl: "marca",
             en: "March",
-            season: "Wiosna (Spring)",
+            season: "spring",
             derivation: "Derived from the Latin 'Martius' (Mars). In old Slavic, it was sometimes called 'brzezień' from the birch trees (brzoza) that began to wake."
         },
         {
-            pl: "Kwiecień",
+            pl: "kwietnia",
             en: "April",
-            season: "Wiosna (Spring)",
+            season: "spring",
             derivation: "Literally the 'blooming month'. Derived from 'kwiat' (flower), as plants begin to bloom across the Polish landscape."
         },
         {
-            pl: "Maj",
+            pl: "maja",
             en: "May",
-            season: "Wiosna (Spring)",
+            season: "spring",
             derivation: "Adopted from the Latin 'Maius' (named after the goddess Maia). It is traditionally considered the most beautiful month in Poland."
         },
         {
-            pl: "Czerwiec",
+            pl: "czerwca",
             en: "June",
-            season: "Lato (Summer)",
+            season: "summer",
             derivation: "Derived from 'czerwie' (larvae). Historically, this was when the 'Polish cochineal' insect was harvested to produce a valuable red dye."
         },
         {
-            pl: "Lipiec",
+            pl: "lipca",
             en: "July",
-            season: "Lato (Summer)",
+            season: "summer",
             derivation: "Named after the 'lipa' (linden or lime tree), which blossoms in July, filling the Polish air with a distinct, sweet fragrance."
         },
         {
-            pl: "Sierpień",
+            pl: "sierpnia",
             en: "August",
-            season: "Lato (Summer)",
+            season: "summer",
             derivation: "Named after the 'sierp' (sickle), the tool traditionally used by Polish farmers to harvest grain during this month."
         },
         {
-            pl: "Wrzesień",
+            pl: "września",
             en: "September",
-            season: "Jesień (Autumn)",
+            season: "autumn",
             derivation: "Derived from 'wrzosy' (heather). This is the time when the purple heather plants bloom beautifully in Polish forests."
         },
         {
-            pl: "Październik",
+            pl: "października",
             en: "October",
-            season: "Jesień (Autumn)",
+            season: "autumn",
             derivation: "From 'paździer' (flax husks). Historically, this was the month when Polish peasants processed flax and hemp to create linen."
         },
         {
-            pl: "Listopad",
+            pl: "listopada",
             en: "November",
-            season: "Jesień (Autumn)",
+            season: "autumn",
             derivation: "A beautiful compound word: 'liść' (leaf) and 'padać' (to fall). It literally translates to 'the falling of the leaves'."
         },
         {
-            pl: "Grudzień",
+            pl: "grudnia",
             en: "December",
-            season: "Zima (Winter)",
+            season: "winter",
             derivation: "Derived from 'gruda' (a frozen lump of earth). It refers to the ground freezing solid as the deep winter sets in."
         }
     ],
