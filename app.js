@@ -171,17 +171,19 @@ function renderCalendarGrid(viewDate, selectedDate, onDateClick) {
      }
 }
 // 4. Initialize
-window.onload = () => {
+document.addEventListener('DOMContentLoaded', () => {
     setupListeners(state, render);
     
-    // 1. Render immediately so the user sees the calendar!
-    render(); 
+    // Use requestAnimationFrame to ensure CSS is parsed 
+    // before we start DOM manipulation to avoid forced layout errors
+    requestAnimationFrame(() => {
+        render();
+    });
 
-    // 2. Then check voices in the background
+    // Check voices in the background
     checkVoices(() => render());
 
     if ('serviceWorker' in navigator) {
-        // --- ADD THIS PART HERE ---
         let refreshing = false;
         navigator.serviceWorker.addEventListener('controllerchange', () => {
             if (!refreshing) {
@@ -189,14 +191,12 @@ window.onload = () => {
                 refreshing = true;
             }
         });
-        // ---------------------------
 
         navigator.serviceWorker.register('sw.js')
             .then(reg => console.log('✅ Registered at:', reg.scope))
             .catch(err => console.log('❌ Failed:', err));
     }
-};
-
+});
 // Keep these at the very bottom for debugging
 window.render = render;
 window.state = state;
