@@ -285,42 +285,29 @@ body {
     opacity: 0.7;
 }
 /* Base cell style (ensure it has a transparent border to prevent 'jumping') */
-.day-cell {
-    border-top: 4px solid transparent;
-    transition: all 0.2s ease;
-}
-
-/* Official Holiday - Red Top Border */
-.day-cell.is-holiday {
-    border-top-color: #e74c3c;
-    background-color: rgba(231, 76, 60, 0.05);
-}
-
-/* Tradition - Blue Top Border */
-.day-cell.is-tradition {
-    border-top-color: #3498db;
-    background-color: rgba(52, 152, 219, 0.05);
-}
-
-/* If a day is both (rare), holiday takes priority or you can use a dual border */
-.day-cell.is-holiday.is-tradition {
-    border-top-color: #e74c3c;
-    border-bottom: 4px solid #3498db;
-
 .calendar-day {
     box-sizing: border-box;
     border-top: 5px solid transparent; /* Placeholder to prevent jumping */
-    /* ... your other styles ... */
+    transition: all 0.2s ease;
 }
 
-/* Priority 1: State Holiday (Red Border) */
+/* Priority 1: State Holiday (Red Top Border) */
 .calendar-day.is-holiday {
     border-top-color: #e74c3c !important;
-    background-color: rgba(231, 76, 60, 0.05);
+    background-color: rgba(231, 76, 60, 0.08) !important;
+    color: #c0392b;
 }
 
-/* Priority 2: Tradition (Blue Border) */
+/* Priority 2: Tradition (Blue Top Border) */
 .calendar-day.is-tradition {
     border-top-color: #3498db !important;
-    background-color: rgba(52, 152, 219, 0.05);
+    background-color: rgba(52, 152, 219, 0.08) !important;
+    color: #2980b9;
+}
+
+/* Selected state should still pop */
+.calendar-day.selected {
+    border-top-color: white !important;
+    background: var(--accent-color) !important;
+    color: white !important;
 }
