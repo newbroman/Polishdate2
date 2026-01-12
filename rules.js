@@ -43,11 +43,17 @@ export function getRulesHTML(state) {
             rule: "Most months change their ending to -a or -ego.",
             example: `Styczeń (January) becomes ${dynamicMonth} (of ${dynamicMonth.slice(0,-1)})`
         },
-        yearStructure: {
+       yearStructure: {
             title: "3. Including the Year",
             explanation: `When saying a full date, Poles use the Genitive form for the year. We add the word 'roku' (of the year) at the end.`,
             rule: "[Ordinal Number in -ego] + roku",
             example: `The year ${currentYear} is spoken in its 'of' form ending in 'roku'.`
+        },
+        proTip: {
+            title: "💡 Pro-Tip: The 'Tens & Units' Rule",
+            explanation: `Only the last two numbers of a year change their endings. For ${currentYear}, the 'Two Thousand' stays the same, but the '${currentYear % 100}' becomes ordinal.`,
+            rule: "Keep the thousands basic, change the tens and units to -ego.",
+            example: `${currentYear} = ...dwudziestego szóstego roku`
         }
     };
 
