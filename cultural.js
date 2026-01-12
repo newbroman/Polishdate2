@@ -122,10 +122,7 @@ const culturalData = {
 export function getCulturalHTML() {
     // 1. Generate Months Section
     const monthsHtml = culturalData.months.map((info) => {
-        // STEP A: Capitalize the Genitive month name (e.g., "stycznia" -> "Stycznia")
         const capitalizedMonth = info.pl.charAt(0).toUpperCase() + info.pl.slice(1);
-        
-        // STEP B: Create a CSS class name from the first word of the season (e.g., "Zima")
         const seasonClass = info.season.split(' ')[0].toLowerCase();
 
         return `
@@ -133,7 +130,7 @@ export function getCulturalHTML() {
                 <h3>${capitalizedMonth}</h3>
                 <p><strong>English:</strong> ${info.en}</p>
                 <p><strong>Origin:</strong> ${info.derivation}</p>
-                <span class="badge">${info.season}</span>
+                <span class="badge">${info.season.toUpperCase()}</span>
             </div>
         `;
     }).join('');
@@ -146,20 +143,34 @@ export function getCulturalHTML() {
         </div>
     `).join('');
 
+    // 3. NEW: Generate Holidays Section
+    // This loops through the holidayExplanations object you have in your data
+    const holidaysHtml = Object.entries(culturalData.holidayExplanations).map(([key, description]) => `
+        <div class="info-block holiday-block">
+            <p>${description}</p>
+        </div>
+    `).join('');
+
     return `
         <div class="culture-container">
             <h2 class="section-title">The Origins of Polish Dates</h2>
+            
             <div class="culture-section">
                 <h3 class="subsection-title">Months & Seasons</h3>
                 <div class="culture-grid">${monthsHtml}</div>
             </div>
+
             <div class="culture-section">
                 <h3 class="subsection-title">Days of the Week</h3>
                 <div class="culture-grid">${daysHtml}</div>
             </div>
+
+            <div class="culture-section">
+                <h3 class="subsection-title">Significant Holidays & Traditions</h3>
+                <div class="culture-grid">${holidaysHtml}</div>
+            </div>
+
             <button class="pill-btn" onclick="document.getElementById('navCalendar').click()">Back to Calendar</button>
         </div>
     `;
 }
-
-export default culturalData;
