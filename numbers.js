@@ -5,6 +5,8 @@ import phonetics from './phonetics.js';
 
 /**
  * Returns the written Polish ordinal day.
+ * isFormal = true (Genitive: dwunastego)
+ * isFormal = false (Nominative: dwunasty)
  */
 export function getWrittenDay(day, isFormal = false) {
     const nominativeDays = {
@@ -31,11 +33,12 @@ export function getWrittenDay(day, isFormal = false) {
         31: "trzydziestego pierwszego"
     };
 
-    return isNominative ? nominativeDays[day] : genitiveDays[day];
+    // If Formal is true, give Genitive. If false, give Nominative.
+    return isFormal ? genitiveDays[day] : nominativeDays[day];
 }
 
-export function getPhoneticDay(day, isNominative = false) {
-    if (!isNominative) {
+export function getPhoneticDay(day, isFormal = false) {
+    if (isFormal) {
         if (phonetics.ordinalDaysGenitive && phonetics.ordinalDaysGenitive[day]) {
             return phonetics.ordinalDaysGenitive[day];
         }
@@ -56,13 +59,11 @@ export function getYearPolish(year, isFormal = false) {
     const lastTwo = year % 100;
     let parts = [];
 
-    // Thousands (usually "dwa tysiące" for 2000s)
     if (thousands > 0) {
         const thousandsMap = { 1: "tysiąc", 2: "dwa tysiące", 3: "trzy tysiące" };
         parts.push(thousandsMap[thousands] || `${thousands} tysięcy`);
     }
 
-    // Hundreds (usually empty for 2026)
     const hundredsMap = { 
         1: "sto", 2: "dwieście", 3: "trzysta", 4: "czterysta", 5: "pięćset", 
         6: "sześćset", 7: "siedemset", 8: "osiemset", 9: "dziewięćset" 
@@ -75,13 +76,13 @@ export function getYearPolish(year, isFormal = false) {
         const tens = ["", "", "dwudziesty", "trzydziesty", "czterdziesty", "pięćdziesiąty", "sześćdziesiąty", "siedemdziesiąty", "osiemdziesiąty", "dziewięćdziesiąty"];
 
         let yearWord = "";
-        if (lastTwo < 10) yearWord = units[lastTwo];
-        else if (lastTwo < 20) yearWord = teens[lastTwo - 10];
-        else {
+        if (lastTwo < 10) {
+            yearWord = units[lastTwo];
+        } else if (lastTwo < 20) {
+            yearWord = teens[lastTwo - 10];
+        } else {
             let t = tens[Math.floor(lastTwo / 10)];
             let u = units[lastTwo % 10];
-
-            // FIXED: If isFormal is true, apply Genitive (-ego)
             if (isFormal) {
                 t = t.replace(/y$/, "ego");
                 u = u.replace(/y$/, "ego").replace(/i$/, "iego");
@@ -89,9 +90,7 @@ export function getYearPolish(year, isFormal = false) {
             yearWord = u ? `${t} ${u}` : t;
         }
 
-        // Apply Genitive to single words (e.g. 2010 -> dziesiątego)
-      let yearWord = "";
-if (isFormal && lastTwo < 20) {
+        if (isFormal && lastTwo < 20) {
             yearWord = yearWord.replace(/y$/, "ego").replace(/i$/, "iego");
         }
         
@@ -99,8 +98,9 @@ if (isFormal && lastTwo < 20) {
     }
     
     return parts.join(" ");
-    
-export function getYearPhonetic(year, isNominative = false) {
+}
+
+export function getYearPhonetic(year, isFormal = false) {
     const thousands = Math.floor(year / 1000);
     const hundreds = Math.floor((year % 1000) / 100);
     const lastTwo = year % 100;
@@ -114,16 +114,19 @@ export function getYearPhonetic(year, isNominative = false) {
     if (hundreds > 0) pParts.push(pHundreds[hundreds]);
 
     if (lastTwo > 0) {
-        const yearList = isNominative ? (phonetics.ordinals || phonetics.ordinalDays) : (phonetics.ordinalsGenitive || phonetics.ordinalDaysGenitive);
+        // Use Genitive phonetics if isFormal is true
+        const yearList = isFormal ? 
+            (phonetics.ordinalsGenitive || phonetics.ordinalDaysGenitive) : 
+            (phonetics.ordinals || phonetics.ordinalDays);
         
         let pYear = "";
-        if (yearList[lastTwo]) {
+        if (yearList && yearList[lastTwo]) {
             pYear = yearList[lastTwo];
         } else {
             const tensVal = Math.floor(lastTwo / 10) * 10;
             const unitsVal = lastTwo % 10;
-            const pTens = yearList[tensVal] || "";
-            const pUnits = yearList[unitsVal] || "";
+            const pTens = yearList ? (yearList[tensVal] || "") : "";
+            const pUnits = yearList ? (yearList[unitsVal] || "") : "";
             pYear = `${pTens} ${pUnits}`.trim();
         }
         pParts.push(pYear);
