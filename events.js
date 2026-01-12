@@ -140,11 +140,12 @@ export function renderCulturalHub(state) {
     const year = state.viewDate.getFullYear();
     const monthInfo = culturalData.months[monthIndex] || { pl: "Miesiąc", derivation: "N/A", season: "N/A" };
     const holidays = holidayData.getHolidaysForYear(year);
-
+    const capitalizedMonth = monthInfo.pl.charAt(0).toUpperCase() + monthInfo.pl.slice(1);
+    
     let html = `
     <div class="content-body">
         <header class="content-header">
-            <h1>${monthInfo.pl} ${year}</h1> 
+            <h1>${capitalizedMonth} ${year}</h1> 
             <div class="season-box">
                 <span class="season-icon">${getSeasonIcon(monthInfo.season)}</span>
                 <strong>${state.isPolish ? 'Pora roku' : 'Season'}:</strong> 
