@@ -6,7 +6,7 @@ import phonetics from './phonetics.js';
 /**
  * Returns the written Polish ordinal day.
  */
-export function getWrittenDay(day, isNominative = false) {
+export function getWrittenDay(day, isFormal = false) {
     const nominativeDays = {
         1: "pierwszy", 2: "drugi", 3: "trzeci", 4: "czwarty", 5: "piąty",
         6: "szósty", 7: "siódmy", 8: "ósmy", 9: "dziewiąty", 10: "dziesiąty",
@@ -48,8 +48,8 @@ export function getPhoneticDay(day, isNominative = false) {
 /**
  * Written Year Logic
  */
-export function getYearPolish(year, isNominative = false) {
-    if (year === 0) return isNominative ? "zerowy" : "zerowego";
+export function getYearPolish(year, isFormal = false) {
+    if (year === 0) return isFormal ? "zerowego" : "zerowy";
     
     const thousands = Math.floor(year / 1000);
     const hundreds = Math.floor((year % 1000) / 100);
@@ -80,8 +80,9 @@ export function getYearPolish(year, isNominative = false) {
         else {
             let t = tens[Math.floor(lastTwo / 10)];
             let u = units[lastTwo % 10];
-            // If in Genitive (dates), BOTH parts of 21, 22, etc change
-            if (!isNominative) {
+
+            // FIXED: If isFormal is true, apply Genitive (-ego)
+            if (isFormal) {
                 t = t.replace(/y$/, "ego");
                 u = u.replace(/y$/, "ego").replace(/i$/, "iego");
             }
@@ -89,7 +90,8 @@ export function getYearPolish(year, isNominative = false) {
         }
 
         // Apply Genitive to single words (e.g. 2010 -> dziesiątego)
-        if (!isNominative && lastTwo < 20) {
+      let yearWord = "";
+if (isFormal && lastTwo < 20) {
             yearWord = yearWord.replace(/y$/, "ego").replace(/i$/, "iego");
         }
         
@@ -97,8 +99,7 @@ export function getYearPolish(year, isNominative = false) {
     }
     
     return parts.join(" ");
-}
-
+    
 export function getYearPhonetic(year, isNominative = false) {
     const thousands = Math.floor(year / 1000);
     const hundreds = Math.floor((year % 1000) / 100);
