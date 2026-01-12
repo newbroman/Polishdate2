@@ -179,7 +179,7 @@ export function renderCulturalHub(state) {
     Object.entries(holidays).forEach(([key, holidayName]) => {
         if (key.startsWith(`${monthIndex}-`)) {
             const dayNum = key.split('-')[1];
-            const description = culturalData.holidayExplanations[key] || "";
+           const description = culturalData.holidayExplanations[key] || culturalData.holidayExplanations[holidayName] || "";
             html += `
             <div class="holiday-entry">
                 <div class="holiday-title"><strong>${dayNum} ${monthInfo.pl}:</strong> ${holidayName}</div>
