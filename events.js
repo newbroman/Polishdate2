@@ -179,16 +179,25 @@ export function renderCulturalHub(state) {
     Object.entries(holidays).forEach(([key, holidayName]) => {
         if (key.startsWith(`${monthIndex}-`)) {
             const dayNum = key.split('-')[1];
+            
+            // 1. Get the data object (fallback to tradition if not found)
+            const info = culturalData.holidayExplanations[key] || 
+                         culturalData.holidayExplanations[holidayName] || 
+                         { text: "", type: "tradition" };
+
+            const isHoliday = info.type === "holiday";
             const capitalizedMonthGenitive = monthInfo.pl.charAt(0).toUpperCase() + monthInfo.pl.slice(1);
-            const description = culturalData.holidayExplanations[key] || culturalData.holidayExplanations[holidayName] || "";
-          
+            
             html += `
-            <div class="holiday-entry">
-                <div class="holiday-title"><strong>${dayNum} ${capitalizedMonthGenitive}:</strong> ${holidayName}</div>
-                    ${description ? `<p class="holiday-desc">${description}</p>` : ''}
-              </div>`;
-        foundHoliday = true;
-    }
+                <div class="holiday-entry ${isHoliday ? 'state-holiday' : 'tradition-item'}">
+                    <div class="holiday-type-tag">${isHoliday ? 'OFFICIAL HOLIDAY' : 'TRADITION'}</div>
+                    <div class="holiday-title">
+                        <strong>${dayNum} ${capitalizedMonthGenitive}:</strong> ${holidayName}
+                    </div>
+                    ${info.text ? `<p class="holiday-desc">${info.text}</p>` : ''}
+                </div>`;
+            foundHoliday = true;
+        }
     });
 
     if (!foundHoliday) {
