@@ -120,17 +120,19 @@ const culturalData = {
 };
 
 export function getCulturalHTML() {
-    // 1. Generate Months Section with Auto-Capitalization
+  // 1. Generate Months Section
     const monthsHtml = culturalData.months.map((info) => {
-        // This line takes "stycznia" and turns it into "Stycznia"
+        // Capitalize month for header (Stycznia, Lutego, etc.)
         const capitalizedMonth = info.pl.charAt(0).toUpperCase() + info.pl.slice(1);
         
+        // Extract just the CSS class name (e.g., "winter") if needed, 
+        // or just use the info.season string for the badge
         return `
-            <div class="info-block ${info.season}">
+            <div class="info-block ${info.season.split(' ')[0].toLowerCase()}">
                 <h3>${capitalizedMonth}</h3>
                 <p><strong>${info.en}</strong></p>
                 <p><strong>Origin:</strong> ${info.derivation}</p>
-                <span class="badge">${info.season.toUpperCase()}</span>
+                <span class="badge">${info.season}</span>
             </div>
         `;
     }).join('');
