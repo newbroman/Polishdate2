@@ -126,34 +126,48 @@ function renderCalendarGrid(viewDate, selectedDate, onDateClick) {
         grid.appendChild(spacer);
     }
 
-    for (let day = 1; day <= lastDay; day++) {
-        const daySquare = document.createElement('div');
-        daySquare.className = 'calendar-day';
-        daySquare.innerText = day;
+     for (let day = 1; day <= lastDay; day++) {
+    const daySquare = document.createElement('div');
+    daySquare.className = 'calendar-day';
+    daySquare.innerText = day;
 
-        const holidayKey = `${month}-${day}`;
-        if (holidays[holidayKey]) daySquare.classList.add('holiday');
+    const holidayKey = `${month}-${day}`;
+    const holidayName = holidays[holidayKey];
 
-        const isToday = day === today.getDate() && 
-                        month === today.getMonth() && 
-                        year === today.getFullYear();
-        if (isToday) daySquare.classList.add('today-highlight');
+    // --- NEW LOGIC START ---
+    if (holidayName) {
+        // Find the details in culturalData (by date key or name)
+        const info = culturalData.holidayExplanations[holidayKey] || 
+                     culturalData.holidayExplanations[holidayName] || 
+                     { type: "tradition" };
 
-        const isSelected = selectedDate && 
-                           day === selectedDate.getDate() && 
-                           month === selectedDate.getMonth() && 
-                           year === selectedDate.getFullYear();
-        if (isSelected) daySquare.classList.add('selected');
-
-        daySquare.onclick = () => {
-            const newSelected = new Date(year, month, day);
-            onDateClick(newSelected);
-        };
-
-        grid.appendChild(daySquare);
+        // Apply specific classes based on priority
+        if (info.type === 'holiday') {
+            daySquare.classList.add('is-holiday');
+        } else {
+            daySquare.classList.add('is-tradition');
+        }
     }
-}
+    // --- NEW LOGIC END ---
 
+    const isToday = day === today.getDate() && 
+                    month === today.getMonth() && 
+                    year === today.getFullYear();
+    if (isToday) daySquare.classList.add('today-highlight');
+
+    const isSelected = selectedDate && 
+                       day === selectedDate.getDate() && 
+                       month === selectedDate.getMonth() && 
+                       year === selectedDate.getFullYear();
+    if (isSelected) daySquare.classList.add('selected');
+
+    daySquare.onclick = () => {
+        const newSelected = new Date(year, month, day);
+        onDateClick(newSelected);
+    };
+
+    grid.appendChild(daySquare);
+}
 // 4. Initialize
 window.onload = () => {
     setupListeners(state, render);
