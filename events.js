@@ -220,9 +220,11 @@ export function renderCulturalHub(state) {
 export function renderRulesPage(state) {
     const page = document.getElementById('rulesPage');
     if (!page) return;
+    
+    // Pass state here so we can access viewDate
     page.innerHTML = `
         <div class="content-body">
-            ${getRulesHTML()}
+            ${getRulesHTML(state)} 
             <div style="text-align:center;">
                 <button class="pill-btn back-to-cal" style="margin-top:20px">← Back to Calendar</button>
             </div>
