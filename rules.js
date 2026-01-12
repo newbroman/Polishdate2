@@ -29,6 +29,28 @@ export function getRulesHTML(state) {
     const monthKeysPl = ["stycznia", "lutego", "marca", "kwietnia", "maja", "czerwca", "lipca", "sierpnia", "września", "października", "listopada", "grudnia"];
     const dynamicMonth = monthKeysPl[monthIndex];
 
+    // Part 2 Rules - Now updated with the current year
+    const grammarRules = {
+        ordinalNumbers: {
+            title: "1. Ordinal Numbers",
+            explanation: "In English, we say 'January first'. In Polish, we always use ordinal numbers (1st, 2nd, 3rd) for the day. These must match the gender of the word 'day' (dzień), which is masculine.",
+            rule: "Day numbers usually end in -y or -i.",
+            example: "1st = pierwszy, 2nd = drugi, 3rd = trzeci"
+        },
+        monthCasing: {
+            title: "2. The 'Of' Case (Genitive)",
+            explanation: "This is the most important rule. We don't say '1 January'. We say '1st day OF January'. This possessive relationship changes the ending of the month name.",
+            rule: "Most months change their ending to -a or -ego.",
+            example: `Styczeń (January) becomes ${dynamicMonth} (of ${dynamicMonth.slice(0,-1)})`
+        },
+        yearStructure: {
+            title: "3. Including the Year",
+            explanation: `When saying a full date, Poles use the Genitive form for the year. We add the word 'roku' (of the year) at the end.`,
+            rule: "[Ordinal Number in -ego] + roku",
+            example: `The year ${currentYear} is spoken in its 'of' form ending in 'roku'.`
+        }
+    };
+
     let html = `
         <article class="rules-container">
             <header class="rules-header">
@@ -58,6 +80,7 @@ export function getRulesHTML(state) {
             <h3 class="section-divider">📖 Part 2: Core Principles</h3>
     `;
 
+    // Render Part 2 with the dynamic examples
     Object.values(grammarRules).forEach(item => {
         html += `
             <section class="rule-block core-rule">
@@ -91,13 +114,6 @@ export function getRulesHTML(state) {
                     <p>You are standing outside the building looking at a map. You are just naming the coordinates. The <strong>Day</strong> furniture stays in its basic form.</p>
                     <p><strong>Result:</strong> <em>Dziesiąty ${dynamicMonth}...</em></p>
                 </div>
-                
-                <p style="margin-top: 20px; font-weight: bold; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 10px;">
-                    💡 Why the Month and Year stay the same:
-                </p>
-                <p style="font-style: italic; opacity: 0.9;">
-                    The Building (${currentYear} roku) and the Room (${dynamicMonth}) are the "owners." Whether you are looking at them or partying in them, their "of" status doesn't change. Only the <strong>Day</strong> toggles!
-                </p>
             </section>
         </article>
     `;
