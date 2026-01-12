@@ -1,5 +1,5 @@
 /**
- * rules.js - Updated for Grammatical Precision
+ * rules.js - Restored with Year/Building Analogy
  */
 
 const grammarRules = {
@@ -24,37 +24,79 @@ const grammarRules = {
 };
 
 export function getRulesHTML(state) {
-    // 1. Get current month and year from state
     const currentYear = state.viewDate.getFullYear();
     const monthIndex = state.viewDate.getMonth();
-    
-    // 2. Map for Genitive month names
     const monthKeysPl = ["stycznia", "lutego", "marca", "kwietnia", "maja", "czerwca", "lipca", "sierpnia", "września", "października", "listopada", "grudnia"];
     const dynamicMonth = monthKeysPl[monthIndex];
 
     let html = `
         <article class="rules-container">
-            <h3 class="section-divider">🏠 Part 3: The "Room" Analogy for ${currentYear}</h3>
+            <header class="rules-header">
+                <h2>🇵🇱 Polish Date Mastery</h2>
+                <p>Understand the logic behind the endings.</p>
+            </header>
+            
+            <h3 class="section-divider">🔄 Part 1: Contextual Ending Changes</h3>
+            
+            <section class="rule-block spoken-mode">
+                <h3>📅 Mode: (It is...) — Nominative (The Map)</h3>
+                <p>Used for simply <strong>identifying</strong> a date on a calendar. (Answers: <em>What day is it?</em>)</p>
+                <div class="full-example">
+                    <span class="highlight">Dziesiąty ${dynamicMonth} ${currentYear} roku</span>
+                </div>
+            </section>
+
+            <section class="rule-block written-mode">
+                <h3>🎉 Mode: (It's on...) — Genitive (The Event)</h3>
+                <p><strong>Primary Mode.</strong> Used for scheduling, parties, and appointments. (Answers: <em>When?</em>)</p>
+                <div class="full-example">
+                    <span class="highlight">Dziesiątego ${dynamicMonth} ${currentYear} roku</span>
+                </div>
+            </section>
+
+            <hr class="rule-divider">
+            <h3 class="section-divider">📖 Part 2: Core Principles</h3>
+    `;
+
+    Object.values(grammarRules).forEach(item => {
+        html += `
+            <section class="rule-block core-rule">
+                <h4>${item.title}</h4>
+                <p>${item.explanation}</p>
+                <p><strong>Rule:</strong> ${item.rule}</p>
+                <p><em>Example: ${item.example}</em></p>
+            </section>
+        `;
+    });
+
+    html += `
+            <hr class="rule-divider">
+            <h3 class="section-divider">🏠 Part 3: The "Address" Analogy</h3>
             <section class="rule-block analogy-section">
-                <p>Think of Polish grammar like <strong>arranging furniture in a room.</strong> Here is how the analogy works with the two modes in this app:</p>
+                <p>Think of Polish grammar like <strong>arranging furniture in a room.</strong> Here is how it works with the year included:</p>
                 
-                <div class="analogy-box">
-                    <h4>🎉 Mode: (It's on...) — The Event</h4>
-                    <p>You are actually <strong>using</strong> the space for a party. Because an action is happening "on" the day, the endings shift to the Genitive.</p>
-                    <p><strong>Result:</strong> <em>Dziesiątego ${dynamicMonth} ${currentYear} roku.</em></p>
+                <div class="analogy-box" style="background: rgba(128,128,128,0.05); border-left: 4px solid #666; padding: 15px; border-radius: 8px; margin-bottom: 15px;">
+                    <h4>🏗️ The Building (The Year)</h4>
+                    <p>The <strong>Year (${currentYear})</strong> is the building. It never moves. Because everything happens "of that year," it is always locked in the possessive case: <strong>${currentYear} roku</strong>.</p>
                 </div>
 
-                <div class="analogy-box">
-                    <h4>📅 Mode: (Today is...) — The Map</h4>
-                    <p>You are looking at the calendar like a map. You are just naming the coordinates: <em>"This square is the 10th of ${dynamicMonth}."</em></p>
-                    <p><strong>Result:</strong> <em>Dziesiąty ${dynamicMonth} ${currentYear} roku.</em></p>
+                <div class="analogy-box" style="border-left: 4px solid #ffd700; padding: 15px; background: rgba(255, 215, 0, 0.05);">
+                    <h4>🎉 Mode: (It's on...) — The Event</h4>
+                    <p>You are actually <strong>using</strong> the room for a party. Because an action is happening "on" the day, the <strong>Day</strong> furniture shifts to the Genitive to match the room.</p>
+                    <p><strong>Result:</strong> <em>Dziesiątego ${dynamicMonth}...</em></p>
+                </div>
+
+                <div class="analogy-box" style="border-left: 4px solid #4a90e2; margin-top: 15px; padding: 15px; background: rgba(74, 144, 226, 0.05);">
+                    <h4>📅 Mode: (It is...) — The Map</h4>
+                    <p>You are standing outside the building looking at a map. You are just naming the coordinates. The <strong>Day</strong> furniture stays in its basic form.</p>
+                    <p><strong>Result:</strong> <em>Dziesiąty ${dynamicMonth}...</em></p>
                 </div>
                 
                 <p style="margin-top: 20px; font-weight: bold; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 10px;">
-                    💡 Why we use "roku":
+                    💡 Why the Month and Year stay the same:
                 </p>
                 <p style="font-style: italic; opacity: 0.9;">
-                    In dates, the year is always possessive. Just as we say "of ${dynamicMonth}" (${dynamicMonth}), we say "of the year" (roku). 
+                    The Building (${currentYear} roku) and the Room (${dynamicMonth}) are the "owners." Whether you are looking at them or partying in them, their "of" status doesn't change. Only the <strong>Day</strong> toggles!
                 </p>
             </section>
         </article>
