@@ -181,12 +181,12 @@ export function renderCulturalHub(state) {
             const dayNum = key.split('-')[1];
             const description = culturalData.holidayExplanations[key] || "";
             html += `
-                <div class="holiday-entry">
-                    <div class="holiday-title"><strong>${dayNum} ${monthInfo.pl}:</strong> ${holidayName}</div>
-                    ${description ? `<p class="holiday-desc">${description}</p>` : ''}
-                </div>`;
-            foundHoliday = true;
-        }
+            <div class="holiday-entry">
+                <div class="holiday-title"><strong>${dayNum} ${monthInfo.pl}:</strong> ${holidayName}</div>
+                ${description ? `<p class="holiday-desc">${description}</p>` : ''}
+            </div>`;
+        foundHoliday = true;
+    }
     });
 
     if (!foundHoliday) {
