@@ -120,17 +120,23 @@ const culturalData = {
 };
 
 export function getCulturalHTML() {
-    // 1. Generate Months Section
-    const monthsHtml = Object.entries(culturalData.months).map(([index, info]) => `
-        <div class="info-block ${info.season}">
-            <h3>${info.pl}</h3>
-            <p><strong>Origin:</strong> ${info.derivation}</p>
-            <span class="badge">${info.season.toUpperCase()}</span>
-        </div>
-    `).join('');
+    // 1. Generate Months Section with Auto-Capitalization
+    const monthsHtml = culturalData.months.map((info) => {
+        // This line takes "stycznia" and turns it into "Stycznia"
+        const capitalizedMonth = info.pl.charAt(0).toUpperCase() + info.pl.slice(1);
+        
+        return `
+            <div class="info-block ${info.season}">
+                <h3>${capitalizedMonth}</h3>
+                <p><strong>${info.en}</strong></p>
+                <p><strong>Origin:</strong> ${info.derivation}</p>
+                <span class="badge">${info.season.toUpperCase()}</span>
+            </div>
+        `;
+    }).join('');
 
-    // 2. Generate Days Section
-    const daysHtml = Object.entries(culturalData.days).map(([index, info]) => `
+    // 2. Generate Days Section (The days are likely already capitalized in your data)
+    const daysHtml = culturalData.days.map((info) => `
         <div class="info-block">
             <h3>${info.pl}</h3>
             <p>${info.meaning}</p>
