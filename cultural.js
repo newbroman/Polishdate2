@@ -174,4 +174,6 @@ export function getCulturalHTML() {
         </div>
     `;
 }
+
+export { getCulturalHTML }
 export default culturalData;
