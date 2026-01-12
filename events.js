@@ -179,12 +179,14 @@ export function renderCulturalHub(state) {
     Object.entries(holidays).forEach(([key, holidayName]) => {
         if (key.startsWith(`${monthIndex}-`)) {
             const dayNum = key.split('-')[1];
-           const description = culturalData.holidayExplanations[key] || culturalData.holidayExplanations[holidayName] || "";
+            const capitalizedMonthGenitive = monthInfo.pl.charAt(0).toUpperCase() + monthInfo.pl.slice(1);
+            const description = culturalData.holidayExplanations[key] || culturalData.holidayExplanations[holidayName] || "";
+          
             html += `
             <div class="holiday-entry">
-                <div class="holiday-title"><strong>${dayNum} ${monthInfo.pl}:</strong> ${holidayName}</div>
-                ${description ? `<p class="holiday-desc">${description}</p>` : ''}
-            </div>`;
+                <div class="holiday-title"><strong>${dayNum} ${capitalizedMonthGenitive}:</strong> ${holidayName}</div>
+                    ${description ? `<p class="holiday-desc">${description}</p>` : ''}
+              </div>`;
         foundHoliday = true;
     }
     });
