@@ -136,17 +136,22 @@ function renderCalendarGrid(viewDate, selectedDate, onDateClick) {
     const holidayName = holidays[holidayKey];
 
     // --- NEW LOGIC START ---
-    if (holidayName) {
-        // Find the details in culturalData (by date key or name)
-        const info = culturalData.holidayExplanations[holidayKey] || 
-                     culturalData.holidayExplanations[holidayName] || 
-                     { type: "tradition" };
+if (holidayName) {
+        // Clean the name of emojis so "Mikołajki 🎅" becomes "Mikołajki"
+        const cleanName = holidayName.replace(/[\u{1F300}-\u{1F9FF}]/gu, '').trim();
 
-        // Apply specific classes based on priority
-        if (info.type === 'holiday') {
-            daySquare.classList.add('is-holiday');
-        } else {
-            daySquare.classList.add('is-tradition');
+        // Find the details in culturalData (by date key, clean name, or full name)
+        const info = culturalData.holidayExplanations[holidayKey] || 
+                     culturalData.holidayExplanations[cleanName] || 
+                     culturalData.holidayExplanations[holidayName];
+
+        if (info) {
+            // Apply specific classes based on the type in cultural.js
+            if (info.type === 'holiday') {
+                daySquare.classList.add('is-holiday');
+            } else if (info.type === 'tradition') {
+                daySquare.classList.add('is-tradition');
+            }
         }
     }
     // --- NEW LOGIC END ---
