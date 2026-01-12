@@ -179,11 +179,12 @@ if (holidayName) {
 document.addEventListener('DOMContentLoaded', () => {
     setupListeners(state, render);
     
-    // Use requestAnimationFrame to ensure CSS is parsed 
-    // before we start DOM manipulation to avoid forced layout errors
+    // Use requestAnimationFrame to let CSS load first
     requestAnimationFrame(() => {
-        render();
+        render(); 
     });
+
+    checkVoices(() => render());
 
     // Check voices in the background
     checkVoices(() => render());
