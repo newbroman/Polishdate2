@@ -120,24 +120,25 @@ const culturalData = {
 };
 
 export function getCulturalHTML() {
-  // 1. Generate Months Section
+    // 1. Generate Months Section
     const monthsHtml = culturalData.months.map((info) => {
-        // Capitalize month for header (Stycznia, Lutego, etc.)
+        // STEP A: Capitalize the Genitive month name (e.g., "stycznia" -> "Stycznia")
         const capitalizedMonth = info.pl.charAt(0).toUpperCase() + info.pl.slice(1);
         
-        // Extract just the CSS class name (e.g., "winter") if needed, 
-        // or just use the info.season string for the badge
+        // STEP B: Create a CSS class name from the first word of the season (e.g., "Zima")
+        const seasonClass = info.season.split(' ')[0].toLowerCase();
+
         return `
-            <div class="info-block ${info.season.split(' ')[0].toLowerCase()}">
+            <div class="info-block ${seasonClass}">
                 <h3>${capitalizedMonth}</h3>
-                <p><strong>${info.en}</strong></p>
+                <p><strong>English:</strong> ${info.en}</p>
                 <p><strong>Origin:</strong> ${info.derivation}</p>
                 <span class="badge">${info.season}</span>
             </div>
         `;
     }).join('');
 
-    // 2. Generate Days Section (The days are likely already capitalized in your data)
+    // 2. Generate Days Section
     const daysHtml = culturalData.days.map((info) => `
         <div class="info-block">
             <h3>${info.pl}</h3>
