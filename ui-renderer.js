@@ -64,19 +64,20 @@ export function updateInfoPanel(selectedDate, includeYear, isFormal) {
        fullPhonetic += ` ${yearPhonetic} ${suffixPhonetic}`;
    }
     
-    // 5. Holiday Display
+  // 5. Holiday Display
     const holidays = holidayData.getHolidaysForYear(year);
     const holidayKey = `${monthIndex}-${day}`;
     
     if (holidayDisplay) {
         if (holidays[holidayKey]) {
-            holidayDisplay.innerText = `🎉 ${holidays[holidayKey]}`;
+            // Using currentMonthKey ensures it says "stycznia" (Genitive) 
+            // instead of "Styczeń" (Nominative)
+            holidayDisplay.innerHTML = `<span class="month-label">${currentMonthKey}:</span> 🎉 ${holidays[holidayKey]}`;
             holidayDisplay.style.display = "block";
         } else {
             holidayDisplay.style.display = "none";
         }
     }
-
    // 6. Update UI - Trimmed to remove potential leading spaces
     plDisplay.innerText = fullPl.trim();
     enDisplay.innerText = fullEn.trim();
