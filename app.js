@@ -5,6 +5,7 @@ import { updateInfoPanel } from './ui-renderer.js';
 import { setupListeners } from './events.js';
 import holidayData from './holiday.js';
 import { checkVoices } from './audio.js';
+import culturalData from './cultural.js';
 
 // 1. Initialize Global State
 const state = { 
@@ -167,6 +168,7 @@ function renderCalendarGrid(viewDate, selectedDate, onDateClick) {
     };
 
     grid.appendChild(daySquare);
+     }
 }
 // 4. Initialize
 window.onload = () => {
