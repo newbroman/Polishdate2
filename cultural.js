@@ -1,123 +1,63 @@
 /**
- * cultural.js - Complete Background data synced with holidayData
+ * cultural.js - Categorized Background data
  */
 
 const culturalData = {
     months: [
-        {
-            pl: "stycznia",
-            en: "January",
-            season: "winter",
-            derivation: "From 'stykać' (to connect), as the month connects the old and the new year. Historically also related to 'tyki' (poles) used by farmers."
-        },
-        {
-            pl: "lutego",
-            en: "February",
-            season: "winter",
-            derivation: "Named after the archaic word 'luty', meaning 'harsh', 'fierce', or 'frosty', referring to the severe Polish winter freezes."
-        },
-        {
-            pl: "marca",
-            en: "March",
-            season: "spring",
-            derivation: "Derived from the Latin 'Martius' (Mars). In old Slavic, it was sometimes called 'brzezień' from the birch trees (brzoza) that began to wake."
-        },
-        {
-            pl: "kwietnia",
-            en: "April",
-            season: "spring",
-            derivation: "Literally the 'blooming month'. Derived from 'kwiat' (flower), as plants begin to bloom across the Polish landscape."
-        },
-        {
-            pl: "maja",
-            en: "May",
-            season: "spring",
-            derivation: "Adopted from the Latin 'Maius' (named after the goddess Maia). It is traditionally considered the most beautiful month in Poland."
-        },
-        {
-            pl: "czerwca",
-            en: "June",
-            season: "summer",
-            derivation: "Derived from 'czerwie' (larvae). Historically, this was when the 'Polish cochineal' insect was harvested to produce a valuable red dye."
-        },
-        {
-            pl: "lipca",
-            en: "July",
-            season: "summer",
-            derivation: "Named after the 'lipa' (linden or lime tree), which blossoms in July, filling the Polish air with a distinct, sweet fragrance."
-        },
-        {
-            pl: "sierpnia",
-            en: "August",
-            season: "summer",
-            derivation: "Named after the 'sierp' (sickle), the tool traditionally used by Polish farmers to harvest grain during this month."
-        },
-        {
-            pl: "września",
-            en: "September",
-            season: "autumn",
-            derivation: "Derived from 'wrzosy' (heather). This is the time when the purple heather plants bloom beautifully in Polish forests."
-        },
-        {
-            pl: "października",
-            en: "October",
-            season: "autumn",
-            derivation: "From 'paździer' (flax husks). Historically, this was the month when Polish peasants processed flax and hemp to create linen."
-        },
-        {
-            pl: "listopada",
-            en: "November",
-            season: "autumn",
-            derivation: "A beautiful compound word: 'liść' (leaf) and 'padać' (to fall). It literally translates to 'the falling of the leaves'."
-        },
-        {
-            pl: "grudnia",
-            en: "December",
-            season: "winter",
-            derivation: "Derived from 'gruda' (a frozen lump of earth). It refers to the ground freezing solid as the deep winter sets in."
-        }
+        { pl: "stycznia", en: "January", season: "Zima (Winter)", derivation: "From 'stykać' (to connect), as the month connects the old and the new year." },
+        { pl: "lutego", en: "February", season: "Zima (Winter)", derivation: "Named after 'luty', meaning 'harsh' or 'fierce', referring to severe freezes." },
+        { pl: "marca", en: "March", season: "Wiosna (Spring)", derivation: "Derived from Latin 'Martius'. In old Slavic, called 'brzezień' from birch trees." },
+        { pl: "kwietnia", en: "April", season: "Wiosna (Spring)", derivation: "The 'blooming month'. Derived from 'kwiat' (flower)." },
+        { pl: "maja", en: "May", season: "Wiosna (Spring)", derivation: "Adopted from Latin 'Maius'. Traditionally the most beautiful month in Poland." },
+        { pl: "czerwca", en: "June", season: "Lato (Summer)", derivation: "Derived from 'czerwie' (larvae), used historically to produce red dye." },
+        { pl: "lipca", en: "July", season: "Lato (Summer)", derivation: "Named after 'lipa' (linden tree), which blossoms and scents the air." },
+        { pl: "sierpnia", en: "August", season: "Lato (Summer)", derivation: "Named after 'sierp' (sickle), used by farmers for the harvest." },
+        { pl: "września", en: "September", season: "Jesień (Autumn)", derivation: "Derived from 'wrzosy' (heather), which blooms in Polish forests." },
+        { pl: "października", en: "October", season: "Jesień (Autumn)", derivation: "From 'paździer' (flax husks), from the time of processing flax for linen." },
+        { pl: "listopada", en: "November", season: "Jesień (Autumn)", derivation: "A compound of 'liść' (leaf) and 'padać' (to fall)." },
+        { pl: "grudnia", en: "December", season: "Zima (Winter)", derivation: "From 'gruda' (frozen lump of earth), as the ground freezes solid." }
     ],
     days: [
         { pl: "Niedziela", meaning: "From 'nie działać' (not working). The day of rest." },
         { pl: "Poniedziałek", meaning: "Means 'after Sunday' (po niedzieli)." },
         { pl: "Wtorek", meaning: "From 'wtóry' (second). The second day of the week." },
-        { pl: "Środa", meaning: "Means 'middle' (środek), the midpoint of the working week." },
+        { pl: "Środa", meaning: "Means 'middle' (środek), the midpoint of the week." },
         { pl: "Czwartek", meaning: "From 'czwarty' (fourth day)." },
         { pl: "Piątek", meaning: "From 'piąty' (fifth day)." },
         { pl: "Sobota", meaning: "Derived from 'Sabbath' (Szabat)." }
     ],
 
     holidayExplanations: {
-        // --- Fixed Dates ---
-        "0-1": "Nowy Rok: The start of the New Year, celebrated with fireworks.",
-        "0-6": "Trzech Króli: Epiphany. Many Poles write 'K+M+B' in chalk on their doors.",
-        "0-21": "Dzień Babci: Grandmothers receive flowers and handmade cards from grandchildren.",
-        "0-22": "Dzień Dziadka: A day to honor grandfathers for their wisdom and care.",
-        "2-8": "Dzień Kobiet: International Women's Day. In Poland, it is common to give tulips to women.",
-        "3-1": "Prima Aprilis: April Fools' Day. A day for jokes, hoaxes, and lighthearted fun.",
-        "4-1": "Święto Pracy: Labor Day. Often the start of 'Majówka', the great Polish BBQ weekend.",
-        "4-3": "Święto Konstytucji: Commemorating the 1791 Constitution, Europe's first modern constitution.",
-        "4-26": "Dzień Matki: Mother's Day. Children honor their moms with 'laurki' (handmade cards).",
-        "5-1": "Dzień Dziecka: Children's Day. Kids usually get small gifts or special trips to the park.",
-        "5-23": "Dzień Ojca: Father's Day. A time to celebrate dads and their role in the family.",
-        "7-15": "Wniebowzięcie / Wojska Polskiego: A double holiday celebrating Mary and the Polish Army.",
-        "10-1": "Wszystkich Świętych: All Saints' Day. Millions of candles (znicze) light up cemeteries at night.",
-        "10-11": "Święto Niepodległości: Independence Day. Celebrating the rebirth of Poland in 1918.",
-        "10-29": "Andrzejki: St. Andrew’s Eve. A night of fortune-telling, like pouring hot wax through a key.",
-        "11-6": "Mikołajki: St. Nicholas Day. Kids find small gifts or chocolates in their clean boots.",
-        "11-24": "Wigilia: Christmas Eve. The most sacred night, involving a 12-dish meatless supper.",
-        "11-25": "Boże Narodzenie: Christmas Day. A quiet time for family and singing carols (kolędy).",
-        "11-26": "Drugi Dzień Świąt: Also known as St. Stephen’s Day; a day for visiting friends.",
+        // --- Official State Holidays (Dni wolne od pracy) ---
+        "0-1": { text: "Nowy Rok: The start of the New Year, celebrated with fireworks and parties.", type: "holiday" },
+        "0-6": { text: "Trzech Króli: Epiphany. Poles write 'K+M+B' in chalk on their doors to bless the home.", type: "holiday" },
+        "4-1": { text: "Święto Pracy: Labor Day. Often the start of 'Majówka', the great Polish BBQ weekend.", type: "holiday" },
+        "4-3": { text: "Święto Konstytucji: Commemorating the 1791 Constitution, Europe's first modern constitution.", type: "holiday" },
+        "7-15": { text: "Wniebowzięcie / Wojska Polskiego: A double holiday celebrating Mary and the Polish Army.", type: "holiday" },
+        "10-1": { text: "Wszystkich Świętych: All Saints' Day. Millions of candles (znicze) light up cemeteries.", type: "holiday" },
+        "10-11": { text: "Święto Niepodległości: Independence Day. Celebrating the rebirth of Poland in 1918.", type: "holiday" },
+        "11-25": { text: "Boże Narodzenie: Christmas Day. A quiet time for family and singing carols.", type: "holiday" },
+        "11-26": { text: "Drugi Dzień Świąt: St. Stephen’s Day; a day for visiting friends and family.", type: "holiday" },
+        "Wielkanoc 🐣": { text: "Easter Sunday: Celebrated with a festive breakfast including blessed eggs (pisanki).", type: "holiday" },
+        "Lany Poniedziałek 💧": { text: "Wet Monday: A fun tradition of splashing friends with water! Also a day off.", type: "holiday" },
+        "Boże Ciało": { text: "Corpus Christi: Famous for massive outdoor processions through flower-covered streets.", type: "holiday" },
 
-        // --- Moveable Feasts (Keys added dynamically by holiday.js) ---
-        "Tłusty Czwartek 🍩": "Fat Thursday: The last Thursday before Lent. Everyone must eat at least one pączek (donut) for good luck!",
-        "Środa Popielcowa": "Ash Wednesday: Marks the beginning of Lent. Faithful have ashes placed on their foreheads.",
-        "Wielkanoc 🐣": "Easter Sunday: Celebrated with a festive breakfast including blessed eggs (pisanki).",
-        "Lany Poniedziałek 💧": "Wet Monday (Śmigus-Dyngus): A fun tradition of splashing friends and family with water!",
-        "Zielone Świątki": "Pentecost: An old agricultural holiday where homes were decorated with green branches.",
-        "Boże Ciało": "Corpus Christi: Famous for massive outdoor processions through flower-covered streets."
+        // --- Cultural Traditions (Working Days) ---
+        "0-21": { text: "Dzień Babci: Grandmothers receive flowers and handmade cards from grandchildren.", type: "tradition" },
+        "0-22": { text: "Dzień Dziadka: A day to honor grandfathers for their wisdom and care.", type: "tradition" },
+        "2-8": { text: "Dzień Kobiet: Women's Day. In Poland, it is common to give tulips to women.", type: "tradition" },
+        "3-1": { text: "Prima Aprilis: April Fools' Day. A day for jokes, hoaxes, and lighthearted fun.", type: "tradition" },
+        "3-3": { text: "Wielki Piątek: Good Friday. A solemn day of fasting and visiting 'Lord's Tombs' in churches.", type: "tradition" },
+        "4-26": { text: "Dzień Matki: Mother's Day. Children honor their moms with 'laurki' (handmade cards).", type: "tradition" },
+        "5-1": { text: "Dzień Dziecka: Children's Day. Kids usually get small gifts or special trips.", type: "tradition" },
+        "5-23": { text: "Dzień Ojca: Father's Day. A time to celebrate dads and their role in the family.", type: "tradition" },
+        "10-29": { text: "Andrzejki: St. Andrew’s Eve. A night of fortune-telling, like pouring hot wax.", type: "tradition" },
+        "11-6": { text: "Mikołajki: St. Nicholas Day. Kids find gifts or chocolates in their clean boots.", type: "tradition" },
+        "11-24": { text: "Wigilia: Christmas Eve. The most sacred night, involving a 12-dish meatless supper.", type: "tradition" },
+        "Tłusty Czwartek 🍩": { text: "Fat Thursday: The last Thursday before Lent. Everyone eats pączki (donuts)!", type: "tradition" },
+        "Środa Popielcowa": { text: "Ash Wednesday: Marks the beginning of Lent. Ashes are placed on foreheads.", type: "tradition" },
+        "Zielone Świątki": { text: "Pentecost: An old agricultural holiday where homes were decorated with branches.", type: "tradition" }
     }
 };
-
 
 export default culturalData;
