@@ -306,3 +306,21 @@ body {
 .day-cell.is-holiday.is-tradition {
     border-top-color: #e74c3c;
     border-bottom: 4px solid #3498db;
+
+.calendar-day {
+    box-sizing: border-box;
+    border-top: 5px solid transparent; /* Placeholder to prevent jumping */
+    /* ... your other styles ... */
+}
+
+/* Priority 1: State Holiday (Red Border) */
+.calendar-day.is-holiday {
+    border-top-color: #e74c3c !important;
+    background-color: rgba(231, 76, 60, 0.05);
+}
+
+/* Priority 2: Tradition (Blue Border) */
+.calendar-day.is-tradition {
+    border-top-color: #3498db !important;
+    background-color: rgba(52, 152, 219, 0.05);
+}
