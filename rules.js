@@ -103,7 +103,12 @@ export function getRulesHTML(state) {
             <h3 class="section-divider">🏠 Part 3: The "Address" Analogy</h3>
             <section class="rule-block analogy-section">
                 <p>Think of Polish grammar like <strong>arranging furniture in a room.</strong> Here is how it works with the year included:</p>
-                
+
+                <div class="analogy-box" style="border-left: 4px solid var(--text-dim); background: rgba(0,0,0,0.02); margin-bottom: 10px;">
+                     <h4>🪧 The Signpost (Day of the Week)</h4>
+                     <p>The day name (like <em>Wtorek</em> or <em>Sobota</em>) is just the signpost at the end of the driveway. It always stays in its basic name form (Nominative) because it's just a label.</p>
+                </div>
+
                 <div class="analogy-box" style="background: rgba(128,128,128,0.05); border-left: 4px solid #666; padding: 15px; border-radius: 8px; margin-bottom: 15px;">
                     <h4>🏗️ The Building (The Year)</h4>
                     <p>The <strong>Year (${currentYear})</strong> is the building. It never moves. Because everything happens "of that year," it is always locked in the possessive case: <strong>${currentYear} roku</strong>.</p>
