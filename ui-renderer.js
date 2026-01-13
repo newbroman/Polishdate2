@@ -26,6 +26,15 @@ export function updateInfoPanel(selectedDate, includeYear, isFormal) {
     }
 
  // 2. Data Mapping
+    const dayNamesPl = ["Niedziela", "Poniedziałek", "Wtorek", "Środa", "Czwartek", "Piątek", "Sobota"];
+    const dayNamesEn = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+
+    const dayOfWeekIndex = selectedDate.getDay();
+    const dayNamePl = dayNamesPl[dayOfWeekIndex];
+    const dayNameEn = dayNamesEn[dayOfWeekIndex]
+
+    
+    
     const monthNamesEn = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     const monthKeysPl = ["stycznia", "lutego", "marca", "kwietnia", "maja", "czerwca", "lipca", "sierpnia", "września", "października", "listopada", "grudnia"];
     
@@ -39,30 +48,30 @@ export function updateInfoPanel(selectedDate, includeYear, isFormal) {
     // REMOVED: yearSpelling and yearPhonetic were defined here incorrectly.
     // They are now handled correctly inside the "if (includeYear)" block below.
 
-    // 3. Intros
+   // 3. Intros & Base Phrasing
     const capitalizedDaySpelling = daySpelling.charAt(0).toUpperCase() + daySpelling.slice(1);
     const capitalizedDayPhonetic = dayPhonetic.charAt(0).toUpperCase() + dayPhonetic.slice(1);
     
-    let fullPl = `${capitalizedDaySpelling} ${currentMonthKey}`;
-    let fullEn = `${monthEn} ${day}${getEnglishSuffix(day)}`;
+    // We add the Signpost (Day Name) at the start
+    let fullPl = `${dayNamePl}, ${capitalizedDaySpelling} ${currentMonthKey}`;
+    let fullEn = `${dayNameEn}, ${monthEn} ${day}${getEnglishSuffix(day)}`;
+    
+    // For phonetics, we need to add the day name pronunciation if you have it, 
+    // otherwise, we start with the day number:
     let fullPhonetic = `${capitalizedDayPhonetic} ${monthPhonetic}`;
 
+    // 4. Year Logic
+    if (includeYear) {
+        const yearSpelling = getYearPolish(year, true); 
+        const yearPhonetic = getYearPhonetic(year, true);
+        
+        const suffixPl = "roku";
+        const suffixPhonetic = "ro-koo";
 
-  
-   // 4. Year Logic
-   if (includeYear) {
-       // Even in Naming Mode (Today is...), the year stays Genitive (e.g., ...szóstego roku)
-       // We pass 'true' to ensure we get the Genitive form: "dwudziestego szóstego"
-       const yearSpelling = getYearPolish(year, true); 
-       const yearPhonetic = getYearPhonetic(year, true);
-       
-       const suffixPl = "roku";
-       const suffixPhonetic = "ro-koo";
-
-       fullPl += ` ${yearSpelling} ${suffixPl}`;
-       fullEn += `, ${year}`;
-       fullPhonetic += ` ${yearPhonetic} ${suffixPhonetic}`;
-   }
+        fullPl += ` ${yearSpelling} ${suffixPl}`;
+        fullEn += `, ${year}`;
+        fullPhonetic += ` ${yearPhonetic} ${suffixPhonetic}`;
+    }
     
   // 5. Holiday Display
     const holidays = holidayData.getHolidaysForYear(year);
