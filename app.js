@@ -178,6 +178,32 @@ if (holidayName) {
 // 4. Initialize
 document.addEventListener('DOMContentLoaded', () => {
     setupListeners(state, render);
+
+    const infoBtn = document.getElementById('navInfo');
+    const aboutModal = document.getElementById('aboutModal');
+    const closeBtn = document.querySelector('.close-btn');
+    const feedbackBtn = document.getElementById('feedbackBtn');
+
+    if (infoBtn && aboutModal) {
+        infoBtn.addEventListener('click', () => {
+            aboutModal.style.display = 'block';
+        });
+
+        closeBtn?.addEventListener('click', () => {
+            aboutModal.style.display = 'none';
+        });
+
+        window.addEventListener('click', (event) => {
+            if (event.target === aboutModal) {
+                aboutModal.style.display = 'none';
+            }
+        });
+
+        feedbackBtn?.addEventListener('click', () => {
+            // Replace this URL once your Google Form is ready
+            window.open('https://forms.gle/YOUR_FORM_ID', '_blank');
+        });
+    }
     
     // Use requestAnimationFrame to let CSS load first
     requestAnimationFrame(() => {
