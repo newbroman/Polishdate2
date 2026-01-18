@@ -6,6 +6,7 @@ import { setupListeners } from './events.js';
 import holidayData from './holiday.js';
 import { checkVoices } from './audio.js';
 import culturalData from './cultural.js';
+import { getNamesForDate } from './namedays.js';
 
 // 1. Initialize Global State
 const state = { 
@@ -130,6 +131,7 @@ if (modalTitle) {
     renderCalendarGrid(state.viewDate, state.selectedDate, (newDate) => {
         state.selectedDate = newDate;
         render(); 
+        updateNamedaysDisplay(newDate);
     });
 }
 
@@ -262,3 +264,20 @@ document.addEventListener('DOMContentLoaded', () => {
 window.render = render;
 window.state = state;
 window.renderCalendarGrid = renderCalendarGrid;
+
+// Function to update namedays display
+function updateNamedaysDisplay(date) {
+    const namedaysList = document.getElementById('namedaysList');
+    if (!namedaysList) return;
+    
+    const names = getNamesForDate(date);
+    
+    if (names.length > 0) {
+        namedaysList.innerHTML = `<p class="namedays-names">${names.join(', ')}</p>`;
+    } else {
+        namedaysList.innerHTML = '<p class="namedays-placeholder">No name days for this date</p>';
+    }
+}
+
+// Export for use in other modules
+window.updateNamedaysDisplay = updateNamedaysDisplay;
