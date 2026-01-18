@@ -11,6 +11,8 @@
     <meta name="apple-mobile-web-app-title" content="PL Date">
     <link rel="apple-touch-icon" href="icon-192.png">
 </head>
+
+
     
 <body class="winter">
     <noscript>
@@ -29,9 +31,11 @@
             <button id="navCalendar" class="nav-icon-btn" title="Calendar">📅</button>
             <button id="navCulture" class="nav-icon-btn" title="Culture">📖</button>
             <button id="navRules" class="nav-icon-btn" title="Grammar">⚖️</button>
+            <button id="navInfo" class="nav-icon-btn" title="About">❓</button>
             <div class="divider"></div>
             <button id="meetingToggle" class="pill-btn mode-btn-written">Mode: Written (Genitive)</button>
             <button id="langToggle" class="pill-btn-sm">EN</button>
+           
         </div>
     </header>
 
@@ -94,5 +98,22 @@
     </footer>
 
     <script type="module" src="app.js"></script>
+<div id="aboutModal" class="modal-overlay">
+    <div class="modal-content">
+        <span class="close-btn">&times;</span>
+        <h2>Polish Date Master</h2>
+        <div class="about-body">
+            <p><strong>Jak to działa?</strong></p>
+            <ul>
+                <li>📅 <b>Kalendarz:</b> Kliknij datę, by usłyszeć wymowę i sprawdzić imieniny.</li>
+                <li>📖 <b>Kultura:</b> Dowiedz się więcej o polskich tradycjach.</li>
+                <li>⚖️ <b>Gramatyka:</b> Poznaj zasady zapisu dat.</li>
+            </ul>
+            <hr>
+            <p>Jestem niezależnym twórcą. Twoja opinia pomaga mi rozwijać tę aplikację!</p>
+            <button id="feedbackBtn" class="pill-btn-feedback">Wypełnij ankietę (Feedback)</button>
+        </div>
+    </div>
+    
 </body>
 </html>
