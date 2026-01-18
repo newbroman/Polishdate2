@@ -31,94 +31,80 @@ function render() {
     const monthIndex = state.viewDate.getMonth();
     const year = state.viewDate.getFullYear();
 
+    // --- Modal Translations ---
+    const modalTitle = document.getElementById('modalTitle');
+    const modalAboutHeader = document.getElementById('modalAboutHeader');
+    const featCal = document.getElementById('featCal');
+    const featCult = document.getElementById('featCult');
+    const featGram = document.getElementById('featGram');
+    const modalDevNote = document.getElementById('modalDevNote');
+    const feedbackBtn = document.getElementById('feedbackBtn');
 
-const modalTitle = document.getElementById('modalTitle');
-const modalAboutHeader = document.getElementById('modalAboutHeader');
-const featCal = document.getElementById('featCal');
-const featCult = document.getElementById('featCult');
-const featGram = document.getElementById('featGram');
-const modalDevNote = document.getElementById('modalDevNote');
-const feedbackBtn = document.getElementById('feedbackBtn');
-
-    
-
-if (modalTitle) {
-    if (state.isPolish) {
-        modalAboutHeader.innerText = "O aplikacji:";
-        featCal.innerHTML = "📅 <b>Kalendarz:</b> Kliknij datę, by usłyszeć wymowę.";
-        featCult.innerHTML = "📖 <b>Kultura:</b> Poznaj polskie tradycje i imieniny.";
-        featGram.innerHTML = "⚖️ <b>Gramatyka:</b> Opanuj odmianę liczebników.";
-        modalDevNote.innerText = "Projekt niezależny. Twoja opinia pomaga mi w rozwoju!";
-        feedbackBtn.innerText = "Prześlij opinię (Feedback)";
-    } else {
-        modalAboutHeader.innerText = "About the app:";
-        featCal.innerHTML = "📅 <b>Calendar:</b> Click a date to hear pronunciation.";
-        featCult.innerHTML = "📖 <b>Culture:</b> Explore Polish traditions and Name Days.";
-        featGram.innerHTML = "⚖️ <b>Grammar:</b> Master the numeral cases.";
-        modalDevNote.innerText = "Independent project. Your feedback helps me improve!";
-        feedbackBtn.innerText = "Send Feedback";
+    if (modalTitle) {
+        if (state.isPolish) {
+            modalAboutHeader.innerText = "O aplikacji:";
+            featCal.innerHTML = "📅 <b>Kalendarz:</b> Kliknij datę, by usłyszeć wymowę.";
+            featCult.innerHTML = "📖 <b>Kultura:</b> Poznaj polskie tradycje i imieniny.";
+            featGram.innerHTML = "⚖️ <b>Gramatyka:</b> Opanuj odmianę liczebników.";
+            modalDevNote.innerText = "Projekt niezależny. Twoja opinia pomaga mi w rozwoju!";
+            feedbackBtn.innerText = "Prześlij opinię (Feedback)";
+        } else {
+            modalAboutHeader.innerText = "About the app:";
+            featCal.innerHTML = "📅 <b>Calendar:</b> Click a date to hear pronunciation.";
+            featCult.innerHTML = "📖 <b>Culture:</b> Explore Polish traditions and Name Days.";
+            featGram.innerHTML = "⚖️ <b>Grammar:</b> Master the numeral cases.";
+            modalDevNote.innerText = "Independent project. Your feedback helps me improve!";
+            feedbackBtn.innerText = "Send Feedback";
+        }
     }
-}
-    
-   // 1. Update Mode Button
+
+    // --- Mode Button ---
     if (meetingBtn) {
-    // state.isFormal = false (Default) -> "Today is" (Naming Mode)
-    // state.isFormal = true            -> "It's on" (Event Mode)
-    
-    const icon = state.isFormal ? "🎉" : "📅";
-    
-    const label = state.isFormal 
-        ? (state.isPolish ? "To jest dnia" : "It's on") 
-        : (state.isPolish ? "Dzisiaj jest" : "Today is");
-
-    meetingBtn.innerText = `${icon} ${label}`;
-    
-    // Theme: Blue for Naming (Today is), Gold for Event (It's on)
-    meetingBtn.className = `pill-btn ${state.isFormal ? 'mode-btn-event' : 'mode-btn-naming'}`;
-}
-
-
-    
-    // 2. Update Info Panel
-    try {
-         updateInfoPanel(state.selectedDate, state.includeYear, state.isFormal, state.isPolish);
-    } catch (e) { 
-        console.error("Info Panel Error:", e); 
+        const icon = state.isFormal ? "🎉" : "📅";
+        const label = state.isFormal 
+            ? (state.isPolish ? "To jest dnia" : "It's on") 
+            : (state.isPolish ? "Dzisiaj jest" : "Today is");
+        meetingBtn.innerText = `${icon} ${label}`;
+        meetingBtn.className = `pill-btn ${state.isFormal ? 'mode-btn-event' : 'mode-btn-naming'}`;
     }
-    
-    // 3. Seasonal Themes
+
+    // --- Info Panel ---
+    try {
+        updateInfoPanel(state.selectedDate, state.includeYear, state.isFormal, state.isPolish);
+    } catch (e) { console.error("Info Panel Error:", e); }
+
+    // --- Seasonal Themes ---
     document.body.className = ''; 
     const seasons = ['winter', 'winter', 'spring', 'spring', 'spring', 'summer', 'summer', 'summer', 'autumn', 'autumn', 'autumn', 'winter'];
     document.body.classList.add(seasons[monthIndex]);
 
-    // 4. Update Month Dropdown
+    // --- Month & Year Inputs ---
     if (mRoller) {
-        const monthNamesEn = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-        const monthNamesPl = ["Styczeń", "Luty", "Marzec", "Kwiecień", "Maj", "Czerwiec", "Lipiec", "Sierpień", "Wrzesień", "Październik", "Listopad", "Grudzień"];
-        const names = state.isPolish ? monthNamesPl : monthNamesEn;
-        
-        mRoller.innerHTML = names.map((name, i) => 
-            `<option value="${i}" ${i === monthIndex ? 'selected' : ''}>${name}</option>`
-        ).join('');
+        const months = state.isPolish 
+            ? ["Styczeń", "Luty", "Marzec", "Kwiecień", "Maj", "Czerwiec", "Lipiec", "Sierpień", "Wrzesień", "Październik", "Listopad", "Grudzień"]
+            : ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+        mRoller.innerHTML = months.map((name, i) => `<option value="${i}" ${i === monthIndex ? 'selected' : ''}>${name}</option>`).join('');
     }
-    
     if (yInput) yInput.value = year;
 
-    // 5. Weekday Labels
+    // --- Weekday Labels ---
     if (weekdayContainer) {
         const days = state.isPolish ? ["Nie", "Pon", "Wt", "Śr", "Czw", "Pią", "Sob"] : ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
         weekdayContainer.innerHTML = days.map(d => `<span>${d}</span>`).join('');
     }
 
-    // 6. Button Translations
+    // --- Button Translations ---
     if (playBtn && !playBtn.innerText.includes("⌛")) {
         playBtn.innerText = state.isPolish ? "🔊 Słuchaj" : "🔊 Listen";
     }
 
-   if (repeatYearBtn) {
-    const yearLabel = state.isPolish ? "Rok" : "Year";
+    if (repeatYearBtn) {
+        const yearLabel = state.isPolish ? "Rok" : "Year";
+        const status = state.isPolish ? (state.includeYear ? "WŁ" : "WYŁ") : (state.includeYear ? "ON" : "OFF");
+        repeatYearBtn.innerText = `${yearLabel}: ${status}`;
+    }
 
-// 6.5 Cultural Page Translations & Name Day Display
+    // --- Cultural Hub Translations & Daily Names ---
     const cultMainTitle = document.getElementById('cultMainTitle');
     const nameSearchInput = document.getElementById('nameSearchInput');
     const dailyNamesTitle = document.getElementById('dailyNamesTitle');
@@ -135,26 +121,22 @@ if (modalTitle) {
             nameSearchInput.placeholder = "Szukaj imienia (np. Maria)...";
             dailyNamesTitle.innerText = "Imieniny na wybraną datę:";
             imieninyTitle.innerText = "Imieniny";
-            imieninyText.innerHTML = "W Polsce <strong>imieniny</strong> są często ważniejsze niż urodziny. Większość polskich kalendarzy zawiera listę imion przypisanych do każdego dnia.";
+            imieninyText.innerHTML = "W Polsce <strong>imieniny</strong> są często ważniejsze niż urodziny.";
             holidaysTitle.innerText = "Święta i Zwyczaje";
-            holidaysText.innerHTML = "Szukaj dni z <em>czerwoną ramką</em> w kalendarzu, aby zidentyfikować święta narodowe i ważne uroczystości.";
+            holidaysText.innerHTML = "Szukaj dni z <em>czerwoną ramką</em>.";
             if(backBtn) backBtn.innerText = "← Powrót do kalendarza";
         } else {
             cultMainTitle.innerText = "Polish Cultural Traditions";
             nameSearchInput.placeholder = "Search for a name (e.g., Maria)...";
             dailyNamesTitle.innerText = "Name Days for selected date:";
             imieninyTitle.innerText = "Imieniny (Name Days)";
-            imieninyText.innerHTML = "In Poland, <strong>Name Days</strong> are often more important than birthdays. Most Polish calendars list the names associated with each day.";
+            imieninyText.innerHTML = "In Poland, <strong>Name Days</strong> are often more important than birthdays.";
             holidaysTitle.innerText = "Holidays & Customs";
-            holidaysText.innerHTML = "Look for days with <em>red borders</em> in the calendar to identify national holidays and significant celebrations.";
+            holidaysText.innerHTML = "Look for days with <em>red borders</em>.";
             if(backBtn) backBtn.innerText = "← Back to Calendar";
         }
     }
 
-    // Update Daily Names from the JSON
- // ... inside render() after section 6.5 ...
-
-    // Update Daily Names from the JSON
     if (dailyNamesList) {
         const dd = String(state.selectedDate.getDate()).padStart(2, '0');
         const mm = String(state.selectedDate.getMonth() + 1).padStart(2, '0');
@@ -165,29 +147,15 @@ if (modalTitle) {
             .then(data => {
                 const names = data[dateKey] || [];
                 dailyNamesList.innerText = names.length > 0 ? names.join(", ") : "---";
-            })
-            .catch(() => { dailyNamesList.innerText = "Error loading names"; });
+            });
     }
 
-    // Translate the status based on the language
-    let status;
-    if (state.isPolish) {
-        status = state.includeYear ? "WŁ" : "WYŁ";
-    } else {
-        status = state.includeYear ? "ON" : "OFF";
-    }
-
-    if (repeatYearBtn) {
-        const yearLabel = state.isPolish ? "Rok" : "Year";
-        repeatYearBtn.innerText = `${yearLabel}: ${status}`;
-    }
-
-    // 7. Render Calendar Grid
+    // 7. Final Step: Draw Grid
     renderCalendarGrid(state.viewDate, state.selectedDate, (newDate) => {
         state.selectedDate = newDate;
         render(); 
     });
-} // This is the final bracket for function render()
+}
 
 // 3. Grid Drawing Logic starts here...
 // 3. Grid Drawing Logic
