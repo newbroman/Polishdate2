@@ -6,7 +6,6 @@ import { setupListeners } from './events.js';
 import holidayData from './holiday.js';
 import { checkVoices } from './audio.js';
 import culturalData from './cultural.js';
-import { getNamesForDate } from './namedays.js';
 
 // 1. Initialize Global State
 const state = { 
@@ -16,23 +15,6 @@ const state = {
     isPolish: false,
     isFormal: false
 }
-
-// Function to update namedays display
-function updateNamedaysDisplay(date) {
-    const namedaysList = document.getElementById('namedaysList');
-    if (!namedaysList) return;
-    
-    const names = getNamesForDate(date);
-    
-    if (names.length > 0) {
-        namedaysList.innerHTML = `<p class="namedays-names">${names.join(', ')}</p>`;
-    } else {
-        namedaysList.innerHTML = '<p class="namedays-placeholder">No name days for this date</p>';
-    }
-}
-/**
-
-
 
 // 2. Main Render Function
 function render() {
@@ -147,6 +129,7 @@ if (modalTitle) {
     // 7. Render Calendar Grid
     renderCalendarGrid(state.viewDate, state.selectedDate, (newDate) => {
         state.selectedDate = newDate;
+        updateNamedaysDisplay(newDate);
         render(); 
     });
 }
@@ -280,3 +263,22 @@ document.addEventListener('DOMContentLoaded', () => {
 window.render = render;
 window.state = state;
 window.renderCalendarGrid = renderCalendarGrid;
+
+// Function to update namedays display
+async function updateNamedaysDisplay(date) {
+    const namedaysList = document.getElementById('namedaysList');
+    if (!namedaysList) return;
+    
+    try {
+        const names = await getNamesForDate(date);
+        
+        if (names.length > 0) {
+            namedaysList.innerHTML = `<p class="namedays-names">${names.join(', ')}</p>`;
+        } else {
+            namedaysList.innerHTML = '<p class="namedays-placeholder">No name days for this date</p>';
+        }
+    } catch (error) {
+        console.error('Error loading namedays:', error);
+        namedaysList.innerHTML = '<p class="namedays-placeholder">Error loading name days</p>';
+    }
+}
