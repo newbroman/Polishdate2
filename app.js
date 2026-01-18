@@ -1,5 +1,5 @@
 /**
- * app.js - Final Integration Fixed
+ * app.js - Final Polished Version
  */
 import { updateInfoPanel } from './ui-renderer.js';
 import { setupListeners } from './events.js';
@@ -7,7 +7,9 @@ import holidayData from './holiday.js';
 import { checkVoices } from './audio.js';
 import culturalData from './cultural.js';
 
-// 1. Initialize Global State
+// 1. Global Cache and State
+let cachedNameDays = null; 
+
 const state = { 
     viewDate: new Date(),    
     selectedDate: new Date(), 
@@ -32,7 +34,6 @@ function render() {
     const year = state.viewDate.getFullYear();
 
     // --- Modal Translations ---
-    const modalTitle = document.getElementById('modalTitle');
     const modalAboutHeader = document.getElementById('modalAboutHeader');
     const featCal = document.getElementById('featCal');
     const featCult = document.getElementById('featCult');
@@ -40,7 +41,7 @@ function render() {
     const modalDevNote = document.getElementById('modalDevNote');
     const feedbackBtn = document.getElementById('feedbackBtn');
 
-    if (modalTitle) {
+    if (modalAboutHeader) {
         if (state.isPolish) {
             modalAboutHeader.innerText = "O aplikacji:";
             featCal.innerHTML = "📅 <b>Kalendarz:</b> Kliknij datę, by usłyszeć wymowę.";
@@ -104,7 +105,7 @@ function render() {
         repeatYearBtn.innerText = `${yearLabel}: ${status}`;
     }
 
-    // --- Cultural Hub Translations & Daily Names ---
+    // --- Cultural Hub Translations ---
     const cultMainTitle = document.getElementById('cultMainTitle');
     const nameSearchInput = document.getElementById('nameSearchInput');
     const dailyNamesTitle = document.getElementById('dailyNamesTitle');
@@ -137,27 +138,30 @@ function render() {
         }
     }
 
+    // Update the daily name list for the selected day
     if (dailyNamesList) {
         const dd = String(state.selectedDate.getDate()).padStart(2, '0');
         const mm = String(state.selectedDate.getMonth() + 1).padStart(2, '0');
         const dateKey = `${dd}-${mm}`;
 
-        fetch('./Imieniny.json')
-            .then(res => res.json())
-            .then(data => {
+        if (cachedNameDays) {
+            const names = cachedNameDays[dateKey] || [];
+            dailyNamesList.innerText = names.length > 0 ? names.join(", ") : "---";
+        } else {
+            fetch('./Imieniny.json').then(res => res.json()).then(data => {
+                cachedNameDays = data;
                 const names = data[dateKey] || [];
                 dailyNamesList.innerText = names.length > 0 ? names.join(", ") : "---";
             });
+        }
     }
 
-    // 7. Final Step: Draw Grid
     renderCalendarGrid(state.viewDate, state.selectedDate, (newDate) => {
         state.selectedDate = newDate;
         render(); 
     });
 }
 
-// 3. Grid Drawing Logic starts here...
 // 3. Grid Drawing Logic
 function renderCalendarGrid(viewDate, selectedDate, onDateClick) {
     const grid = document.getElementById('calendarGrid'); 
@@ -181,85 +185,58 @@ function renderCalendarGrid(viewDate, selectedDate, onDateClick) {
         grid.appendChild(spacer);
     }
 
-     for (let day = 1; day <= lastDay; day++) {
-    const daySquare = document.createElement('div');
-    daySquare.className = 'calendar-day';
-    daySquare.innerText = day;
+    for (let day = 1; day <= lastDay; day++) {
+        const daySquare = document.createElement('div');
+        daySquare.className = 'calendar-day';
+        daySquare.innerText = day;
 
-    const holidayKey = `${month}-${day}`;
-    const holidayName = holidays[holidayKey];
+        const holidayKey = `${month}-${day}`;
+        const holidayName = holidays[holidayKey];
 
-    // --- NEW LOGIC START ---
-if (holidayName) {
-        // Clean the name of emojis so "Mikołajki 🎅" becomes "Mikołajki"
-        const cleanName = holidayName.replace(/[\u{1F300}-\u{1F9FF}]/gu, '').trim();
+        if (holidayName) {
+            const cleanName = holidayName.replace(/[\u{1F300}-\u{1F9FF}]/gu, '').trim();
+            const info = culturalData.holidayExplanations[holidayKey] || 
+                         culturalData.holidayExplanations[cleanName] || 
+                         culturalData.holidayExplanations[holidayName];
 
-        // Find the details in culturalData (by date key, clean name, or full name)
-        const info = culturalData.holidayExplanations[holidayKey] || 
-                     culturalData.holidayExplanations[cleanName] || 
-                     culturalData.holidayExplanations[holidayName];
-
-        if (info) {
-            // Apply specific classes based on the type in cultural.js
-            if (info.type === 'holiday') {
-                daySquare.classList.add('is-holiday');
-            } else if (info.type === 'tradition') {
-                daySquare.classList.add('is-tradition');
+            if (info) {
+                if (info.type === 'holiday') daySquare.classList.add('is-holiday');
+                else if (info.type === 'tradition') daySquare.classList.add('is-tradition');
             }
         }
+
+        const isToday = day === today.getDate() && month === today.getMonth() && year === today.getFullYear();
+        if (isToday) daySquare.classList.add('today-highlight');
+
+        const isSelected = selectedDate && day === selectedDate.getDate() && month === selectedDate.getMonth() && year === selectedDate.getFullYear();
+        if (isSelected) daySquare.classList.add('selected');
+
+        daySquare.onclick = () => {
+            onDateClick(new Date(year, month, day));
+        };
+
+        grid.appendChild(daySquare);
     }
-    // --- NEW LOGIC END ---
-
-    const isToday = day === today.getDate() && 
-                    month === today.getMonth() && 
-                    year === today.getFullYear();
-    if (isToday) daySquare.classList.add('today-highlight');
-
-    const isSelected = selectedDate && 
-                       day === selectedDate.getDate() && 
-                       month === selectedDate.getMonth() && 
-                       year === selectedDate.getFullYear();
-    if (isSelected) daySquare.classList.add('selected');
-
-    daySquare.onclick = () => {
-        const newSelected = new Date(year, month, day);
-        onDateClick(newSelected);
-    };
-
-    grid.appendChild(daySquare);
-     }
 }
+
 // 4. Initialize
 document.addEventListener('DOMContentLoaded', () => {
     setupListeners(state, render);
 
+    // Modal Listeners
     const infoBtn = document.getElementById('navInfo');
     const aboutModal = document.getElementById('aboutModal');
     const closeBtn = document.querySelector('.close-btn');
     const feedbackBtn = document.getElementById('feedbackBtn');
 
     if (infoBtn && aboutModal) {
-        infoBtn.addEventListener('click', () => {
-            aboutModal.style.display = 'block';
-        });
-
-        closeBtn?.addEventListener('click', () => {
-            aboutModal.style.display = 'none';
-        });
-
-        window.addEventListener('click', (event) => {
-            if (event.target === aboutModal) {
-                aboutModal.style.display = 'none';
-            }
-        });
-
-        feedbackBtn?.addEventListener('click', () => {
-            // Replace this URL once your Google Form is ready
-            window.open('https://forms.gle/YOUR_FORM_ID', '_blank');
-        });
+        infoBtn.addEventListener('click', () => aboutModal.style.display = 'block');
+        closeBtn?.addEventListener('click', () => aboutModal.style.display = 'none');
+        window.addEventListener('click', (e) => { if (e.target === aboutModal) aboutModal.style.display = 'none'; });
+        feedbackBtn?.addEventListener('click', () => window.open('https://forms.gle/YOUR_FORM_ID', '_blank'));
     }
 
-// Name Search Logic
+    // --- Search Logic (Placed Once) ---
     const searchInput = document.getElementById('nameSearchInput');
     const resultsDiv = document.getElementById('searchResults');
 
@@ -268,63 +245,44 @@ document.addEventListener('DOMContentLoaded', () => {
         resultsDiv.innerHTML = "";
         if (query.length < 2) return;
 
-        const response = await fetch('./Imieniny.json');
-        const data = await response.json();
+        if (!cachedNameDays) {
+            const response = await fetch('./Imieniny.json');
+            cachedNameDays = await response.json();
+        }
 
-        for (const [date, names] of Object.entries(data)) {
+        for (const [date, names] of Object.entries(cachedNameDays)) {
             const matches = names.filter(n => n.toLowerCase().includes(query));
-           matches.forEach(name => {
-    const row = document.createElement('div');
-    row.className = 'search-item';
-    
-    // Your file is DD-MM, so d=01, m=02
-    const [d, m] = date.split('-'); 
-    row.innerHTML = `<span>${name}</span> <small>(${d}.${m})</small>`;
-    
-    row.style.cursor = 'pointer';
-    row.onclick = () => {
-        const currentYear = state.viewDate.getFullYear();
-        
-        // Month index must be (m - 1) because JS months are 0-11
-        state.viewDate = new Date(currentYear, parseInt(m) - 1, parseInt(d));
-        state.selectedDate = new Date(currentYear, parseInt(m) - 1, parseInt(d));
-        
-        // Switch views
-        document.getElementById('culturalHub').style.display = 'none';
-        document.getElementById('calendarApp').style.display = 'block';
-        
-        render(); 
-    };
-    resultsDiv.appendChild(row);
-});
+            matches.forEach(name => {
+                const row = document.createElement('div');
+                row.className = 'search-item';
+                const [d, m] = date.split('-'); 
+                row.innerHTML = `<span>${name}</span> <small>(${d}.${m})</small>`;
+                row.style.cursor = 'pointer';
+                row.onclick = () => {
+                    state.viewDate = new Date(state.viewDate.getFullYear(), parseInt(m) - 1, parseInt(d));
+                    state.selectedDate = new Date(state.viewDate.getFullYear(), parseInt(m) - 1, parseInt(d));
+                    document.getElementById('culturalHub').style.display = 'none';
+                    document.getElementById('calendarApp').style.display = 'block';
+                    render(); 
+                };
+                resultsDiv.appendChild(row);
+            });
         }
     });
-    
-    // Use requestAnimationFrame to let CSS load first
-    requestAnimationFrame(() => {
-        render(); 
-    });
 
+    // Initial render and voice check
+    requestAnimationFrame(() => render());
     checkVoices(() => render());
 
-    // Check voices in the background
-    checkVoices(() => render());
-
+    // Service Worker
     if ('serviceWorker' in navigator) {
-        let refreshing = false;
-        navigator.serviceWorker.addEventListener('controllerchange', () => {
-            if (!refreshing) {
-                window.location.reload();
-                refreshing = true;
-            }
-        });
-
         navigator.serviceWorker.register('sw.js')
             .then(reg => console.log('✅ Registered at:', reg.scope))
             .catch(err => console.log('❌ Failed:', err));
     }
 });
-// Keep these at the very bottom for debugging
+
+// Debugging
 window.render = render;
 window.state = state;
 window.renderCalendarGrid = renderCalendarGrid;
