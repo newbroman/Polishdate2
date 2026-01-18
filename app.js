@@ -31,22 +31,8 @@ function updateNamedaysDisplay(date) {
     }
 }
 /**
- * app.js - Final Integration Fixed
- */
-import { updateInfoPanel } from './ui-renderer.js';
-import { setupListeners } from './events.js';
-import holidayData from './holiday.js';
-import { checkVoices } from './audio.js';
-import culturalData from './cultural.js';
 
-// 1. Initialize Global State
-const state = { 
-    viewDate: new Date(),    
-    selectedDate: new Date(), 
-    includeYear: true,
-    isPolish: false,
-    isFormal: false
-}
+
 
 // 2. Main Render Function
 function render() {
