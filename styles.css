@@ -411,3 +411,36 @@ body {
         box-shadow: 0 0 20px rgba(230, 25, 46, 0.2);
     }
 }
+
+/* Namedays Display Styling */
+.namedays-display {
+    margin: 20px 0;
+    padding: 15px;
+    background: var(--card-bg, #f8f9fa);
+    border-radius: 8px;
+    border-left: 4px solid var(--accent-color, #4a90e2);
+}
+
+.namedays-display h3 {
+    margin: 0 0 10px 0;
+    color: var(--text-primary, #333);
+    font-size: 1.2rem;
+}
+
+.namedays-list {
+    padding: 10px;
+}
+
+.namedays-names {
+    font-size: 1.1rem;
+    color: var(--text-primary, #333);
+    font-weight: 500;
+    line-height: 1.6;
+    margin: 0;
+}
+
+.namedays-placeholder {
+    color: var(--text-dim, #999);
+    font-style: italic;
+    margin: 0;
+}
