@@ -139,20 +139,31 @@ function render() {
     }
 
     // Update the daily name list for the selected day
-    if (dailyNamesList) {
+   if (dailyNamesList) {
+        // 1. Get the Day and Month from the state
         const dd = String(state.selectedDate.getDate()).padStart(2, '0');
         const mm = String(state.selectedDate.getMonth() + 1).padStart(2, '0');
-        const dateKey = `${dd}-${mm}`;
+        
+        // 2. Create the key in DD-MM format to match your JSON file
+        const dateKey = `${dd}-${mm}`; 
 
         if (cachedNameDays) {
+            // 3. If we already have the names in memory, use them
             const names = cachedNameDays[dateKey] || [];
             dailyNamesList.innerText = names.length > 0 ? names.join(", ") : "---";
         } else {
-            fetch('./Imieniny.json').then(res => res.json()).then(data => {
-                cachedNameDays = data;
-                const names = data[dateKey] || [];
-                dailyNamesList.innerText = names.length > 0 ? names.join(", ") : "---";
-            });
+            // 4. If memory is empty, fetch the file once
+            fetch('./Imieniny.json')
+                .then(res => res.json())
+                .then(data => {
+                    cachedNameDays = data; // Save to memory
+                    const names = data[dateKey] || [];
+                    dailyNamesList.innerText = names.length > 0 ? names.join(", ") : "---";
+                })
+                .catch(err => {
+                    console.error("Error loading names:", err);
+                    dailyNamesList.innerText = "Error loading names";
+                });
         }
     }
 
@@ -222,6 +233,14 @@ function renderCalendarGrid(viewDate, selectedDate, onDateClick) {
 // 4. Initialize
 document.addEventListener('DOMContentLoaded', () => {
     setupListeners(state, render);
+
+    fetch('./Imieniny.json')
+        .then(res => res.json())
+        .then(data => {
+            cachedNameDays = data; // Store the data in your global variable
+            render();              // Redraw to show names for the current date
+        })
+        .catch(err => console.error("Could not load Imieniny database:", err));
 
     // Modal Listeners
     const infoBtn = document.getElementById('navInfo');
