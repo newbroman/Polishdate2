@@ -6,38 +6,6 @@ import { setupListeners } from './events.js';
 import holidayData from './holiday.js';
 import { checkVoices } from './audio.js';
 import culturalData from './cultural.js';
-import { getNamesForDate } from './namedays.js';
-
-// 1. Initialize Global State
-const state = { 
-    viewDate: new Date(),    
-    selectedDate: new Date(), 
-    includeYear: true,
-    isPolish: false,
-    isFormal: false
-}
-
-// Function to update namedays display
-function updateNamedaysDisplay(date) {
-    const namedaysList = document.getElementById('namedaysList');
-    if (!namedaysList) return;
-    
-    const names = getNamesForDate(date);
-    
-    if (names.length > 0) {
-        namedaysList.innerHTML = `<p class="namedays-names">${names.join(', ')}</p>`;
-    } else {
-        namedaysList.innerHTML = '<p class="namedays-placeholder">No name days for this date</p>';
-    }
-}
-/**
- * app.js - Final Integration Fixed
- */
-import { updateInfoPanel } from './ui-renderer.js';
-import { setupListeners } from './events.js';
-import holidayData from './holiday.js';
-import { checkVoices } from './audio.js';
-import culturalData from './cultural.js';
 
 // 1. Initialize Global State
 const state = { 
