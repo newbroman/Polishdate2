@@ -40,6 +40,8 @@ const featGram = document.getElementById('featGram');
 const modalDevNote = document.getElementById('modalDevNote');
 const feedbackBtn = document.getElementById('feedbackBtn');
 
+    
+
 if (modalTitle) {
     if (state.isPolish) {
         modalAboutHeader.innerText = "O aplikacji:";
@@ -115,24 +117,79 @@ if (modalTitle) {
 
    if (repeatYearBtn) {
     const yearLabel = state.isPolish ? "Rok" : "Year";
-    
+
+// 6.5 Cultural Page Translations & Name Day Display
+    const cultMainTitle = document.getElementById('cultMainTitle');
+    const nameSearchInput = document.getElementById('nameSearchInput');
+    const dailyNamesTitle = document.getElementById('dailyNamesTitle');
+    const imieninyTitle = document.getElementById('imieninyTitle');
+    const imieninyText = document.getElementById('imieninyText');
+    const holidaysTitle = document.getElementById('holidaysTitle');
+    const holidaysText = document.getElementById('holidaysText');
+    const backBtn = document.querySelector('.back-to-cal');
+    const dailyNamesList = document.getElementById('dailyNamesList');
+
+    if (cultMainTitle) {
+        if (state.isPolish) {
+            cultMainTitle.innerText = "Polskie Tradycje Kulturowe";
+            nameSearchInput.placeholder = "Szukaj imienia (np. Maria)...";
+            dailyNamesTitle.innerText = "Imieniny na wybraną datę:";
+            imieninyTitle.innerText = "Imieniny";
+            imieninyText.innerHTML = "W Polsce <strong>imieniny</strong> są często ważniejsze niż urodziny. Większość polskich kalendarzy zawiera listę imion przypisanych do każdego dnia.";
+            holidaysTitle.innerText = "Święta i Zwyczaje";
+            holidaysText.innerHTML = "Szukaj dni z <em>czerwoną ramką</em> w kalendarzu, aby zidentyfikować święta narodowe i ważne uroczystości.";
+            if(backBtn) backBtn.innerText = "← Powrót do kalendarza";
+        } else {
+            cultMainTitle.innerText = "Polish Cultural Traditions";
+            nameSearchInput.placeholder = "Search for a name (e.g., Maria)...";
+            dailyNamesTitle.innerText = "Name Days for selected date:";
+            imieninyTitle.innerText = "Imieniny (Name Days)";
+            imieninyText.innerHTML = "In Poland, <strong>Name Days</strong> are often more important than birthdays. Most Polish calendars list the names associated with each day.";
+            holidaysTitle.innerText = "Holidays & Customs";
+            holidaysText.innerHTML = "Look for days with <em>red borders</em> in the calendar to identify national holidays and significant celebrations.";
+            if(backBtn) backBtn.innerText = "← Back to Calendar";
+        }
+    }
+
+    // Update Daily Names from the JSON
+ // ... inside render() after section 6.5 ...
+
+    // Update Daily Names from the JSON
+    if (dailyNamesList) {
+        const dd = String(state.selectedDate.getDate()).padStart(2, '0');
+        const mm = String(state.selectedDate.getMonth() + 1).padStart(2, '0');
+        const dateKey = `${dd}-${mm}`;
+
+        fetch('./Imieniny.json')
+            .then(res => res.json())
+            .then(data => {
+                const names = data[dateKey] || [];
+                dailyNamesList.innerText = names.length > 0 ? names.join(", ") : "---";
+            })
+            .catch(() => { dailyNamesList.innerText = "Error loading names"; });
+    }
+
     // Translate the status based on the language
     let status;
     if (state.isPolish) {
-        status = state.includeYear ? "WŁ" : "WYŁ"; // WŁ = Włączone (ON), WYŁ = Wyłączone (OFF)
+        status = state.includeYear ? "WŁ" : "WYŁ";
     } else {
         status = state.includeYear ? "ON" : "OFF";
     }
 
-    repeatYearBtn.innerText = `${yearLabel}: ${status}`;
-}
+    if (repeatYearBtn) {
+        const yearLabel = state.isPolish ? "Rok" : "Year";
+        repeatYearBtn.innerText = `${yearLabel}: ${status}`;
+    }
+
     // 7. Render Calendar Grid
     renderCalendarGrid(state.viewDate, state.selectedDate, (newDate) => {
         state.selectedDate = newDate;
         render(); 
     });
-}
+} // This is the final bracket for function render()
 
+// 3. Grid Drawing Logic starts here...
 // 3. Grid Drawing Logic
 function renderCalendarGrid(viewDate, selectedDate, onDateClick) {
     const grid = document.getElementById('calendarGrid'); 
@@ -233,6 +290,47 @@ document.addEventListener('DOMContentLoaded', () => {
             window.open('https://forms.gle/YOUR_FORM_ID', '_blank');
         });
     }
+
+// Name Search Logic
+    const searchInput = document.getElementById('nameSearchInput');
+    const resultsDiv = document.getElementById('searchResults');
+
+    searchInput?.addEventListener('input', async (e) => {
+        const query = e.target.value.toLowerCase().trim();
+        resultsDiv.innerHTML = "";
+        if (query.length < 2) return;
+
+        const response = await fetch('./Imieniny.json');
+        const data = await response.json();
+
+        for (const [date, names] of Object.entries(data)) {
+            const matches = names.filter(n => n.toLowerCase().includes(query));
+           matches.forEach(name => {
+    const row = document.createElement('div');
+    row.className = 'search-item';
+    
+    // Your file is DD-MM, so d=01, m=02
+    const [d, m] = date.split('-'); 
+    row.innerHTML = `<span>${name}</span> <small>(${d}.${m})</small>`;
+    
+    row.style.cursor = 'pointer';
+    row.onclick = () => {
+        const currentYear = state.viewDate.getFullYear();
+        
+        // Month index must be (m - 1) because JS months are 0-11
+        state.viewDate = new Date(currentYear, parseInt(m) - 1, parseInt(d));
+        state.selectedDate = new Date(currentYear, parseInt(m) - 1, parseInt(d));
+        
+        // Switch views
+        document.getElementById('culturalHub').style.display = 'none';
+        document.getElementById('calendarApp').style.display = 'block';
+        
+        render(); 
+    };
+    resultsDiv.appendChild(row);
+});
+        }
+    });
     
     // Use requestAnimationFrame to let CSS load first
     requestAnimationFrame(() => {
