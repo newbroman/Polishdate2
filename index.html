@@ -60,17 +60,28 @@
     </main>
 
     <section id="culturalHub" class="content-page" style="display: none;">
-        <h1>Polish Cultural Traditions</h1>
-        <div class="content-body">
-            <h2>Imieniny (Name Days)</h2>
-            <p>In Poland, <strong>Name Days</strong> are often more important than birthdays. Most Polish calendars list the names associated with each day.</p>
-            
-            <h2>Holidays & Customs</h2>
-            <p>Look for days with <em>red borders</em> in the calendar to identify national holidays and significant celebrations.</p>
-        </div>
-        <button class="pill-btn back-to-cal">← Back to Calendar</button>
-    </section>
+    <h1 id="cultMainTitle">Polish Cultural Traditions</h1>
+    
+    <div class="search-container" style="margin-bottom: 20px;">
+        <input type="text" id="nameSearchInput" placeholder="Szukaj imienia...">
+        <div id="searchResults" class="search-results-overlay"></div>
+    </div>
 
+    <div class="daily-names-box" style="padding: 15px; background: var(--panel-bg); border-radius: 8px; margin-bottom: 20px;">
+        <h3 id="dailyNamesTitle">Name Days for Selected Date</h3>
+        <p id="dailyNamesList" style="font-weight: bold; color: var(--accent-color);"></p>
+    </div>
+
+    <div class="content-body">
+        <h2 id="imieninyTitle">Imieniny (Name Days)</h2>
+        <p id="imieninyText">In Poland, Name Days are often more important than birthdays...</p>
+        
+        <h2 id="holidaysTitle">Holidays & Customs</h2>
+        <p id="holidaysText">Look for days with red borders in the calendar to identify national holidays...</p>
+    </div>
+    
+    <button class="pill-btn back-to-cal" id="backToCalBtn">← Back to Calendar</button>
+</section>
    <section id="rulesPage" class="content-page" style="display: none;">
     <h1>Grammar Rules</h1>
     <div class="content-body">
