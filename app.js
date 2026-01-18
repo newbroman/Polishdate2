@@ -31,6 +31,33 @@ function render() {
     const monthIndex = state.viewDate.getMonth();
     const year = state.viewDate.getFullYear();
 
+
+const modalTitle = document.getElementById('modalTitle');
+const modalAboutHeader = document.getElementById('modalAboutHeader');
+const featCal = document.getElementById('featCal');
+const featCult = document.getElementById('featCult');
+const featGram = document.getElementById('featGram');
+const modalDevNote = document.getElementById('modalDevNote');
+const feedbackBtn = document.getElementById('feedbackBtn');
+
+if (modalTitle) {
+    if (state.isPolish) {
+        modalAboutHeader.innerText = "O aplikacji:";
+        featCal.innerHTML = "📅 <b>Kalendarz:</b> Kliknij datę, by usłyszeć wymowę.";
+        featCult.innerHTML = "📖 <b>Kultura:</b> Poznaj polskie tradycje i imieniny.";
+        featGram.innerHTML = "⚖️ <b>Gramatyka:</b> Opanuj odmianę liczebników.";
+        modalDevNote.innerText = "Projekt niezależny. Twoja opinia pomaga mi w rozwoju!";
+        feedbackBtn.innerText = "Prześlij opinię (Feedback)";
+    } else {
+        modalAboutHeader.innerText = "About the app:";
+        featCal.innerHTML = "📅 <b>Calendar:</b> Click a date to hear pronunciation.";
+        featCult.innerHTML = "📖 <b>Culture:</b> Explore Polish traditions and Name Days.";
+        featGram.innerHTML = "⚖️ <b>Grammar:</b> Master the numeral cases.";
+        modalDevNote.innerText = "Independent project. Your feedback helps me improve!";
+        feedbackBtn.innerText = "Send Feedback";
+    }
+}
+    
    // 1. Update Mode Button
     if (meetingBtn) {
     // state.isFormal = false (Default) -> "Today is" (Naming Mode)
@@ -47,6 +74,8 @@ function render() {
     // Theme: Blue for Naming (Today is), Gold for Event (It's on)
     meetingBtn.className = `pill-btn ${state.isFormal ? 'mode-btn-event' : 'mode-btn-naming'}`;
 }
+
+
     
     // 2. Update Info Panel
     try {
