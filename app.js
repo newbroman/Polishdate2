@@ -294,7 +294,7 @@ document.addEventListener('DOMContentLoaded', () => {
     checkVoices(() => render());
 
    // --- Service Worker Registration ---
-    if ('serviceWorker' in navigator) {
+   if ('serviceWorker' in navigator) {
         let refreshing = false;
         // Detect when a new service worker takes over and reload the page
         navigator.serviceWorker.addEventListener('controllerchange', () => {
@@ -303,6 +303,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 refreshing = true;
             }
         });
+
+        navigator.serviceWorker.register('sw.js')
+            .then(reg => console.log('✅ Service Worker Registered at:', reg.scope))
+            .catch(err => console.log('❌ Service Worker Failed:', err));
+    }
+});
 
 // Debugging
 window.render = render;
