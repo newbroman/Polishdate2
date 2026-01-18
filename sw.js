@@ -10,7 +10,7 @@ const ASSETS = [
   './numbers.js',
   './audio.js',
   './holiday.js',
-  './Imieniny.json
+  './Imieniny.json',
   './cultural.js',
   './rules.js',
   './manifest.json',
